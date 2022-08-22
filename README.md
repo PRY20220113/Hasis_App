@@ -1,2 +1,2 @@
-# Hassis_App
+# Hasis_App
 App para personas con discapacidad visual.
