@@ -5,40 +5,30 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.upc.hasis_app.data.api.ApiRest
 import com.upc.hasis_app.data.model.response.ObtenerFactosResponse
+import com.upc.hasis_app.domain.usecase.ObtenerFactosUseCase
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.multibindings.IntKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    val API_URL = "https://catfact.ninja/"
 
-    private fun getRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(API_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    private fun obtenerFactos() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val call = getRetrofit().create(ApiRest::class.java).contributors().execute()
-            val response = call.body() as ObtenerFactosResponse?
-            runOnUiThread {
-                Log.i("Response", response.toString())
-            }
-        }
-    }
-
+    @Inject
+    lateinit var obtenerFactosUseCase: ObtenerFactosUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        obtenerFactos()
+        GlobalScope.launch(Dispatchers.Main) {
+            Log.i("test", obtenerFactosUseCase.obtenerFactosUseCase().toString());
+        }
 
     }
 

@@ -5,6 +5,6 @@ import com.upc.hasis_app.data.model.response.ObtenerFactosResponse
 
 interface ObtenerFactosRepository {
 
-    fun obtenerFactos(): ObtenerFactosResponse
+    suspend fun obtenerFactos(): ObtenerFactosResponse
 
 }
