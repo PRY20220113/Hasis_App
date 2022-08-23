@@ -3,18 +3,13 @@ package com.upc.hasis_app
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.upc.hasis_app.data.apí.ApiRest
-import com.upc.hasis_app.data.model.request.ObtenerFactosRequest
+import com.upc.hasis_app.data.api.ApiRest
 import com.upc.hasis_app.data.model.response.ObtenerFactosResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
 
 
 class MainActivity : AppCompatActivity() {
