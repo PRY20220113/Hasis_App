@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.upc.hasis_app.data.api.ApiRest
 import com.upc.hasis_app.data.model.response.ObtenerFactosResponse
+import com.upc.hasis_app.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,6 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity() {
 
     val API_URL = "https://catfact.ninja/"
+    private lateinit var binding: ActivityMainBinding
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
@@ -36,7 +38,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         obtenerFactos()
 

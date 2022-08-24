@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Hasis_App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_text">Bienvenido</string>
+    <string name="register_button_text">Registrarse</string>
+    <string name="login_button_text">Iniciar Sesión</string>
+
 </resources>
