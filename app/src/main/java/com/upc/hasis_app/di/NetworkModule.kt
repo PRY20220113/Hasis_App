@@ -1,9 +1,6 @@
 package com.upc.hasis_app.di
 
-import android.app.Application
 import com.upc.hasis_app.data.api.ApiRest
-import com.upc.hasis_app.data.repository.ObtenerFactosRepositoryImp
-import com.upc.hasis_app.domain.repository.ObtenerFactosRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +13,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val API_URL = "https://catfact.ninja/"
+    //private const val API_URL = "https://catfact.ninja/"
+    private const val API_URL = "http://192.168.0.8:8080/api/v1/"
 
     @Provides
     @Singleton
