@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/selectRoleFragment"
-        android:name="com.upc.hasis_app.ui.select_role.SelectRoleFragment"
+        android:name="com.upc.hasis_app.presentation.ui.select_role.SelectRoleFragment"
         android:label="SelectRoleFragment" >
         <action
             android:id="@+id/go_to_register_form"
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.upc.hasis_app.ui.register.RegisterFragment"
+        android:name="com.upc.hasis_app.presentation.ui.register.RegisterFragment"
         android:label="RegisterFragment" >
         <action
             android:id="@+id/go_back_to_select_rol"

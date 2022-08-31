@@ -1,14 +1,11 @@
-package com.upc.hasis_app.ui.select_role
+package com.upc.hasis_app.presentation.ui.login
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.upc.hasis_app.R
-import com.upc.hasis_app.databinding.FragmentSelectRoleBinding
-import com.upc.hasis_app.databinding.FragmentWelcomeBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,15 +14,13 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [SelectRoleFragment.newInstance] factory method to
+ * Use the [LoginFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SelectRoleFragment : Fragment() {
+class LoginFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
-    private lateinit var binding: FragmentSelectRoleBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,24 +34,8 @@ class SelectRoleFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSelectRoleBinding.inflate(inflater, container, false)
-        return binding.root;
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.btnRegisterPatient.setOnClickListener {
-            findNavController().navigate(R.id.go_to_register_form)
-        }
-
-        binding.btnRegisterDoctor.setOnClickListener {
-            findNavController().navigate(R.id.go_to_register_form)
-        }
-
-        binding.btnBack.setOnClickListener {
-            findNavController().navigate(R.id.go_back_to_welcome)
-        }
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
     companion object {
@@ -66,12 +45,12 @@ class SelectRoleFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment SelectRoleFragment.
+         * @return A new instance of fragment LoginFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            SelectRoleFragment().apply {
+            LoginFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

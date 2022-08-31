@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.upc.hasis_app.ui.welcome.WelcomeFragment"
+        android:name="com.upc.hasis_app.presentation.ui.welcome.WelcomeFragment"
         android:label="fragment_welcome"
         tools:layout="@layout/fragment_welcome" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.upc.hasis_app.ui.login.LoginFragment"
+        android:name="com.upc.hasis_app.presentation.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
     <include app:graph="@navigation/register_navigation" />
