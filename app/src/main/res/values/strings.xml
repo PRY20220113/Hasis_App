@@ -11,5 +11,9 @@
     <string name="register_title">Registro</string>
     <string name="patient_text">Paciente</string>
     <string name="doctor_text">Doctor</string>
-
+    <string name="name_text">Nombres</string>
+    <string name="surname_text">Apellidos</string>
+    <string name="email_text">Correo</string>
+    <string name="phone_text">Teléfono</string>
+    <string name="sfees_text">Número de Colegiatura</string>
 </resources>

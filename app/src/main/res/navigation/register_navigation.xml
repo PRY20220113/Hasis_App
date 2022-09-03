@@ -12,9 +12,13 @@
             android:id="@+id/go_to_register_form"
             app:destination="@id/registerFragment" />
         <action
+            android:id="@+id/go_to_register_form_doctor"
+            app:destination="@id/registerFragmentDoctor" />}
+        <action
             android:id="@+id/go_back_to_welcome"
             app:destination="@id/login_navigation" />
     </fragment>
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.upc.hasis_app.presentation.ui.register.RegisterFragment"
@@ -23,4 +27,15 @@
             android:id="@+id/go_back_to_select_rol"
             app:destination="@id/selectRoleFragment" />
     </fragment>
+
+
+    <fragment
+    android:id="@+id/registerFragmentDoctor"
+    android:name="com.upc.hasis_app.presentation.ui.register.RegisterFragmentDoctor"
+    android:label="RegisterFragmentDoctor" >
+    <action
+        android:id="@+id/go_back_to_select_rol"
+        app:destination="@id/selectRoleFragment" />
+    </fragment>
+
 </navigation>

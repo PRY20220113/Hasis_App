@@ -2,8 +2,10 @@ package com.upc.hasis_app.data.api
 
 import com.upc.hasis_app.data.model.request.CrearDoctorRequest
 import com.upc.hasis_app.data.model.request.CrearPacienteRequest
+import com.upc.hasis_app.data.model.request.CrearRecipeRequest
 import com.upc.hasis_app.data.model.response.CrearDoctorResponse
 import com.upc.hasis_app.data.model.response.CrearPacienteResponse
+import com.upc.hasis_app.data.model.response.CrearRecipeResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -39,5 +41,21 @@ interface ApiRest {
     @DELETE("patient/{patient}")
     suspend fun deletePatientById(@Path("patient") id: Int ): Response<Void>
 
+
+
+    @GET("recipe/{recipeId}")
+    suspend fun getRecipeById(@Path("recipeId") id: Int): Response<CrearRecipeResponse>
+
+    @GET("patient/{patientId}/recipe")
+    suspend fun getAllRecipesByPatient(@Path("patientId") id: Int): Response<List<CrearRecipeResponse>>
+
+    @POST("patient/{patientId}/recipe")
+    suspend fun createRecipe(@Path("patientId") id: Int, @Body crearPacienteRequest: CrearRecipeRequest): Response<CrearRecipeResponse>
+
+    @PUT("recipe/{recipeId}")
+    suspend fun updateRecipe(@Path("recipeId") id: Int, @Body crearPacienteRequest: CrearRecipeRequest): Response<CrearRecipeResponse>
+
+    @DELETE("recipe/{recipeId}")
+    suspend fun deleteRecipeById(@Path("recipeId") id: Int ): Response<Void>
 
 }

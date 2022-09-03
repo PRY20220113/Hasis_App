@@ -50,7 +50,7 @@ class SelectRoleFragment : Fragment() {
         }
 
         binding.btnRegisterDoctor.setOnClickListener {
-            findNavController().navigate(R.id.go_to_register_form)
+            findNavController().navigate(R.id.go_to_register_form_doctor)
         }
 
         binding.btnBack.setOnClickListener {
