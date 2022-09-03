@@ -1,18 +1,23 @@
-package com.upc.hasis_app.ui.welcome
+package com.upc.hasis_app.presentation.ui.welcome
 
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.upc.hasis_app.MainActivity
 import com.upc.hasis_app.R
 import com.upc.hasis_app.databinding.FragmentWelcomeBinding
+import com.upc.hasis_app.presentation.view_model.WelcomeStatus
+import com.upc.hasis_app.presentation.view_model.WelcomeViewModel
+import com.upc.hasis_app.util.tts.TTSHelper
+import kotlinx.coroutines.delay
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -20,18 +25,15 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class WelcomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
 
     private lateinit var binding: FragmentWelcomeBinding
+    private val viewModel: WelcomeViewModel by activityViewModels()
+    private lateinit var ttsHelper: TTSHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -40,8 +42,9 @@ class WelcomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentWelcomeBinding.inflate(inflater, container, false)
+        ttsHelper = (activity as MainActivity).ttsHelper
+        initObservers()
         return binding.root;
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,25 +57,22 @@ class WelcomeFragment : Fragment() {
         binding.btnRegister.setOnClickListener {
             findNavController().navigate(R.id.go_to_register)
         }
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment welcomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WelcomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun initObservers(){
+        viewModel.currentState.observe(viewLifecycleOwner) {
+            when (it) {
+                is WelcomeStatus.Success -> {
+                    speakWelcomeUser()
                 }
             }
+        }
     }
+
+    private fun speakWelcomeUser() {
+        ttsHelper.speakOut("Bienvenido a jasis; tu asistente de gestión de medicamentos. Para inicar sesión selecciona por favor la opción sobre la parte inferior derecha o para " +
+                "registrarte selecciona la opción de la parte inferior izquierda")
+    }
+
 }
