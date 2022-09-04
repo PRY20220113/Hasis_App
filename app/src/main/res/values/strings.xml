@@ -16,4 +16,8 @@
     <string name="email_text">Correo</string>
     <string name="phone_text">Teléfono</string>
     <string name="sfees_text">Número de Colegiatura</string>
+    <string name="patient_consult_text">Pacientes</string>
+    <string name="profile_text">Perfil</string>
+    <string name="patient_consult_empty">Aquí se mostrará la información del paciente</string>
+    <string name="scan_QR_text">Escanear QR</string>
 </resources>

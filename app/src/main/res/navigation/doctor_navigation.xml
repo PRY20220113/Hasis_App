@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/doctor_navigation"
+    app:startDestination="@id/patientConsultFragment">
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.upc.hasis_app.presentation.ui.profile.ProfileFragment"
+        android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/patientConsultFragment"
+        android:name="com.upc.hasis_app.presentation.ui.patient.PatientConsultFragment"
+        android:label="PatientConsultFragment" />
+</navigation>

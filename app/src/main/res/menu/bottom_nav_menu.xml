@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/patientConsultFragment"
+        android:icon="@drawable/ic_patient_consult"
+        android:title="@string/patient_consult_text"/>
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_account"
+        android:title="@string/profile_text"/>
+
+</menu>
