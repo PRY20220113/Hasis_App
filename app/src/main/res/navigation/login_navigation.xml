@@ -21,6 +21,15 @@
         android:id="@+id/loginFragment"
         android:name="com.upc.hasis_app.presentation.ui.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/login_doctor_complete"
+            app:destination="@id/doctorActivity" />
+    </fragment>
     <include app:graph="@navigation/register_navigation" />
+    <activity
+        android:id="@+id/doctorActivity"
+        android:name="com.upc.hasis_app.presentation.ui.DoctorActivity"
+        android:label="activity_doctor"
+        tools:layout="@layout/activity_doctor" />
 </navigation>

@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.upc.hasis_app.MainActivity
 import com.upc.hasis_app.R
 import com.upc.hasis_app.databinding.FragmentWelcomeBinding
-import com.upc.hasis_app.presentation.view_model.WelcomeStatus
+import com.upc.hasis_app.presentation.view_model.ResultStatus
 import com.upc.hasis_app.presentation.view_model.WelcomeViewModel
 import com.upc.hasis_app.util.tts.TTSHelper
 import kotlinx.coroutines.delay
@@ -44,7 +44,7 @@ class WelcomeFragment : Fragment() {
         binding = FragmentWelcomeBinding.inflate(inflater, container, false)
         ttsHelper = (activity as MainActivity).ttsHelper
         initObservers()
-        return binding.root;
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,10 +63,17 @@ class WelcomeFragment : Fragment() {
     private fun initObservers(){
         viewModel.currentState.observe(viewLifecycleOwner) {
             when (it) {
-                is WelcomeStatus.Success -> {
+                is ResultStatus.Success -> {
                     speakWelcomeUser()
                 }
             }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if(!ttsHelper.isComplete()) {
+            ttsHelper.silence()
         }
     }
 

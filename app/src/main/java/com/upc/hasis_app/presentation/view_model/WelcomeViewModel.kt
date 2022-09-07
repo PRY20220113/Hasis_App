@@ -4,19 +4,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 
-sealed class WelcomeStatus {
+sealed class ResultStatus {
 
-    object Success : WelcomeStatus()
-
+    object Success : ResultStatus()
+    object Started : ResultStatus()
+    object Speaking : ResultStatus()
+    object SpeakComplete : ResultStatus()
+    object Listening : ResultStatus()
+    object ListenComplete : ResultStatus()
+    object DataComplete : ResultStatus()
 }
 
 class WelcomeViewModel : ViewModel() {
 
-    val currentState : MutableLiveData<WelcomeStatus> by lazy {
-        MutableLiveData<WelcomeStatus>()
+    val currentState : MutableLiveData<ResultStatus> by lazy {
+        MutableLiveData<ResultStatus>()
     }
 
-    fun setState(value: WelcomeStatus) {
+    fun setState(value: ResultStatus) {
         currentState.postValue(value)
     }
 
