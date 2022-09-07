@@ -13,13 +13,12 @@ class PatientUseCase @Inject constructor(
     private val patientRepositoryImp: PatientRepositoryImp
 )  {
 
-    suspend fun getPatientsByDoctor(id:Int): Response<List<CrearPacienteResponse>> {
-        return patientRepositoryImp.getPatientsByDoctor(id)
+    suspend fun getPatientById(id:Int): Response<CrearPacienteResponse> {
+        return patientRepositoryImp.getPatientById(id)
     }
 
-
-    suspend fun createPatient(id:Int, crearDoctorRequest: CrearPacienteRequest): Response<CrearPacienteResponse> {
-        return patientRepositoryImp.createPatient(id, crearDoctorRequest)
+    suspend fun createPatient(crearDoctorRequest: CrearPacienteRequest): Response<CrearPacienteResponse> {
+        return patientRepositoryImp.createPatient( crearDoctorRequest)
     }
 
     suspend fun updatePatient(id:Int, crearDoctorRequest: CrearPacienteRequest): Response<CrearPacienteResponse> {

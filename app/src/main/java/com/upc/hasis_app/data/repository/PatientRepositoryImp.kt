@@ -14,15 +14,15 @@ class PatientRepositoryImp @Inject constructor(
 ) : PatientRepository {
 
 
-    override suspend fun getPatientsByDoctor(id:Int): Response<List<CrearPacienteResponse>> {
+    override suspend fun getPatientById(id:Int): Response<CrearPacienteResponse> {
         return withContext(Dispatchers.IO) {
-            apiRest.getPatientsbyDoctor(id)
+            apiRest.getPatientById(id)
         }
     }
 
-    override suspend fun createPatient(id:Int,crearPacienteRequest: CrearPacienteRequest): Response<CrearPacienteResponse> {
+    override suspend fun createPatient(crearPacienteRequest: CrearPacienteRequest): Response<CrearPacienteResponse> {
         return withContext(Dispatchers.IO) {
-            apiRest.createPatient(id, crearPacienteRequest)
+            apiRest.createPatient(crearPacienteRequest)
         }
     }
 

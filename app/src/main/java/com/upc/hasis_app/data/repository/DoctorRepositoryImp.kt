@@ -2,7 +2,10 @@ package com.upc.hasis_app.data.repository
 
 import com.upc.hasis_app.data.api.ApiRest
 import com.upc.hasis_app.data.model.request.CrearDoctorRequest
+import com.upc.hasis_app.data.model.request.EditarDoctorRequest
+import com.upc.hasis_app.data.model.request.LoginRequest
 import com.upc.hasis_app.data.model.response.CrearDoctorResponse
+import com.upc.hasis_app.data.model.response.LoginDoctorResponse
 import com.upc.hasis_app.domain.repository.DoctorRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,11 +16,11 @@ class DoctorRepositoryImp @Inject constructor(
    private val apiRest: ApiRest,
 ) : DoctorRepository {
 
-    override suspend fun getAllDoctors(): Response<List<CrearDoctorResponse>> {
-        return withContext(Dispatchers.IO) {
-             apiRest.getAllDoctors()
-        }
-    }
+//    override suspend fun getAllDoctors(): Response<List<CrearDoctorResponse>> {
+//        return withContext(Dispatchers.IO) {
+//             apiRest.getAllDoctors()
+//        }
+//    }
 
     override suspend fun getDoctorById(id:Int): Response<CrearDoctorResponse> {
         return withContext(Dispatchers.IO) {
@@ -25,15 +28,22 @@ class DoctorRepositoryImp @Inject constructor(
         }
     }
 
+    override suspend fun loginDoctor(loginRequest: LoginRequest): Response<LoginDoctorResponse> {
+        return withContext(Dispatchers.IO) {
+            apiRest.loginDoctor(loginRequest)
+        }
+    }
+
+
     override suspend fun createDoctor(crearDoctorRequest: CrearDoctorRequest): Response<CrearDoctorResponse> {
         return withContext(Dispatchers.IO) {
             apiRest.createDoctor(crearDoctorRequest)
         }
     }
 
-    override suspend fun updateDoctor(id: Int, crearDoctorRequest: CrearDoctorRequest): Response<CrearDoctorResponse> {
+    override suspend fun updateDoctor(id: Int, editarDoctorRequest: EditarDoctorRequest ): Response<CrearDoctorResponse> {
         return withContext(Dispatchers.IO) {
-            apiRest.updateDoctor(id, crearDoctorRequest)
+            apiRest.updateDoctor(id, editarDoctorRequest)
         }
     }
 

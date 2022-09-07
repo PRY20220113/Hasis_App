@@ -2,22 +2,23 @@ package com.upc.hasis_app.presentation.ui.register
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.upc.hasis_app.R
 import com.upc.hasis_app.data.model.request.CrearDoctorRequest
-import com.upc.hasis_app.databinding.FragmentRegisterBinding
 import com.upc.hasis_app.databinding.FragmentRegisterDoctorBinding
-import com.upc.hasis_app.domain.entity.Doctor
 import com.upc.hasis_app.domain.usecase.DoctorUseCase
+import com.upc.hasis_app.util.Constantes
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import javax.inject.Inject
 
 
@@ -78,19 +79,23 @@ class RegisterFragmentDoctor : Fragment() {
     private fun registerDoctor(){
         var doctor = CrearDoctorRequest()
         doctor.dni      = binding.etDni.text.toString()
-        doctor.name     = binding.etName.text.toString()
-        doctor.surname  = binding.etSurname.text.toString()
+        doctor.first_name  = binding.etName.text.toString()
+        doctor.last_name  = binding.etSurname.text.toString()
         doctor.email    = binding.etEmail.text.toString()
         doctor.phone    = binding.etPhone.text.toString()
         doctor.password = binding.etPassword.text.toString()
         doctor.sfeesNum = binding.etSfees.text.toString()
-
+        doctor.roles.add(Constantes.ROL_DOCTOR)
 
         GlobalScope.launch(Dispatchers.Main) {
             val response = doctorUseCase.createDoctor(doctor)
             Log.i("Response", response.toString())
             if(response.code() == 200){
-                Toast.makeText(requireActivity(),"Registro exitoso", Toast.LENGTH_SHORT).show()
+                Log.i("Response", response.body().toString())
+            } else {
+                val error = response.errorBody()
+                Toast.makeText(requireActivity(), error!!.string(), Toast.LENGTH_LONG).show()
+                Log.i("Response", error.string())
             }
         }
     }
