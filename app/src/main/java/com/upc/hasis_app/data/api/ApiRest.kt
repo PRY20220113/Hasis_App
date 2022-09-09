@@ -53,10 +53,10 @@ interface ApiRest {
     suspend fun getAllRecipesByPatient(@Path("patientId") id: Int): Response<List<CrearRecipeResponse>>
 
     @POST("patient/{patientId}/recipe")
-    suspend fun createRecipe(@Path("patientId") id: Int, @Body crearPacienteRequest: CrearRecipeRequest): Response<CrearRecipeResponse>
+    suspend fun createRecipe(@Path("patientId") patientId: Int, @Body crearPacienteRequest: CrearRecipeRequest): Response<CrearRecipeResponse>
 
     @PUT("recipe/{recipeId}")
-    suspend fun updateRecipe(@Path("recipeId") id: Int, @Body crearPacienteRequest: CrearRecipeRequest): Response<CrearRecipeResponse>
+    suspend fun updateRecipe(@Path("recipeId") recipeId: Int, @Body crearPacienteRequest: CrearRecipeRequest): Response<CrearRecipeResponse>
 
     @DELETE("recipe/{recipeId}")
     suspend fun deleteRecipeById(@Path("recipeId") id: Int ): Response<Void>

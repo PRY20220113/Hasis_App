@@ -5,7 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
+import com.upc.hasis_app.MainActivity
 import com.upc.hasis_app.R
+import com.upc.hasis_app.databinding.FragmentLoginBinding
+import com.upc.hasis_app.databinding.FragmentProfileBinding
+import com.upc.hasis_app.databinding.FragmentSelectRoleBinding
+import com.upc.hasis_app.presentation.view_model.ResultStatus
 import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,6 +32,9 @@ class ProfileFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var binding: FragmentProfileBinding
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -38,7 +48,23 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val barcodeEncoder = BarcodeEncoder()
+        val bitmap = barcodeEncoder.encodeBitmap(
+            "Hola",
+            BarcodeFormat.QR_CODE,
+            450,
+            450
+        )
+
+        binding.ivCodigoQR.setImageBitmap(bitmap);
+
     }
 
     companion object {

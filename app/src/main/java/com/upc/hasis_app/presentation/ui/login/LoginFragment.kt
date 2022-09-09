@@ -77,7 +77,7 @@ class LoginFragment : Fragment() {
                 Log.i("LoginResponse", response.body().toString())
                 findNavController().navigate(R.id.login_doctor_complete)
             } else {
-                Log.i("LoginResponse", response.errorBody().toString())
+                Log.i("LoginResponse", response.errorBody()!!.string())
             }
         }
     }
@@ -108,7 +108,8 @@ class LoginFragment : Fragment() {
 
                 }
                 is ResultStatus.DataComplete -> {
-                    findNavController().navigate(R.id.login_doctor_complete)
+                    doLogin()
+                    //findNavController().navigate(R.id.login_doctor_complete)
                 }
                 else -> {}
             }
@@ -124,10 +125,10 @@ class LoginFragment : Fragment() {
     private val updateValueListened : (ArrayList<String>) -> Unit = {
         if(viewModel.userName == null || viewModel.password == null) {
             if(viewModel.userName == null) {
-                binding.tiUsername.setText(it[0])
+                binding.tiUsername.setText(it[0].replace("\\s".toRegex(), ""))
                 viewModel.userName = it[0]
             } else {
-                binding.tiPassword.setText(it[0])
+                binding.tiPassword.setText(it[0].replace("\\s".toRegex(), ""))
                 viewModel.password = it[0]
             }
             viewModel.setState(ResultStatus.Success)
