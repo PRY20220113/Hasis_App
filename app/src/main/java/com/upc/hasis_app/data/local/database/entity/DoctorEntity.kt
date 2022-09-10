@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "medico")
-class MedicoEntity {
+@Entity(tableName = "doctor")
+class DoctorEntity {
 
     @Expose(serialize = false)
     //@PrimaryKey(autoGenerate = true)

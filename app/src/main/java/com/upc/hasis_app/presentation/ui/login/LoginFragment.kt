@@ -15,6 +15,7 @@ import com.upc.hasis_app.data.model.request.LoginRequest
 import com.upc.hasis_app.databinding.FragmentLoginBinding
 import com.upc.hasis_app.domain.entity.Doctor
 import com.upc.hasis_app.domain.usecase.DoctorUseCase
+import com.upc.hasis_app.domain.usecase.PreferencesUseCase
 import com.upc.hasis_app.presentation.view_model.LoginViewModel
 import com.upc.hasis_app.presentation.view_model.ResultStatus
 import com.upc.hasis_app.presentation.view_model.UserActionStatus
@@ -38,6 +39,9 @@ class LoginFragment : Fragment() {
 
     @Inject
     lateinit var doctorUseCase: DoctorUseCase
+
+    @Inject
+    lateinit var preferencesUseCase: PreferencesUseCase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,9 +79,12 @@ class LoginFragment : Fragment() {
             Log.i("LoginResponse", response.toString())
             if(response.code() == 200){
                 Log.i("LoginResponse", response.body().toString())
+                preferencesUseCase.setLoginRequest(loginRequest)
                 findNavController().navigate(R.id.login_doctor_complete)
+                preferencesUseCase.setToken("Bearer ${response.body()!!.token}")
+
             } else {
-                Log.i("LoginResponse", response.errorBody().toString())
+                Log.i("LoginResponse", response.errorBody()!!.string())
             }
         }
     }
@@ -108,7 +115,8 @@ class LoginFragment : Fragment() {
 
                 }
                 is ResultStatus.DataComplete -> {
-                    findNavController().navigate(R.id.login_doctor_complete)
+                    doLogin()
+                    //findNavController().navigate(R.id.login_doctor_complete)
                 }
                 else -> {}
             }
@@ -124,10 +132,10 @@ class LoginFragment : Fragment() {
     private val updateValueListened : (ArrayList<String>) -> Unit = {
         if(viewModel.userName == null || viewModel.password == null) {
             if(viewModel.userName == null) {
-                binding.tiUsername.setText(it[0])
+                binding.tiUsername.setText(it[0].replace("\\s".toRegex(), ""))
                 viewModel.userName = it[0]
             } else {
-                binding.tiPassword.setText(it[0])
+                binding.tiPassword.setText(it[0].replace("\\s".toRegex(), ""))
                 viewModel.password = it[0]
             }
             viewModel.setState(ResultStatus.Success)
