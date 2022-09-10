@@ -15,7 +15,12 @@ import com.google.zxing.integration.android.IntentIntegrator
 import com.upc.hasis_app.R
 import com.upc.hasis_app.databinding.FragmentPatientConsultBinding
 import com.upc.hasis_app.databinding.FragmentProfileBinding
+import com.upc.hasis_app.domain.usecase.PatientUseCase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,6 +43,9 @@ class PatientConsultFragment : Fragment() {
     private lateinit var binding: FragmentPatientConsultBinding
 
     private lateinit var zxingActivityResultContracts: ActivityResultLauncher<Intent>
+
+    @Inject
+    lateinit var patientUseCase: PatientUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,6 +113,10 @@ class PatientConsultFragment : Fragment() {
                 Log.i("CódigoQR: ", "Cancelado" )
             } else {
                 Log.i("CódigoQR: ", intentResult.contents)
+
+                GlobalScope.launch(Dispatchers.IO){
+                    Log.i("Paciente", patientUseCase.getPatientById(intentResult.contents.toInt()).body().toString())
+                }
             }
         }
     }

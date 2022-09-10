@@ -1,6 +1,7 @@
 package com.upc.hasis_app.presentation.ui.profile
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +13,11 @@ import com.upc.hasis_app.R
 import com.upc.hasis_app.databinding.FragmentLoginBinding
 import com.upc.hasis_app.databinding.FragmentProfileBinding
 import com.upc.hasis_app.databinding.FragmentSelectRoleBinding
+import com.upc.hasis_app.domain.usecase.PreferencesUseCase
 import com.upc.hasis_app.presentation.view_model.ResultStatus
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.*
+import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,6 +38,8 @@ class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
 
+    @Inject
+    lateinit var preferencesUseCase: PreferencesUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,13 +63,17 @@ class ProfileFragment : Fragment() {
 
         val barcodeEncoder = BarcodeEncoder()
         val bitmap = barcodeEncoder.encodeBitmap(
-            "Hola",
+            "4",//Codigo de Paciente existente
             BarcodeFormat.QR_CODE,
             450,
             450
         )
 
         binding.ivCodigoQR.setImageBitmap(bitmap);
+
+        GlobalScope.launch(Dispatchers.IO){
+            Log.i("Test", preferencesUseCase.getLoginRequest().toString())
+        }
 
     }
 
