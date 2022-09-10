@@ -2,8 +2,10 @@
 <resources>
     <color name="primary_color">#FF373ECE</color>
     <color name="secondary_color">#FF37CEC7</color>
+    <color name="alternative_color">#FF378ACE</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
+    <color name="red_color">#FFFF0C0C</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>

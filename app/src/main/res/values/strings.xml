@@ -21,5 +21,12 @@
     <string name="patient_consult_empty">Aquí se mostrará la información del paciente</string>
     <string name="scan_QR_text">Escanear QR</string>
     <string name="text_aceptar">Aceptar</string>
-
+    <string name="register_recipe">Registrar receta</string>
+    <string name="list_recipes">Recetas</string>
+    <string name="patient_default_name">Jhon Doe</string>
+    <string name="patient_default_age">Edad: 45 años</string>
+    <string name="patient_default_height">Altura : 1.71 m</string>
+    <string name="patient_default_weight">Peso: 70 kg</string>
+    <string name="patient_information_title">Información del Paciente</string>
+    <string name="close">Cerrar</string>
 </resources>

@@ -11,27 +11,23 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.zxing.integration.android.IntentIntegrator
 import com.upc.hasis_app.R
 import com.upc.hasis_app.databinding.FragmentPatientConsultBinding
 import com.upc.hasis_app.databinding.FragmentProfileBinding
 import com.upc.hasis_app.domain.usecase.PatientUseCase
+import com.upc.hasis_app.presentation.view_model.PatientConsultVIewModel
+import com.upc.hasis_app.presentation.view_model.PatientStatus
+import com.upc.hasis_app.presentation.view_model.ResultStatus
+import com.upc.hasis_app.presentation.view_model.WelcomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [PatientConsultFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 
 @AndroidEntryPoint
 class PatientConsultFragment : Fragment() {
@@ -41,7 +37,7 @@ class PatientConsultFragment : Fragment() {
 
 
     private lateinit var binding: FragmentPatientConsultBinding
-
+    private val viewModel: PatientConsultVIewModel by activityViewModels()
     private lateinit var zxingActivityResultContracts: ActivityResultLauncher<Intent>
 
     @Inject
@@ -49,11 +45,7 @@ class PatientConsultFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-        //initScanner()
+
     }
 
     override fun onCreateView(
@@ -61,6 +53,7 @@ class PatientConsultFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPatientConsultBinding.inflate(inflater, container, false)
+        initObservers()
         return binding.root
     }
 
@@ -91,6 +84,18 @@ class PatientConsultFragment : Fragment() {
             //integrator.initiateScan()
             zxingActivityResultLauncher.launch(integrator.createScanIntent())
         }
+
+    }
+
+
+    private fun initObservers(){
+        viewModel.currentPatientState.observe(viewLifecycleOwner) {
+            when (it) {
+                is PatientStatus.PatientDataComplete -> {
+                    findNavController().navigate(R.id.load_patient)
+                }
+            }
+        }
     }
 
     var zxingActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -105,29 +110,11 @@ class PatientConsultFragment : Fragment() {
                 Log.i("CódigoQR: ", intentResult.contents)
 
                 GlobalScope.launch(Dispatchers.IO){
-                    Log.i("Paciente", patientUseCase.getPatientById(intentResult.contents.toInt()).body().toString())
+                    patientUseCase.getPatientById(intentResult.contents.toInt()).body()
+                        ?.let { viewModel.updatePatient(it) }
                 }
+
             }
         }
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PatientConsultFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PatientConsultFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }
