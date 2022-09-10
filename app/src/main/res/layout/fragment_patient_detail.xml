@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/patientInformation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnCreateRecipe"
+            android:layout_marginHorizontal="30dp"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/tvPatientName"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="200dp"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:text="@string/patient_default_name"
+                android:layout_marginVertical="20dp"/>
+
+            <TextView
+                android:layout_marginHorizontal="30dp"
+                android:layout_width="match_parent"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:text="@string/patient_information_title"
+                android:layout_marginVertical="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp">
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_age"/>
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/tvPatientAge"
+                    android:textSize="16sp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/patient_default_age" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp">
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_blood"/>
+
+                <TextView
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:id="@+id/tvPatientHeight"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/patient_default_height" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp">
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_allergy"/>
+
+                <TextView
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:id="@+id/tvPatientWeight"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/patient_default_weight"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
+            android:id="@+id/btnCreateRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            app:cornerRadius="0dp"
+            android:backgroundTint="@color/primary_color"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:icon="@drawable/ic_scan_qr"
+            app:iconGravity="textStart"
+            android:text="@string/register_recipe"
+            app:layout_constraintBottom_toTopOf="@id/llDoctorOptions">
+        </com.google.android.material.button.MaterialButton>
+
+        <LinearLayout
+            android:id="@+id/llDoctorOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
+                android:id="@+id/btnRecipeConsult"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:cornerRadius="0dp"
+                android:backgroundTint="@color/alternative_color"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:icon="@drawable/ic_scan_qr"
+                app:iconGravity="textStart"
+                android:text="@string/list_recipes"
+                app:layout_constraintBottom_toTopOf="@id/llDoctorOptions">
+            </com.google.android.material.button.MaterialButton>
+
+            <com.google.android.material.button.MaterialButton
+                android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
+                android:id="@+id/btnClose"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:cornerRadius="0dp"
+                android:backgroundTint="@color/red_color"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:icon="@drawable/ic_scan_qr"
+                app:iconGravity="textStart"
+                android:text="@string/close"
+                app:layout_constraintBottom_toTopOf="@id/llDoctorOptions">
+            </com.google.android.material.button.MaterialButton>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
