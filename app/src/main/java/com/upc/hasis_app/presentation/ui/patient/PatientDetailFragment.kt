@@ -7,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.upc.hasis_app.R
 import com.upc.hasis_app.databinding.FragmentPatientConsultBinding
 import com.upc.hasis_app.databinding.FragmentPatientDetailBinding
 import com.upc.hasis_app.presentation.view_model.PatientConsultVIewModel
+import com.upc.hasis_app.presentation.view_model.PatientStatus
 
 
 class PatientDetailFragment : Fragment() {
@@ -34,7 +37,10 @@ class PatientDetailFragment : Fragment() {
         binding.tvPatientHeight.text = "Grupo Sanguineo: ${viewModel.patient?.bloodT}"
         binding.tvPatientWeight.text = "Alergias: ${viewModel.patient?.allergy}"
 
-
+        binding.btnClose.setOnClickListener {
+            viewModel.setPatientStatus(PatientStatus.Success)
+            findNavController().navigate(R.id.close_patient)
+        }
     }
 
 }

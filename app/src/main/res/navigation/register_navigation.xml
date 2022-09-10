@@ -13,7 +13,7 @@
             app:destination="@id/registerFragment" />
         <action
             android:id="@+id/go_to_register_form_doctor"
-            app:destination="@id/registerFragmentDoctor" />}
+            app:destination="@id/registerFragmentDoctor" />
         <action
             android:id="@+id/go_back_to_welcome"
             app:destination="@id/login_navigation" />
@@ -33,9 +33,14 @@
     android:id="@+id/registerFragmentDoctor"
     android:name="com.upc.hasis_app.presentation.ui.register.RegisterFragmentDoctor"
     android:label="RegisterFragmentDoctor" >
-    <action
+         <action
         android:id="@+id/go_back_to_select_rol"
         app:destination="@id/selectRoleFragment" />
+        <action
+            android:id="@+id/back_to_login_from_doctor_register"
+            app:destination="@id/login_navigation" />
     </fragment>
+
+
 
 </navigation>

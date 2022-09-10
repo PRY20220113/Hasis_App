@@ -11,24 +11,24 @@ class PreferencesUseCase @Inject constructor(
     private val preferenceDataStore: LocalPreferenceDataStore
 ) {
 
-    suspend fun getLoginRequest(): LoginRequest? {
+     fun getLoginRequest(): LoginRequest? {
         return preferenceDataStore.getLoginRequest()
     }
-    suspend fun setLoginRequest(loginRequest: LoginRequest) {
+     fun setLoginRequest(loginRequest: LoginRequest) {
         preferenceDataStore.setLoginRequest(loginRequest)
     }
-    suspend fun getUserDoctorLoggIn(): LoginDoctorResponse? {
+     fun getUserDoctorLoggIn(): LoginDoctorResponse? {
         return preferenceDataStore.getUserDoctorLoggIn()
     }
-    suspend fun setUserDoctorLoggIn(loginDoctorResponse: LoginDoctorResponse){
+     fun setUserDoctorLoggIn(loginDoctorResponse: LoginDoctorResponse){
         return preferenceDataStore.setUserDoctorLoggIn(loginDoctorResponse)
     }
 
-    suspend fun getToken(): String? {
+     fun getToken(): String? {
         return preferenceDataStore.getToken()
     }
 
-    suspend fun setToken(token: String) {
+     fun setToken(token: String) {
         preferenceDataStore.setToken(token)
     }
 

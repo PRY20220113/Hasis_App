@@ -10,9 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.upc.hasis_app.R
 import com.upc.hasis_app.data.model.request.CrearDoctorRequest
+import com.upc.hasis_app.data.model.request.LoginRequest
 import com.upc.hasis_app.databinding.FragmentRegisterDoctorBinding
 import com.upc.hasis_app.domain.usecase.DoctorUseCase
+import com.upc.hasis_app.domain.usecase.PreferencesUseCase
 import com.upc.hasis_app.util.Constantes
+import com.upc.hasis_app.util.ErrorDialog
+import com.upc.hasis_app.util.SuccessDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -31,6 +35,10 @@ class RegisterFragmentDoctor : Fragment() {
     private var param2: String? = null
 
     private lateinit var binding: FragmentRegisterDoctorBinding
+
+
+    @Inject
+    lateinit var preferencesUseCase: PreferencesUseCase
 
     @Inject
     lateinit var doctorUseCase: DoctorUseCase
@@ -76,6 +84,8 @@ class RegisterFragmentDoctor : Fragment() {
     }
 
 
+
+
     private fun registerDoctor(){
         var doctor = CrearDoctorRequest()
         doctor.dni      = binding.etDni.text.toString()
@@ -92,11 +102,35 @@ class RegisterFragmentDoctor : Fragment() {
             Log.i("Response", response.toString())
             if(response.code() == 200){
                 Log.i("Response", response.body().toString())
+                showSuccessDialog("¡Registro exitoso!")
             } else {
                 val error = response.errorBody()
-                Toast.makeText(requireActivity(), error!!.string(), Toast.LENGTH_LONG).show()
-                Log.i("Response", error.string())
+                Log.i("Response", error!!.string())
+                showErrorDialog(error.string())
             }
         }
     }
+
+    private fun showErrorDialog(message: String){
+        val dialog = ErrorDialog(requireContext(), message)
+        dialog.requestWindowFeature(1)
+        //dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.show()
+    }
+
+    private fun showSuccessDialog(message: String){
+        val dialog = SuccessDialog(requireContext(), message)
+        dialog.requestWindowFeature(1)
+        //dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setOnDismissListener {
+            findNavController().navigate(R.id.back_to_login_from_doctor_register)
+
+
+            preferencesUseCase.setLoginRequest(LoginRequest("",""))
+
+        }
+        dialog.show()
+
+    }
+
 }
