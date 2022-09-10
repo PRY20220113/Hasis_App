@@ -66,8 +66,10 @@ class LoginFragment : Fragment() {
 
         GlobalScope.launch(Dispatchers.IO){
             val loginRequest =  preferencesUseCase.getLoginRequest();
-            binding.tiUsername.setText(loginRequest!!.dni)
-            binding.tiPassword.setText(loginRequest.password)
+            if(loginRequest != null) {
+                binding.tiUsername.setText(loginRequest!!.dni)
+                binding.tiPassword.setText(loginRequest.password)
+            }
         }
 
 
@@ -87,8 +89,9 @@ class LoginFragment : Fragment() {
             if(response.code() == 200){
                 Log.i("LoginResponse", response.body().toString())
                 preferencesUseCase.setLoginRequest(loginRequest)
-                findNavController().navigate(R.id.login_doctor_complete)
                 preferencesUseCase.setToken("Bearer ${response.body()!!.token}")
+
+                viewModel.setState(ResultStatus.LoggedIn)
 
             } else {
                 val errorResponse = response.errorBody()!!.string()
@@ -133,6 +136,10 @@ class LoginFragment : Fragment() {
                 is ResultStatus.DataComplete -> {
                     doLogin()
                     //findNavController().navigate(R.id.login_doctor_complete)
+                }
+                is ResultStatus.LoggedIn -> {
+                    sttHelper.stopListen()
+                    findNavController().navigate(R.id.login_doctor_complete)
                 }
                 else -> {}
             }

@@ -13,6 +13,8 @@ sealed class ResultStatus {
     object Listening : ResultStatus()
     object ListenComplete : ResultStatus()
     object DataComplete : ResultStatus()
+    object LoggedIn : ResultStatus()
+
 }
 
 class WelcomeViewModel : ViewModel() {
