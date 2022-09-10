@@ -28,10 +28,11 @@
         <ImageView
             android:id="@+id/ivWelcomeImage"
             android:layout_width="wrap_content"
-            android:layout_height="250dp"
+            android:layout_height="280dp"
             android:src="@drawable/hasis_vector_welcome"
             android:layout_marginTop="30dp"
             app:layout_constraintTop_toBottomOf="@+id/ivScreenLogo"
+            app:layout_constraintBottom_toTopOf="@+id/txWelcomeText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             />
@@ -51,16 +52,17 @@
 
 
         <LinearLayout
+            android:id="@+id/btnLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/txWelcomeText"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.button.MaterialButton
+                android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
                 android:id="@+id/btnRegister"
                 android:layout_width="match_parent"
-                android:layout_height="210dp"
+                android:layout_height="200dp"
                 app:cornerRadius="0dp"
                 android:backgroundTint="@color/primary_color"
                 android:layout_weight="1"
@@ -70,9 +72,10 @@
             </com.google.android.material.button.MaterialButton>
 
             <com.google.android.material.button.MaterialButton
+                android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
-                android:layout_height="210dp"
+                android:layout_height="200dp"
                 app:cornerRadius="0dp"
                 android:backgroundTint="@color/secondary_color"
                 android:layout_weight="1"
