@@ -11,5 +11,17 @@
     <fragment
         android:id="@+id/patientConsultFragment"
         android:name="com.upc.hasis_app.presentation.ui.patient.PatientConsultFragment"
-        android:label="PatientConsultFragment" />
+        android:label="PatientConsultFragment" >
+        <action
+            android:id="@+id/load_patient"
+            app:destination="@id/patientDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/patientDetailFragment"
+        android:name="com.upc.hasis_app.presentation.ui.patient.PatientDetailFragment"
+        android:label="PatientDetailFragment" >
+        <action
+            android:id="@+id/close_patient"
+            app:destination="@id/patientConsultFragment" />
+    </fragment>
 </navigation>
