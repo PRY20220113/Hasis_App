@@ -1,24 +1,25 @@
 package com.upc.hasis_app.presentation.ui.login
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.upc.hasis_app.MainActivity
 import com.upc.hasis_app.R
 import com.upc.hasis_app.data.model.request.LoginRequest
 import com.upc.hasis_app.databinding.FragmentLoginBinding
-import com.upc.hasis_app.domain.entity.Doctor
 import com.upc.hasis_app.domain.usecase.DoctorUseCase
 import com.upc.hasis_app.domain.usecase.PreferencesUseCase
 import com.upc.hasis_app.presentation.view_model.LoginViewModel
 import com.upc.hasis_app.presentation.view_model.ResultStatus
 import com.upc.hasis_app.presentation.view_model.UserActionStatus
+import com.upc.hasis_app.util.ErrorDialog
 import com.upc.hasis_app.util.stt.STTHelper
 import com.upc.hasis_app.util.tts.TTSHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.math.log
 
 
 @AndroidEntryPoint
@@ -64,6 +64,13 @@ class LoginFragment : Fragment() {
             doLogin()
         }
 
+        GlobalScope.launch(Dispatchers.IO){
+            val loginRequest =  preferencesUseCase.getLoginRequest();
+            binding.tiUsername.setText(loginRequest!!.dni)
+            binding.tiPassword.setText(loginRequest.password)
+        }
+
+
         initObservers()
         initTTSObservers()
         setSpeechRecognizerListeners()
@@ -84,9 +91,18 @@ class LoginFragment : Fragment() {
                 preferencesUseCase.setToken("Bearer ${response.body()!!.token}")
 
             } else {
-                Log.i("LoginResponse", response.errorBody()!!.string())
+                val errorResponse = response.errorBody()!!.string()
+                Log.i("LoginResponse", errorResponse )
+                showErrorDialog(errorResponse.toString())
             }
         }
+    }
+
+    private fun showErrorDialog(message: String){
+        val dialog = ErrorDialog(requireContext(), message)
+        dialog.requestWindowFeature(1)
+        //dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.show()
     }
 
     private fun initTTSObservers(){

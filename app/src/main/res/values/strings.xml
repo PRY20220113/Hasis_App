@@ -20,4 +20,6 @@
     <string name="profile_text">Perfil</string>
     <string name="patient_consult_empty">Aquí se mostrará la información del paciente</string>
     <string name="scan_QR_text">Escanear QR</string>
+    <string name="text_aceptar">Aceptar</string>
+
 </resources>

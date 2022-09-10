@@ -64,15 +64,6 @@ class PatientConsultFragment : Fragment() {
         return binding.root
     }
 
-    private fun initScanner(){
-        zxingActivityResultContracts =  registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            val intentResult = IntentIntegrator.parseActivityResult(it.resultCode, it.data)
-            if(intentResult.contents != null) {
-                Toast.makeText(requireActivity(), intentResult.contents, Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode,  data)
         if (result != null){
@@ -82,7 +73,6 @@ class PatientConsultFragment : Fragment() {
             } else {
                 //Toast.makeText(requireActivity(),"El valor es: ${result.contents} " , Toast.LENGTH_SHORT).show()
                 Log.i("CódigoQR: ", result.contents )
-
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
