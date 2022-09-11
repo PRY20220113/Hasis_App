@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/doctor_navigation"
     app:startDestination="@id/patientConsultFragment">
 
@@ -23,5 +24,13 @@
         <action
             android:id="@+id/close_patient"
             app:destination="@id/patientConsultFragment" />
+        <action
+            android:id="@+id/go_to_prescriptions"
+            app:destination="@id/prescriptionActivity" />
     </fragment>
+    <activity
+        android:id="@+id/prescriptionActivity"
+        android:name="com.upc.hasis_app.presentation.ui.PrescriptionActivity"
+        android:label="activity_prescription"
+        tools:layout="@layout/activity_prescription" />
 </navigation>
