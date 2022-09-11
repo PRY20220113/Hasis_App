@@ -51,95 +51,89 @@
             app:layout_constraintTop_toBottomOf="@+id/llTopBar"
             app:layout_constraintBottom_toTopOf="@+id/btnRegister">
 
-            <LinearLayout
-                android:id="@+id/llRegisterBox"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/llTopBar"
-                app:layout_constraintBottom_toTopOf="@+id/btnLogin"
-                android:layout_marginHorizontal="30dp"
-                android:layout_weight="2"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-
-                <EditText
-                    android:id="@+id/etDni"
+                <LinearLayout
+                    android:id="@+id/llRegisterBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/patient_login_username"
-                    android:inputType="number"
-                    android:maxLength="8"
-                    />
-
-                <EditText
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/etEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/email_text"
-                    android:inputType="text"
-                    />
-
-                <EditText
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/etPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/password_login"
-                    android:inputType="textPassword"
-                    />
-
-                <EditText
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/etRepeatPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/password_register"
-                    android:inputType="textPassword"
-                    />
-
-                <EditText
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/etName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/name_text"
-                    android:inputType="text"
-                    />
-
-                <EditText
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/etSurname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/surname_text"
-                    android:inputType="text"
-                    />
-
-                <EditText
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/etPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/phone_text"
-                    android:inputType="number"
-                    android:maxLength="9"
-                    />
-
-                <EditText
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/etSfees"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/sfees_text"
-                    android:inputType="number"
-                    android:maxLength="6"
-                    />
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+                    app:layout_constraintTop_toBottomOf="@+id/llTopBar">
 
 
-            </LinearLayout>
+                    <EditText
+                        android:id="@+id/etDni"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/patient_login_username"
+                        android:inputType="number"
+                        android:maxLength="8" />
 
+                    <EditText
+                        android:id="@+id/etEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="@string/email_text"
+                        android:inputType="text" />
 
+                    <EditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="@string/password_login"
+                        android:inputType="textPassword" />
+
+                    <EditText
+                        android:id="@+id/etRepeatPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="@string/password_register"
+                        android:inputType="textPassword" />
+
+                    <EditText
+                        android:id="@+id/etName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="@string/name_text"
+                        android:inputType="text" />
+
+                    <EditText
+                        android:id="@+id/etSurname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="@string/surname_text"
+                        android:inputType="text" />
+
+                    <EditText
+                        android:id="@+id/etPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="@string/phone_text"
+                        android:inputType="number"
+                        android:maxLength="9" />
+
+                    <EditText
+                        android:id="@+id/etSfees"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="@string/sfees_text"
+                        android:inputType="number"
+                        android:maxLength="6" />
+
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton

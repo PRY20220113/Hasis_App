@@ -24,6 +24,7 @@ import com.upc.hasis_app.presentation.view_model.PatientStatus
 import com.upc.hasis_app.presentation.view_model.ResultStatus
 import com.upc.hasis_app.presentation.view_model.WelcomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -97,15 +98,20 @@ class PatientConsultFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK) {
 
             if (intentResult.contents == null) {
-                Log.i("CódigoQR: ", "Cancelado" )
+                Log.i("CódigoQR: ", "Cancelado")
             } else {
                 Log.i("CódigoQR: ", intentResult.contents)
 
-                GlobalScope.launch(Dispatchers.IO){
-                    patientUseCase.getPatientById(intentResult.contents.toInt()).body()
-                        ?.let { viewModel.updatePatient(it) }
+                CoroutineScope(Dispatchers.IO).launch {
+                    val call = patientUseCase.getPatientById(intentResult.contents.toInt())
+                    if (call.isSuccessful) {
+                        val responseDTO = call.body()
+                        if (responseDTO!!.httpCode == 200) {
+                            val patient = responseDTO.data
+                            viewModel.updatePatient(patient!!)
+                        }
+                    }
                 }
-
             }
         }
     }

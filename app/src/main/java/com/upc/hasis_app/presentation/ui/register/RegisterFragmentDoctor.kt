@@ -1,28 +1,30 @@
 package com.upc.hasis_app.presentation.ui.register
 
 import android.os.Bundle
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.upc.hasis_app.R
-import com.upc.hasis_app.data.model.request.CrearDoctorRequest
+import com.upc.hasis_app.data.model.request.RegisterDoctorRequest
 import com.upc.hasis_app.data.model.request.LoginRequest
 import com.upc.hasis_app.databinding.FragmentRegisterDoctorBinding
 import com.upc.hasis_app.domain.usecase.DoctorUseCase
 import com.upc.hasis_app.domain.usecase.PreferencesUseCase
+import com.upc.hasis_app.domain.usecase.UserUseCase
 import com.upc.hasis_app.util.Constantes
 import com.upc.hasis_app.util.ErrorDialog
 import com.upc.hasis_app.util.SuccessDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
+import java.time.LocalDate
 import javax.inject.Inject
 
 
@@ -41,7 +43,7 @@ class RegisterFragmentDoctor : Fragment() {
     lateinit var preferencesUseCase: PreferencesUseCase
 
     @Inject
-    lateinit var doctorUseCase: DoctorUseCase
+    lateinit var userUseCase: UserUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +72,11 @@ class RegisterFragmentDoctor : Fragment() {
         binding.btnRegister.setOnClickListener {
             registerDoctor()
         }
+
+        binding.etRepeatPassword.doAfterTextChanged {
+                binding.etPassword.error = null
+                binding.etRepeatPassword.error = null
+        }
     }
 
     companion object {
@@ -87,26 +94,44 @@ class RegisterFragmentDoctor : Fragment() {
 
 
     private fun registerDoctor(){
-        var doctor = CrearDoctorRequest()
+        var doctor = RegisterDoctorRequest()
         doctor.dni      = binding.etDni.text.toString()
-        doctor.first_name  = binding.etName.text.toString()
-        doctor.last_name  = binding.etSurname.text.toString()
+        doctor.firstName  = binding.etName.text.toString()
+        doctor.lastName  = binding.etSurname.text.toString()
         doctor.email    = binding.etEmail.text.toString()
         doctor.phone    = binding.etPhone.text.toString()
         doctor.password = binding.etPassword.text.toString()
-        doctor.sfeesNum = binding.etSfees.text.toString()
-        doctor.roles.add(Constantes.ROL_DOCTOR)
+        doctor.license = binding.etSfees.text.toString()
+        doctor.sex = "M"
+        doctor.birthDate = LocalDate.now().toString()
 
-        GlobalScope.launch(Dispatchers.Main) {
-            val response = doctorUseCase.createDoctor(doctor)
-            Log.i("Response", response.toString())
-            if(response.code() == 200){
-                Log.i("Response", response.body().toString())
-                showSuccessDialog("¡Registro exitoso!")
-            } else {
-                val error = response.errorBody()
-                Log.i("Response", error!!.string())
-                showErrorDialog(error.string())
+
+        if(binding.etPassword.text.toString() != binding.etRepeatPassword.text.toString()){
+            binding.etPassword.error = "Las constraseñas no coinciden"
+            binding.etRepeatPassword.error = "Las constraseñas no coinciden"
+            return
+        }
+
+
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = userUseCase.registerDoctor(doctor)
+            requireActivity().runOnUiThread {
+                if (call.isSuccessful){
+                    val responseDTO = call.body()
+                    if(responseDTO!!.httpCode == 201){
+                        Log.i("Response", responseDTO.toString())
+                        showSuccessDialog("¡Registro exitoso!")
+                    } else {
+                        Log.i("Response", responseDTO.toString())
+                        showErrorDialog(responseDTO.errorMessage)
+                    }
+                } else {
+                    val error = call.errorBody()
+                    Log.i("Response", error!!.string())
+                    showErrorDialog(error.string())
+                }
             }
         }
     }

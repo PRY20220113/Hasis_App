@@ -2,61 +2,53 @@ package com.upc.hasis_app.data.api
 
 import com.upc.hasis_app.data.model.request.*
 import com.upc.hasis_app.data.model.response.*
+import com.upc.hasis_app.domain.entity.Doctor
+import com.upc.hasis_app.domain.entity.Medicine
+import com.upc.hasis_app.domain.entity.Patient
+import com.upc.hasis_app.domain.entity.Recipe
 import retrofit2.Response
 import retrofit2.http.*
+import java.util.*
 
 interface ApiRest {
 
-    @GET("doctors/{doctorId}")
-    suspend fun getDoctorById(@Path("doctorId") doctorId: Int, @Header("Authorization") token: String): Response<CrearDoctorResponse>
 
-    @PUT("doctors/{doctorId}")
-    suspend fun updateDoctor(@Path("doctorId") id: Int, @Body editarDoctorRequest: EditarDoctorRequest, @Header("Authorization") token: String): Response<CrearDoctorResponse>
+    @POST("user/login")
+    suspend fun login(@Body loginRequest: LoginRequest): Response<ResponseDTO<Any>>
 
-    @DELETE("doctors/{doctorId}")
-    suspend fun deleteDoctorById(@Path("doctorId") id: Int, @Header("Authorization") token: String ): Response<Void>
+    @POST("user/registerDoctor")
+    suspend fun registerDoctor(@Body registerDoctorRequest: RegisterDoctorRequest): Response<ResponseDTO<Doctor>>
 
-    @POST("doctors/auth/sign-up")
-    suspend fun createDoctor(@Body crearDoctorRequest: CrearDoctorRequest): Response<CrearDoctorResponse>
-
-    @POST("doctors/auth/sign-in")
-    suspend fun loginDoctor(@Body loginRequest: LoginRequest): Response<LoginDoctorResponse>
+    @POST("user/registerPatient")
+    suspend fun registerPatient(@Body registerPatientRequest: RegisterPatientRequest): Response<ResponseDTO<Patient>>
 
 
+    @GET("/doctor")
+    suspend fun getDoctorById(@Query("doctorId") doctorId: Int, @Header("Authorization") token: String): Response<ResponseDTO<Doctor>>
 
-
-
-
-    @GET("patients/{patientId}")
-    suspend fun getPatientById(@Path("patientId") patientId: Int, @Header("Authorization") token: String): Response<CrearPacienteResponse>
-
-    @PUT("patient/{patient}")
-    suspend fun updatePatient(@Path("patient") id: Int,@Body crearPacienteRequest: CrearPacienteRequest, @Header("Authorization") token: String): Response<CrearPacienteResponse>
-
-    @DELETE("patient/{patient}")
-    suspend fun deletePatientById(@Path("patient") id: Int, @Header("Authorization") token: String): Response<Void>
-
-    @POST("patients/auth/sign-up")
-    suspend fun createPatient(@Body crearPacienteRequest: CrearPacienteRequest): Response<CrearPacienteResponse>
-
-    @POST("doctors/auth/sign-in")
-    suspend fun loginPatient(@Body loginRequest: LoginRequest): Response<LoginPatientResponse>
+    @GET("/patient")
+    suspend fun getPatientById(@Query("patientId") patientId: Int, @Header("Authorization") token: String): Response<ResponseDTO<Patient>>
 
 
 
-    @GET("recipe/{recipeId}")
-    suspend fun getRecipeById(@Path("recipeId") id: Int, @Header("Authorization") token: String): Response<CrearRecipeResponse>
 
-    @GET("patient/{patientId}/recipe")
-    suspend fun getAllRecipesByPatient(@Path("patientId") id: Int, @Header("Authorization") token: String): Response<List<CrearRecipeResponse>>
+    @GET("recipe")
+    suspend fun getRecipeById(@Query("recipeId") recipeId: Int, @Header("Authorization") token: String): Response<ResponseDTO<Recipe>>
 
-    @POST("patient/{patientId}/recipe")
-    suspend fun createRecipe(@Path("patientId") patientId: Int, @Body crearPacienteRequest: CrearRecipeRequest, @Header("Authorization") token: String): Response<CrearRecipeResponse>
+    @POST("recipe")
+    suspend fun createRecipe(@Body createRecipeRequest: CreateRecipeRequest, @Header("Authorization") token: String): Response<ResponseDTO<Recipe>>
 
-    @PUT("recipe/{recipeId}")
-    suspend fun updateRecipe(@Path("recipeId") recipeId: Int, @Body crearPacienteRequest: CrearRecipeRequest, @Header("Authorization") token: String): Response<CrearRecipeResponse>
+    @GET("recipe/patient")
+    suspend fun getActiveRecipeOfPatient(@Query("patientId") patientId: Int, @Header("Authorization") token: String): Response<ResponseDTO<Recipe>>
 
-    @DELETE("recipe/{recipeId}")
-    suspend fun deleteRecipeById(@Path("recipeId") id: Int , @Header("Authorization") token: String): Response<Void>
+
+
+    @GET("medicine")
+    suspend fun getMedicineById(@Query("medicineId") medicineId: Int, @Header("Authorization") token: String): Response<ResponseDTO<Medicine>>
+
+    @PUT("medicine")
+    suspend fun updateMedicine(@Query("medicineId") medicineId: Int,@Body updateMedicineRequest: UpdateMedicineRequest, @Header("Authorization") token: String): Response<ResponseDTO<Medicine>>
+
+
 
 }

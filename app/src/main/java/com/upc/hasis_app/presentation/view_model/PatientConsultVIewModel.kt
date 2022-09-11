@@ -2,7 +2,7 @@ package com.upc.hasis_app.presentation.view_model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.upc.hasis_app.data.model.response.CrearPacienteResponse
+import com.upc.hasis_app.domain.entity.Patient
 
 
 sealed class PatientStatus {
@@ -24,13 +24,13 @@ class PatientConsultVIewModel : ViewModel() {
     }
 
 
-    var patient: CrearPacienteResponse? = null
+    var patient: Patient? = null
 
     fun setPatientStatus(status : PatientStatus) {
         currentPatientState.postValue(status)
     }
 
-    fun updatePatient(newPatient: CrearPacienteResponse) {
+    fun updatePatient(newPatient: Patient) {
         patient = newPatient
         setPatientStatus(PatientStatus.PatientDataComplete)
     }
