@@ -4,7 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.upc.hasis_app.data.model.request.LoginRequest
-import com.upc.hasis_app.data.model.response.LoginDoctorResponse
+import com.upc.hasis_app.domain.entity.Doctor
+import com.upc.hasis_app.domain.entity.Patient
 import com.upc.hasis_app.util.Constantes
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -48,33 +49,47 @@ class LocalPreferenceDataStore @Inject constructor(
         }
     }
 
-    override fun getUserDoctorLoggIn(): LoginDoctorResponse? {
+    override fun getUserDoctorLoggIn(): Doctor? {
         val json = sharedPreferences.getString(KEY_DOCTOR_LOG_IN, "")
         if (json!!.isEmpty()) return null
 
         val gson = Gson()
 
-        return gson.fromJson(json, LoginDoctorResponse::class.java)
+        return gson.fromJson(json, Doctor::class.java)
     }
 
-    override fun setUserDoctorLoggIn(doctorResponse: LoginDoctorResponse) {
-        if (doctorResponse != null) {
+    override fun setUserDoctorLoggIn(doctor: Doctor) {
+        if (doctor != null) {
             editor = sharedPreferences.edit()
             val gson = Gson()
-            editor.putString(KEY_DOCTOR_LOG_IN, gson.toJson(doctorResponse))
+            editor.putString(KEY_DOCTOR_LOG_IN, gson.toJson(doctor))
             editor.commit()
         } else {
             sharedPreferences.edit().putString(KEY_DOCTOR_LOG_IN, "").commit()
         }
     }
 
-    override fun getUserPatientLoggIn() {
-        TODO("Not yet implemented")
+    override fun getUserPatientLoggIn(): Patient? {
+        val json = sharedPreferences.getString(KEY_PATIENT_LOG_IN, "")
+        if (json!!.isEmpty()) return null
+
+        val gson = Gson()
+
+        return gson.fromJson(json, Patient::class.java)
     }
 
-    override fun setUserPatientLoggIn() {
-        TODO("Not yet implemented")
+    override fun setUserPatientLoggIn(patient: Patient)    {
+        if (patient != null) {
+            editor = sharedPreferences.edit()
+            val gson = Gson()
+            editor.putString(KEY_DOCTOR_LOG_IN, gson.toJson(patient))
+            editor.commit()
+        } else {
+            sharedPreferences.edit().putString(KEY_PATIENT_LOG_IN, "").commit()
+        }
     }
+
+
 
     override fun getToken(): String? {
         val token = sharedPreferences.getString(KEY_TOKEN, "")

@@ -10,12 +10,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import com.upc.hasis_app.MainActivity
 import com.upc.hasis_app.R
 import com.upc.hasis_app.data.model.request.LoginRequest
+import com.upc.hasis_app.data.model.response.ResponseDTO
 import com.upc.hasis_app.databinding.FragmentLoginBinding
+import com.upc.hasis_app.domain.entity.Doctor
 import com.upc.hasis_app.domain.usecase.DoctorUseCase
 import com.upc.hasis_app.domain.usecase.PreferencesUseCase
+import com.upc.hasis_app.domain.usecase.UserUseCase
 import com.upc.hasis_app.presentation.view_model.LoginViewModel
 import com.upc.hasis_app.presentation.view_model.ResultStatus
 import com.upc.hasis_app.presentation.view_model.UserActionStatus
@@ -23,6 +27,7 @@ import com.upc.hasis_app.util.ErrorDialog
 import com.upc.hasis_app.util.stt.STTHelper
 import com.upc.hasis_app.util.tts.TTSHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -38,7 +43,7 @@ class LoginFragment : Fragment() {
     private val viewModel : LoginViewModel by activityViewModels()
 
     @Inject
-    lateinit var doctorUseCase: DoctorUseCase
+    lateinit var userUseCase: UserUseCase
 
     @Inject
     lateinit var preferencesUseCase: PreferencesUseCase
@@ -82,25 +87,39 @@ class LoginFragment : Fragment() {
         val loginRequest  = LoginRequest()
         loginRequest.dni = binding.tiUsername.text.toString()
         loginRequest.password = binding.tiPassword.text.toString()
+        val gson = Gson()
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = userUseCase.login(loginRequest)
+            val headers = call.headers()
+            requireActivity().runOnUiThread {
+                if (call.isSuccessful){
+                    val responseDTO = call.body()
+                    if (responseDTO!!.errorCode == 0){
+                        Log.i("LoginResponse", responseDTO.toString() )
+                        preferencesUseCase.setLoginRequest(loginRequest)
+                        preferencesUseCase.setToken("Bearer ${headers.get("Token").toString()}")
+                        if (headers.get("Rol").toString() == "D"){
+                            preferencesUseCase.setUserDoctorLoggIn(gson.fromJson(gson.toJson(responseDTO.data), Doctor::class.java))
+                        } else {
+                            preferencesUseCase.setUserDoctorLoggIn(gson.fromJson(gson.toJson(responseDTO.data), Doctor::class.java))
+                        }
+                        viewModel.setState(ResultStatus.LoggedIn)
 
-//        GlobalScope.launch(Dispatchers.Main) {
-//            val response = doctorUseCase.loginDoctor(loginRequest)
-//            Log.i("LoginResponse", response.toString())
-//            if(response.code() == 200){
-//                Log.i("LoginResponse", response.body().toString())
-//                preferencesUseCase.setLoginRequest(loginRequest)
-//                preferencesUseCase.setToken("Bearer ${response.body()!!.token}")
-//
-//                viewModel.setState(ResultStatus.LoggedIn)
-//
-//            } else {
-//                val errorResponse = response.errorBody()!!.string()
-//                Log.i("LoginResponse", errorResponse )
-//                showErrorDialog(errorResponse.toString())
-//            }
-//        }
+                    } else {
+                        val errorResponse = responseDTO.errorMessage
+                        Log.i("LoginResponse", errorResponse )
+                        showErrorDialog(errorResponse)
+                    }
+                } else {
+                    val errorResponse = call.errorBody()!!.string()
+                    Log.i("Error Body Login ", errorResponse )
+                    showErrorDialog(errorResponse.toString())
+                }
+            }
 
-        viewModel.setState(ResultStatus.LoggedIn)
+        }
+
+
     }
 
     private fun showErrorDialog(message: String){

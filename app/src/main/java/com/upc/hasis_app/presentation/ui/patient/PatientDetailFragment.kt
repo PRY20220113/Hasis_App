@@ -32,8 +32,8 @@ class PatientDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tvPatientName.text = viewModel.patient?.name
-        binding.tvPatientAge.text = "Edad: ${viewModel.patient?.age}"
+        binding.tvPatientName.text = viewModel.patient?.user!!.firstName + " " + viewModel.patient?.user!!.lastName
+        binding.tvPatientAge.text = "Edad: ${viewModel.patient?.user!!.age}"
         binding.tvPatientHeight.text = "Grupo Sanguineo: ${viewModel.patient?.bloodT}"
         binding.tvPatientWeight.text = "Alergias: ${viewModel.patient?.allergy}"
 

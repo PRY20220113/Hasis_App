@@ -1,8 +1,9 @@
 package com.upc.hasis_app.data.repository
 
 import com.upc.hasis_app.data.api.ApiRest
-import com.upc.hasis_app.data.model.request.CrearRecipeRequest
-import com.upc.hasis_app.data.model.response.CrearRecipeResponse
+import com.upc.hasis_app.data.model.request.CreateRecipeRequest
+import com.upc.hasis_app.data.model.response.ResponseDTO
+import com.upc.hasis_app.domain.entity.Recipe
 import com.upc.hasis_app.domain.repository.RecipeRepository
 import com.upc.hasis_app.domain.usecase.PreferencesUseCase
 import kotlinx.coroutines.Dispatchers
@@ -15,39 +16,16 @@ class RecipeRepositoryImp @Inject constructor(
     private val preferencesUseCase: PreferencesUseCase
 ) : RecipeRepository {
 
-    override suspend fun getRecipeById(id: Int): Response<CrearRecipeResponse> {
-        return withContext(Dispatchers.IO) {
-            apiRest.getRecipeById(id,  preferencesUseCase.getToken()!!)
-        }
+    override suspend fun getRecipeById(medicineId: Int): Response<ResponseDTO<Recipe>> {
+        return apiRest.getRecipeById(medicineId, preferencesUseCase.getToken()!!)
     }
 
-    override suspend fun getAllRecipesByPatient(id: Int): Response<List<CrearRecipeResponse>> {
-        return withContext(Dispatchers.IO) {
-            apiRest.getAllRecipesByPatient(id,  preferencesUseCase.getToken()!!)
-        }
+    override suspend fun createRecipe(createRecipeRequest: CreateRecipeRequest): Response<ResponseDTO<Recipe>> {
+        return apiRest.createRecipe(createRecipeRequest, preferencesUseCase.getToken()!!)
     }
 
-    override suspend fun createRecipe(
-        id: Int,
-        crearRecipeRequest: CrearRecipeRequest
-    ): Response<CrearRecipeResponse> {
-        return withContext(Dispatchers.IO) {
-            apiRest.createRecipe(id, crearRecipeRequest,  preferencesUseCase.getToken()!!)
-        }
+    override suspend fun getActiveRecipeOfPatient(patientId: Int): Response<ResponseDTO<Recipe>> {
+        return apiRest.getActiveRecipeOfPatient(patientId, preferencesUseCase.getToken()!!)
     }
 
-    override suspend fun updateRecipe(
-        id: Int,
-        crearRecipeRequest: CrearRecipeRequest
-    ): Response<CrearRecipeResponse> {
-        return withContext(Dispatchers.IO) {
-            apiRest.updateRecipe(id,crearRecipeRequest,  preferencesUseCase.getToken()!!)
-        }
-    }
-
-    override suspend fun deleteRecipeById(id: Int): Response<Void> {
-        return withContext(Dispatchers.IO) {
-            apiRest.deleteDoctorById(id,  preferencesUseCase.getToken()!!)
-        }
-    }
 }

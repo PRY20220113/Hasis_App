@@ -8,12 +8,10 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.upc.hasis_app.R
-import com.upc.hasis_app.data.model.response.CrearRecipeResponse
 import com.upc.hasis_app.databinding.FragmentMedicalRecipeBinding
-import com.upc.hasis_app.databinding.FragmentPatientConsultBinding
-import com.upc.hasis_app.databinding.FragmentPatientDetailBinding
+import com.upc.hasis_app.domain.entity.Medicine
 import com.upc.hasis_app.presentation.adapter.PrescriptionAdapter
-import com.upc.hasis_app.presentation.view_model.PatientStatus
+import java.time.LocalDate
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,7 +19,7 @@ import com.upc.hasis_app.presentation.view_model.PatientStatus
 class FragmentMedicalRecipe : Fragment() {
 
     private lateinit var binding: FragmentMedicalRecipeBinding
-    private val prescriptions = ArrayList<CrearRecipeResponse>()
+    private val prescriptions = ArrayList<Medicine>()
     private lateinit var prescriptionAdapter: PrescriptionAdapter
 
     override fun onCreateView(
@@ -32,7 +30,7 @@ class FragmentMedicalRecipe : Fragment() {
 
         val recyclerView = binding.prescriptionContainer
 
-        prescriptions.add(CrearRecipeResponse(1, "Paracetamol", 10, 1, 8, 12))
+        prescriptions.add(Medicine(1, "Paracetamol", 10, 1, 8, 12,"2022-05-22", "2022-05-28"))
 
         prescriptionAdapter = PrescriptionAdapter(prescriptions)
 
