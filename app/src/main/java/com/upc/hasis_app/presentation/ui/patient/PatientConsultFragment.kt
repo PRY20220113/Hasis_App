@@ -31,9 +31,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class PatientConsultFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
 
     private lateinit var binding: FragmentPatientConsultBinding
@@ -42,11 +39,6 @@ class PatientConsultFragment : Fragment() {
 
     @Inject
     lateinit var patientUseCase: PatientUseCase
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

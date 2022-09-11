@@ -129,6 +129,22 @@
 
             <com.google.android.material.button.MaterialButton
                 android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
+                android:id="@+id/btnClose"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:cornerRadius="0dp"
+                android:backgroundTint="@color/red_color"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:icon="@drawable/ic_scan_qr"
+                app:iconGravity="textStart"
+                android:text="@string/close"
+                app:layout_constraintBottom_toTopOf="@id/llDoctorOptions">
+            </com.google.android.material.button.MaterialButton>
+
+            <com.google.android.material.button.MaterialButton
+                android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
                 android:id="@+id/btnRecipeConsult"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
@@ -143,21 +159,6 @@
                 app:layout_constraintBottom_toTopOf="@id/llDoctorOptions">
             </com.google.android.material.button.MaterialButton>
 
-            <com.google.android.material.button.MaterialButton
-                android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
-                android:id="@+id/btnClose"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                app:cornerRadius="0dp"
-                android:backgroundTint="@color/red_color"
-                android:layout_weight="1"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                app:icon="@drawable/ic_scan_qr"
-                app:iconGravity="textStart"
-                android:text="@string/close"
-                app:layout_constraintBottom_toTopOf="@id/llDoctorOptions">
-            </com.google.android.material.button.MaterialButton>
 
         </LinearLayout>
 

@@ -83,22 +83,24 @@ class LoginFragment : Fragment() {
         loginRequest.dni = binding.tiUsername.text.toString()
         loginRequest.password = binding.tiPassword.text.toString()
 
-        GlobalScope.launch(Dispatchers.Main) {
-            val response = doctorUseCase.loginDoctor(loginRequest)
-            Log.i("LoginResponse", response.toString())
-            if(response.code() == 200){
-                Log.i("LoginResponse", response.body().toString())
-                preferencesUseCase.setLoginRequest(loginRequest)
-                preferencesUseCase.setToken("Bearer ${response.body()!!.token}")
+//        GlobalScope.launch(Dispatchers.Main) {
+//            val response = doctorUseCase.loginDoctor(loginRequest)
+//            Log.i("LoginResponse", response.toString())
+//            if(response.code() == 200){
+//                Log.i("LoginResponse", response.body().toString())
+//                preferencesUseCase.setLoginRequest(loginRequest)
+//                preferencesUseCase.setToken("Bearer ${response.body()!!.token}")
+//
+//                viewModel.setState(ResultStatus.LoggedIn)
+//
+//            } else {
+//                val errorResponse = response.errorBody()!!.string()
+//                Log.i("LoginResponse", errorResponse )
+//                showErrorDialog(errorResponse.toString())
+//            }
+//        }
 
-                viewModel.setState(ResultStatus.LoggedIn)
-
-            } else {
-                val errorResponse = response.errorBody()!!.string()
-                Log.i("LoginResponse", errorResponse )
-                showErrorDialog(errorResponse.toString())
-            }
-        }
+        viewModel.setState(ResultStatus.LoggedIn)
     }
 
     private fun showErrorDialog(message: String){

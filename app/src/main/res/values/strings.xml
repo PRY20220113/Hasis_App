@@ -4,6 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="welcome_text">Bienvenido</string>
     <string name="register_button_text">Registrarse</string>
+    <string name="register_button_prescription">Guardar prescripción</string>
     <string name="login_button_text">Iniciar Sesión</string>
     <string name="patient_login_username">DNI</string>
     <string name="password_login">Contraseña</string>
@@ -22,6 +23,8 @@
     <string name="scan_QR_text">Escanear QR</string>
     <string name="text_aceptar">Aceptar</string>
     <string name="register_recipe">Registrar receta</string>
+    <string name="add_prescription">Añadir Prescripción</string>
+    <string name="medical_recipe_title">Receta Médica</string>
     <string name="list_recipes">Recetas</string>
     <string name="patient_default_name">Jhon Doe</string>
     <string name="patient_default_age">Edad: 45 años</string>
@@ -29,4 +32,22 @@
     <string name="patient_default_weight">Peso: 70 kg</string>
     <string name="patient_information_title">Información del Paciente</string>
     <string name="close">Cerrar</string>
+    <string name="back">Volver</string>
+    <string name="cancel">Cancelar</string>
+
+
+    <string name="medicine_name">Medicamento</string>
+    <string name="medicine_weight">Peso mg</string>
+    <string name="medicine_quantity">Cantidad tomas</string>
+    <string name="medicine_hours">Intervalo de horas</string>
+    <string name="medicine_days">Periodo (días)</string>
+    <string name="title_activity_prescription">PrescriptionActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

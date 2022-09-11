@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tbMedicalRecipeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/prescriptionContainer">
+
+            <ImageView
+                android:id="@+id/ivScreenLogo"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_gravity="end"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_hasis_logo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:layout_margin="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/prescriptionContainer"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                android:text="@string/medical_recipe_title"/>
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/prescriptionContainer"
+            android:layout_marginHorizontal="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/tbMedicalRecipeTitle"
+            app:layout_constraintBottom_toTopOf="@+id/optionsContainer"
+            tools:listitem="@layout/item_recipe"/>
+
+        <LinearLayout
+            android:id="@+id/optionsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/prescriptionContainer"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
+                android:id="@+id/btnBack"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:cornerRadius="0dp"
+                android:backgroundTint="@color/red_color"
+                android:layout_weight="2"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:icon="@drawable/ic_scan_qr"
+                app:iconGravity="textStart"
+                android:text="@string/back"
+                app:layout_constraintBottom_toBottomOf="parent">
+            </com.google.android.material.button.MaterialButton>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
+                android:id="@+id/btnAddPrescription"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:cornerRadius="0dp"
+                android:backgroundTint="@color/primary_color"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:icon="@drawable/ic_scan_qr"
+                app:iconGravity="textStart"
+                android:text="@string/add_prescription"
+                app:layout_constraintBottom_toBottomOf="parent">
+            </com.google.android.material.button.MaterialButton>
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
