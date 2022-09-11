@@ -26,11 +26,21 @@
             app:destination="@id/patientConsultFragment" />
         <action
             android:id="@+id/go_to_prescriptions"
-            app:destination="@id/prescriptionActivity" />
+            app:destination="@id/prescriptionActivity">
+            <argument
+                android:name="patientId"
+                app:argType="integer"
+                android:defaultValue="1" />
+        </action>
     </fragment>
     <activity
         android:id="@+id/prescriptionActivity"
         android:name="com.upc.hasis_app.presentation.ui.PrescriptionActivity"
         android:label="activity_prescription"
-        tools:layout="@layout/activity_prescription" />
+        tools:layout="@layout/activity_prescription" >
+        <argument
+            android:name="patientId"
+            app:argType="integer"
+            android:defaultValue="1" />
+    </activity>
 </navigation>

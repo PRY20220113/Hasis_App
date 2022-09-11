@@ -24,7 +24,7 @@ class PrescriptionAdapter(private val prescriptions: List<Medicine>)
                 binding.tvMedicineName.text = name
                 val medicineWeight = "$weight mg"
                 binding.tvMedicineWeight.text = medicineWeight
-                val days = "$prescriptions dias"
+                val days = "$prescribedDays dias"
                 binding.tvDays.text = days
                 val prescriptionDescription = "$quantity tomas cada $eachHour horas"
                 binding.tvPrescriptionDescription.text = prescriptionDescription

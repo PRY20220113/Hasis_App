@@ -118,14 +118,11 @@ class LoginFragment : Fragment() {
             }
 
         }
-
-
     }
 
     private fun showErrorDialog(message: String){
         val dialog = ErrorDialog(requireContext(), message)
         dialog.requestWindowFeature(1)
-        //dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
     }
 
