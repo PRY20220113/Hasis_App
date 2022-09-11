@@ -2,18 +2,13 @@ package com.upc.hasis_app.presentation.ui
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
 import androidx.navigation.navArgs
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.upc.hasis_app.R
 import com.upc.hasis_app.databinding.ActivityPrescriptionBinding
 import com.upc.hasis_app.presentation.view_model.RegisterPrescriptionViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PrescriptionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPrescriptionBinding

@@ -70,7 +70,7 @@ class RegisterPrescriptionViewModel @Inject constructor(
             if(call.isSuccessful) {
                 val responseDTO = call.body()
                 if(responseDTO!!.httpCode == 201) { setStatus(RegisterStatus.Success) }
-                else { setStatus(RegisterStatus.Failed) }
+                else { setStatus( RegisterStatus.Failed ) }
             }
         }
     }

@@ -11,10 +11,12 @@
         <action
             android:id="@+id/go_to_register_prescription"
             app:destination="@id/registerPrescriptionFragment2" />
+
         <action
             android:id="@+id/back_to_patient"
-            app:popUpTo="@id/fragmentMedicalRecipe"
-            app:popUpToInclusive="true"/>
+            app:destination="@id/doctor_navigation" />
+
+
     </fragment>
     <fragment
         android:id="@+id/registerPrescriptionFragment2"

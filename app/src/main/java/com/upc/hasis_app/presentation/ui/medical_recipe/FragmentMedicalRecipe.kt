@@ -38,8 +38,6 @@ class FragmentMedicalRecipe : Fragment() {
 
         val recyclerView = binding.prescriptionContainer
 
-        //prescriptions.add(Medicine(1, "Paracetamol", 10, 1, 8, 12,"2022-05-22", "2022-05-28"))
-
         prescriptionAdapter = PrescriptionAdapter(viewModel.medicines)
 
         val layoutManager = LinearLayoutManager(context)
