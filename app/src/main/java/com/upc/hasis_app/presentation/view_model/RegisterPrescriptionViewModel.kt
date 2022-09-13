@@ -28,15 +28,27 @@ sealed class RegisterStatus {
 
 }
 
+sealed class RecipeStatus {
+
+    object Init : RecipeStatus()
+    object Success : RecipeStatus()
+    object Failed : RecipeStatus()
+
+}
+
 @HiltViewModel
 class RegisterPrescriptionViewModel @Inject constructor(
     private val recipeUseCase: RecipeUseCase,
     private val preferencesUseCase: PreferencesUseCase)  : ViewModel(){
 
+    var actualRecipe : Recipe? = null
     var medicinesToRegister : MutableList<CreateMedicineRequest> = mutableListOf()
     var medicines : MutableList<Medicine> = mutableListOf()
     val registerStatus : MutableLiveData<RegisterStatus> by lazy {
         MutableLiveData<RegisterStatus>()
+    }
+    val recipeStatus : MutableLiveData<RecipeStatus> by lazy {
+        MutableLiveData<RecipeStatus>()
     }
 
     private var doctorId : Int? = null
@@ -46,7 +58,26 @@ class RegisterPrescriptionViewModel @Inject constructor(
         patientId = id
     }
 
+    fun setRecipeStatus(status : RecipeStatus) {
+        recipeStatus.postValue(status)
+    }
+
+    fun getActiveRecipe() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = recipeUseCase.getActiveRecipeOfPatient(patientId!!)
+            if(call.isSuccessful) {
+                val responseDTO = call.body()
+                if(responseDTO!!.httpCode == 200) {
+                    actualRecipe = responseDTO.data
+                    medicines.addAll(actualRecipe!!.medicines)
+                    setRecipeStatus(RecipeStatus.Success)
+                } else { setRecipeStatus( RecipeStatus.Failed ) }
+            }
+        }
+    }
+
     fun addPrescription(medicineRequest: CreateMedicineRequest) {
+        if(medicines.isNotEmpty()) medicines.clear()
         medicinesToRegister.add(medicineRequest)
         medicines.add(Medicine(
             0,

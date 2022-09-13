@@ -5,6 +5,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.navArgs
 import com.upc.hasis_app.databinding.ActivityPrescriptionBinding
+import com.upc.hasis_app.presentation.view_model.RecipeStatus
 import com.upc.hasis_app.presentation.view_model.RegisterPrescriptionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +23,8 @@ class PrescriptionActivity : AppCompatActivity() {
         binding = ActivityPrescriptionBinding.inflate(layoutInflater)
 
         viewModel.setPatientId(args.patientId)
+
+        viewModel.setRecipeStatus(RecipeStatus.Init)
 
         setContentView(binding.root)
 

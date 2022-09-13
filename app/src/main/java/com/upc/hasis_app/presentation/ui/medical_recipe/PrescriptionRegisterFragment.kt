@@ -32,11 +32,11 @@ class PrescriptionRegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.btnRegister.setOnClickListener {
             saveMedicineInPrescription()
-            findNavController().navigate(R.id.back_to_recipes)
+            findNavController().navigate(R.id.back_to_recipe)
         }
 
         binding.btnBack.setOnClickListener {
-            findNavController().navigate(R.id.back_to_recipes)
+            findNavController().navigate(R.id.back_to_recipe)
         }
 
     }

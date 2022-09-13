@@ -20,9 +20,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
 class FragmentMedicalRecipe : Fragment() {
 
     private lateinit var binding: FragmentMedicalRecipeBinding
@@ -45,6 +42,7 @@ class FragmentMedicalRecipe : Fragment() {
         recyclerView.adapter = prescriptionAdapter
 
         initObservers()
+        initRecipeObservers()
 
         return binding.root
     }
@@ -79,10 +77,23 @@ class FragmentMedicalRecipe : Fragment() {
         }
     }
 
-    fun registerRecipe() {
+    private fun initRecipeObservers(){
+        viewModel.recipeStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                is RecipeStatus.Success -> {
+                    binding.progressIndicator.visibility = View.GONE
+                    binding.prescriptionContainer.visibility = View.VISIBLE
+                }
+                is RecipeStatus.Failed -> {
 
+                }
+                else -> {  viewModel.getActiveRecipe() }
+            }
+        }
+    }
+
+    private fun registerRecipe() {
         viewModel.registerRecipe()
-
     }
 
 
