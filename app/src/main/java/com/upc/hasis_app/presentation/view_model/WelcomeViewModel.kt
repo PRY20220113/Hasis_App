@@ -14,6 +14,7 @@ sealed class ResultStatus {
     object ListenComplete : ResultStatus()
     object DataComplete : ResultStatus()
     object LoggedIn : ResultStatus()
+    object FailedLoggedIn : ResultStatus()
     object PreferencesExist : ResultStatus()
 
 }

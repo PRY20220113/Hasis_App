@@ -70,7 +70,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun doLogin(){
-        if (!viewModel.dataComplete()) viewModel.setData(dni = binding.tiUsername.text.toString(), password = binding.tiPassword.text.toString())
+//        if (!viewModel.dataComplete())
+        viewModel.setData(dni = binding.tiUsername.text.toString(), password = binding.tiPassword.text.toString())
         viewModel.loginUser()
     }
 
@@ -116,7 +117,11 @@ class LoginFragment : Fragment() {
                     sttHelper.stopListen()
                     findNavController().navigate(R.id.login_doctor_complete)
                 }
-                else -> {}
+                is ResultStatus.FailedLoggedIn -> {
+                    showErrorDialog(viewModel.errorMessage)
+                }
+                else -> {
+                }
             }
         }
     }

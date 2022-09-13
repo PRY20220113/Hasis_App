@@ -17,6 +17,8 @@
     <string name="email_text">Correo</string>
     <string name="phone_text">Teléfono</string>
     <string name="sfees_text">Número de Colegiatura</string>
+    <string name="sex_text">Género</string>
+    <string name="birthDate_text">Fecha de Nacimiento</string>
     <string name="patient_consult_text">Pacientes</string>
     <string name="profile_text">Perfil</string>
     <string name="patient_consult_empty">Aquí se mostrará la información del paciente</string>
