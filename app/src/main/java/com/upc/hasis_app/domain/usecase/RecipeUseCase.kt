@@ -3,7 +3,6 @@ package com.upc.hasis_app.domain.usecase
 import com.upc.hasis_app.data.model.request.CreateRecipeRequest
 import com.upc.hasis_app.data.model.response.ResponseDTO
 import com.upc.hasis_app.data.repository.RecipeRepositoryImp
-import com.upc.hasis_app.domain.entity.Patient
 import com.upc.hasis_app.domain.entity.Recipe
 import retrofit2.Response
 import javax.inject.Inject

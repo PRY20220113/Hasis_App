@@ -11,13 +11,22 @@
         <action
             android:id="@+id/go_to_register_prescription"
             app:destination="@id/registerPrescriptionFragment2" />
+
+        <action
+            android:id="@+id/back_to_patient"
+            app:popUpTo="@id/fragmentMedicalRecipe"
+            app:popUpToInclusive="true" />
+
+
     </fragment>
     <fragment
         android:id="@+id/registerPrescriptionFragment2"
         android:name="com.upc.hasis_app.presentation.ui.medical_recipe.PrescriptionRegisterFragment"
         android:label="RegisterPrescriptionFragment" >
+
         <action
-            android:id="@+id/back_to_recipes"
-            app:destination="@id/fragmentMedicalRecipe" />
+            android:id="@+id/back_to_recipe"
+            app:popUpTo="@id/registerPrescriptionFragment2"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

@@ -38,8 +38,9 @@ class PatientDetailFragment : Fragment() {
         binding.tvPatientWeight.text = "Alergias: ${viewModel.patient?.allergy}"
 
         binding.btnCreateRecipe.setOnClickListener {
-            viewModel.setPatientStatus(PatientStatus.Success)
-            findNavController().navigate(R.id.go_to_prescriptions)
+
+            val goToPrescriptions = PatientDetailFragmentDirections.goToPrescriptions(patientId = viewModel.patient!!.patientId)
+            findNavController().navigate(goToPrescriptions)
         }
 
         binding.btnClose.setOnClickListener {

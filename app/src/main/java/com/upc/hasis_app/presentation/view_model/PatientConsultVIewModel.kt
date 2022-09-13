@@ -23,7 +23,6 @@ class PatientConsultVIewModel : ViewModel() {
         MutableLiveData<PatientStatus>()
     }
 
-
     var patient: Patient? = null
 
     fun setPatientStatus(status : PatientStatus) {

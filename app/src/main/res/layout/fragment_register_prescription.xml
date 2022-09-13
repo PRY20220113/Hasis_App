@@ -8,19 +8,53 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/llTopBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="30dp"
+            android:divider="@color/black"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/llRegister"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="30dp">
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:tint="@color/white"
+                android:backgroundTint="@color/primary_color"
+                android:contentDescription="@string/register_title"
+                android:src="@drawable/ic_round_arrow_back" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="@string/register_title"
+                android:textAlignment="textEnd"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/llRegister"
             android:layout_marginTop="40dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llTopBar"
             app:layout_constraintBottom_toTopOf="@+id/btnRegister">
 
             <LinearLayout
                 android:id="@+id/llRegisterBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/llTopBar"
                 app:layout_constraintBottom_toTopOf="@+id/btnLogin"
                 android:layout_marginHorizontal="30dp"
                 android:layout_weight="2"
@@ -32,8 +66,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/medicine_name"
-                    android:inputType="number"
-                    android:maxLength="8"
                     />
 
                 <EditText
@@ -42,7 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/medicine_weight"
-                    android:inputType="text"
+                    android:inputType="number"
                     />
 
                 <EditText
@@ -51,7 +83,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/medicine_quantity"
-                    android:inputType="textPassword"
+                    android:inputType="number"
                     />
 
                 <EditText
@@ -60,7 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/medicine_hours"
-                    android:inputType="textPassword"
+                    android:inputType="number"
                     />
 
                 <EditText
@@ -69,7 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/medicine_days"
-                    android:inputType="text"
+                    android:inputType="number"
                     />
 
             </LinearLayout>
