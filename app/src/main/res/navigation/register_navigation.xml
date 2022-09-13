@@ -2,12 +2,15 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/register_navigation"
-    app:startDestination="@id/selectRoleFragment">
+    app:startDestination="@id/selectRoleFragment"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <fragment
         android:id="@+id/selectRoleFragment"
         android:name="com.upc.hasis_app.presentation.ui.select_role.SelectRoleFragment"
-        android:label="SelectRoleFragment" >
+        android:label="SelectRoleFragment"
+        tools:layout="@layout/fragment_select_role"
+        >
         <action
             android:id="@+id/go_to_register_form"
             app:destination="@id/registerFragment" />
@@ -22,7 +25,8 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.upc.hasis_app.presentation.ui.register.RegisterFragment"
-        android:label="RegisterFragment" >
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/go_back_to_select_rol"
             app:destination="@id/selectRoleFragment" />
@@ -32,7 +36,8 @@
     <fragment
     android:id="@+id/registerFragmentDoctor"
     android:name="com.upc.hasis_app.presentation.ui.register.RegisterFragmentDoctor"
-    android:label="RegisterFragmentDoctor" >
+    android:label="RegisterFragmentDoctor"
+        tools:layout="@layout/fragment_register_doctor">
          <action
         android:id="@+id/go_back_to_select_rol"
         app:destination="@id/selectRoleFragment" />

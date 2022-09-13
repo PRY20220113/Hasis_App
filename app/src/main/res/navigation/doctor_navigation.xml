@@ -8,11 +8,13 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.upc.hasis_app.presentation.ui.profile.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
     <fragment
         android:id="@+id/patientConsultFragment"
         android:name="com.upc.hasis_app.presentation.ui.patient.PatientConsultFragment"
-        android:label="PatientConsultFragment" >
+        android:label="PatientConsultFragment"
+        tools:layout="@layout/fragment_patient_consult">
         <action
             android:id="@+id/load_patient"
             app:destination="@id/patientDetailFragment" />
@@ -20,7 +22,8 @@
     <fragment
         android:id="@+id/patientDetailFragment"
         android:name="com.upc.hasis_app.presentation.ui.patient.PatientDetailFragment"
-        android:label="PatientDetailFragment" >
+        android:label="PatientDetailFragment"
+        tools:layout="@layout/fragment_patient_detail">
         <action
             android:id="@+id/close_patient"
             app:destination="@id/patientConsultFragment" />
