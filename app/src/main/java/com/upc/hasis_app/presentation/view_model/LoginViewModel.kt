@@ -12,10 +12,7 @@ import com.upc.hasis_app.domain.usecase.RecipeUseCase
 import com.upc.hasis_app.domain.usecase.UserUseCase
 import com.upc.hasis_app.util.tts.TTSHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 
@@ -38,12 +35,14 @@ class LoginViewModel @Inject constructor(
     var userName : String? = null
     var password : String? = null
 
+    var errorMessage: String = ""
+
     fun setState(value: ResultStatus) {
         currentState.postValue(value)
     }
 
     fun dataComplete() : Boolean {
-        return userName != null && password != null
+        return !userName.isNullOrEmpty()  && !password.isNullOrEmpty()
     }
 
     fun setData(dni : String, password : String) {
@@ -56,8 +55,8 @@ class LoginViewModel @Inject constructor(
         val gson = Gson()
         CoroutineScope(Dispatchers.IO).launch {
             val call = userUseCase.login(loginRequest)
-            val headers = call.headers()
             if(call.isSuccessful) {
+                val headers = call.headers()
                 val responseDTO = call.body()
                 if (responseDTO!!.errorCode == 0) {
                     Log.i("LoginResponse", responseDTO.toString() )
@@ -70,17 +69,21 @@ class LoginViewModel @Inject constructor(
                     }
                     setState(ResultStatus.LoggedIn)
                 } else {
-                    val errorResponse = call.errorBody()!!.toString()
-                    Log.i("Error Body Login ", errorResponse )
+                    errorMessage = responseDTO.errorMessage
+                    Log.i("Error Body Login ", errorMessage )
+                    setState(ResultStatus.FailedLoggedIn)
                 }
             } else {
-
+                errorMessage = call.errorBody()!!.string()
+                Log.i("Error Body Login ", errorMessage )
+                setState(ResultStatus.FailedLoggedIn)
+                this.cancel()
             }
         }
     }
 
     fun getUserPreferences() {
-        GlobalScope.launch(Dispatchers.IO){
+        CoroutineScope(Dispatchers.IO).launch {
             val loginRequest =  preferencesUseCase.getLoginRequest();
             if(loginRequest != null) {
                 userName = loginRequest.dni
