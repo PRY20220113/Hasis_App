@@ -14,6 +14,7 @@
 
         <action
             android:id="@+id/back_to_patient"
+            app:destination="@+id/doctor_navigation"
             app:popUpTo="@id/fragmentMedicalRecipe"
             app:popUpToInclusive="true" />
 
@@ -26,7 +27,7 @@
 
         <action
             android:id="@+id/back_to_recipe"
-            app:popUpTo="@id/registerPrescriptionFragment2"
+            app:popUpTo="@id/fragmentMedicalRecipe"
             app:popUpToInclusive="true" />
     </fragment>
 </navigation>

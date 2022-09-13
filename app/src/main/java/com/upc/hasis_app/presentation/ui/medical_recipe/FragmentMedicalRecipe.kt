@@ -60,6 +60,10 @@ class FragmentMedicalRecipe : Fragment() {
             registerRecipe()
         }
 
+        binding.btnBack.setOnClickListener {
+            findNavController().navigate(R.id.back_to_patient)
+        }
+
 
     }
 

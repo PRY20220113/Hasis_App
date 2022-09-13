@@ -70,7 +70,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
-                android:id="@+id/btnRegisterRecipe"
+                android:id="@+id/btnAddPrescription"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 app:cornerRadius="0dp"
@@ -79,7 +79,7 @@
                 android:textSize="16sp"
                 app:icon="@drawable/ic_scan_qr"
                 app:iconGravity="textStart"
-                android:text="@string/register_recipe">
+                android:text="@string/add_prescription">
 
         </com.google.android.material.button.MaterialButton>
 
@@ -114,17 +114,17 @@
 
             <com.google.android.material.button.MaterialButton
                 android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
-                android:id="@+id/btnAddPrescription"
+                android:id="@+id/btnRegisterRecipe"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 app:cornerRadius="0dp"
-                android:backgroundTint="@color/secondary_color"
+                android:backgroundTint="@color/alternative_color"
                 android:layout_weight="1"
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 app:icon="@drawable/ic_scan_qr"
                 app:iconGravity="textStart"
-                android:text="@string/add_prescription"
+                android:text="@string/register_recipe"
                 app:layout_constraintBottom_toBottomOf="parent">
             </com.google.android.material.button.MaterialButton>
 
