@@ -7,7 +7,6 @@ data class UpdateMedicineRequest(
     @SerializedName("weight")           var weight: Int = 0,
     @SerializedName("quantity")         var quantity: Int = 0,
     @SerializedName("eachHour")         var eachHour: Int = 0,
-    @SerializedName("prescribedDays")   var prescribedDays: Int = 0,
 )
 {
     override fun toString(): String = Gson().toJson(this)
