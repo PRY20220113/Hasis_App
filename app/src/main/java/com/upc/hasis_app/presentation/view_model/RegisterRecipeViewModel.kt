@@ -22,6 +22,8 @@ import javax.inject.Inject
 
 sealed class RegisterStatus {
 
+    object Ready : RecipeStatus()
+    object Eliminating : RegisterStatus()
     object Registering : RegisterStatus()
     object Success : RegisterStatus()
     object Failed : RegisterStatus()
@@ -44,6 +46,7 @@ class RegisterRecipeViewModel @Inject constructor(
 
     var medicinesToRegister : MutableList<CreateMedicineRequest> = mutableListOf()
     var medicines : MutableList<Medicine> = mutableListOf()
+    var registered = false
     val registerStatus : MutableLiveData<RegisterStatus> by lazy {
         MutableLiveData<RegisterStatus>()
     }
@@ -62,6 +65,10 @@ class RegisterRecipeViewModel @Inject constructor(
         recipeStatus.postValue(status)
     }
 
+    fun eraseMedicine(medicine: Int) {
+        medicines.removeAt(medicine)
+        medicinesToRegister.removeAt(medicine)
+    }
 
 
     fun addPrescription(medicineRequest: CreateMedicineRequest) {
@@ -87,7 +94,9 @@ class RegisterRecipeViewModel @Inject constructor(
 
             if(call.isSuccessful) {
                 val responseDTO = call.body()
-                if(responseDTO!!.httpCode == 201) { setStatus(RegisterStatus.Success) }
+                if(responseDTO!!.httpCode == 201) {
+                    registered = true
+                    setStatus(RegisterStatus.Success) }
                 else { setStatus( RegisterStatus.Failed ) }
             }
         }

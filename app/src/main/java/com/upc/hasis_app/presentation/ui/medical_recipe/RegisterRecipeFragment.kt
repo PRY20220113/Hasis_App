@@ -10,14 +10,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.upc.hasis_app.R
 import com.upc.hasis_app.databinding.FragmentRegisterRecipeBinding
-import com.upc.hasis_app.presentation.adapter.PrescriptionAdapter
+import com.upc.hasis_app.domain.entity.Medicine
+import com.upc.hasis_app.presentation.adapter.MedicineAdapter
 import com.upc.hasis_app.presentation.view_model.RegisterRecipeViewModel
 import com.upc.hasis_app.presentation.view_model.RegisterStatus
 
 class RegisterRecipeFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterRecipeBinding
-    private lateinit var prescriptionAdapter: PrescriptionAdapter
+    private lateinit var medicineAdapter : MedicineAdapter
 
     private val viewModel : RegisterRecipeViewModel by activityViewModels()
 
@@ -29,11 +30,11 @@ class RegisterRecipeFragment : Fragment() {
 
         val recyclerView = binding.prescriptionContainer
 
-        prescriptionAdapter = PrescriptionAdapter(viewModel.medicines)
+        medicineAdapter = MedicineAdapter(viewModel.medicines, viewModel)
 
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = prescriptionAdapter
+        recyclerView.adapter = medicineAdapter
 
         initObservers()
 
@@ -60,7 +61,7 @@ class RegisterRecipeFragment : Fragment() {
         viewModel.registerStatus.observe(viewLifecycleOwner) {
             when (it) {
                 is RegisterStatus.Success -> {
-                    findNavController().navigate(R.id.back_to_patient)
+                    findNavController().navigate(R.id.back_to_recipe)
                 }
                 is RegisterStatus.Failed -> {
 

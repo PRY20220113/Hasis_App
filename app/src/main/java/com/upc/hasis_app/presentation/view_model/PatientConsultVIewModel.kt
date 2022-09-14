@@ -8,12 +8,8 @@ import com.upc.hasis_app.domain.entity.Patient
 sealed class PatientStatus {
 
     object Success : PatientStatus()
-    object Started : PatientStatus()
     object PatientDataComplete : PatientStatus()
-    object SpeakComplete : PatientStatus()
-    object Listening : PatientStatus()
-    object ListenComplete : PatientStatus()
-    object DataComplete : PatientStatus()
+
 }
 
 

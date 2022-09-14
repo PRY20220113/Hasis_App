@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.upc.hasis_app.R
 import com.upc.hasis_app.databinding.FragmentMedicalRecipeBinding
 import com.upc.hasis_app.presentation.adapter.PrescriptionAdapter
@@ -19,6 +20,9 @@ class FragmentMedicalRecipe : Fragment() {
     private lateinit var prescriptionAdapter: PrescriptionAdapter
 
     private val viewModel : RecipeViewModel by activityViewModels()
+    private val medicineViewModel : MedicineViewModel by activityViewModels()
+    private val registerRecipeViewModel : RegisterRecipeViewModel by activityViewModels()
+    private var recyclerView : RecyclerView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,15 +30,13 @@ class FragmentMedicalRecipe : Fragment() {
     ): View? {
         binding = FragmentMedicalRecipeBinding.inflate(inflater, container, false)
 
-        val recyclerView = binding.prescriptionContainer
+        recyclerView = binding.prescriptionContainer
 
-        prescriptionAdapter = PrescriptionAdapter(viewModel.medicines)
-
-        val layoutManager = LinearLayoutManager(context)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = prescriptionAdapter
-
-        if(viewModel.actualRecipe == null) viewModel.getActiveRecipe()
+        if(viewModel.actualRecipe == null || medicineViewModel.updated || registerRecipeViewModel.registered) {
+            registerRecipeViewModel.registered = false
+            medicineViewModel.updated = false
+            viewModel.getActiveRecipe()
+        }
 
         initObservers()
 
@@ -60,6 +62,13 @@ class FragmentMedicalRecipe : Fragment() {
         viewModel.recipeStatus.observe(viewLifecycleOwner) {
             when (it) {
                 is RecipeStatus.Success -> {
+
+                    prescriptionAdapter = PrescriptionAdapter(viewModel.medicines)
+
+                    val layoutManager = LinearLayoutManager(context)
+                    recyclerView!!.layoutManager = layoutManager
+                    recyclerView!!.adapter = prescriptionAdapter
+
                     binding.progressIndicator.visibility = View.GONE
                     binding.prescriptionContainer.visibility = View.VISIBLE
                 }

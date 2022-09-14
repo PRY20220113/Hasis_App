@@ -33,6 +33,9 @@ class RecipeViewModel @Inject constructor(
     }
 
     fun getActiveRecipe() {
+
+        if(medicines.isNotEmpty()) medicines.clear()
+
         CoroutineScope(Dispatchers.IO).launch {
             val call = recipeUseCase.getActiveRecipeOfPatient(patientId!!)
             if(call.isSuccessful) {
