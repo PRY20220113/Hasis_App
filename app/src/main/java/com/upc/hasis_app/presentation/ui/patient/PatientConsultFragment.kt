@@ -47,6 +47,7 @@ class PatientConsultFragment : Fragment() {
     ): View? {
         binding = FragmentPatientConsultBinding.inflate(inflater, container, false)
         initObservers()
+
         return binding.root
     }
 
@@ -85,8 +86,10 @@ class PatientConsultFragment : Fragment() {
         viewModel.currentPatientState.observe(viewLifecycleOwner) {
             when (it) {
                 is PatientStatus.PatientDataComplete -> {
-                    findNavController().navigate(R.id.load_patient)
+                    val goToPatientDetail = PatientConsultFragmentDirections.goToPatientDetail(patientId = viewModel.patientId!!)
+                    findNavController().navigate(goToPatientDetail)
                 }
+                else -> {}
             }
         }
     }
@@ -102,16 +105,8 @@ class PatientConsultFragment : Fragment() {
             } else {
                 Log.i("CódigoQR: ", intentResult.contents)
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    val call = patientUseCase.getPatientById(intentResult.contents.toInt())
-                    if (call.isSuccessful) {
-                        val responseDTO = call.body()
-                        if (responseDTO!!.httpCode == 200) {
-                            val patient = responseDTO.data
-                            viewModel.updatePatient(patient!!)
-                        }
-                    }
-                }
+                viewModel.setPatient(intentResult.contents.toInt())
+
             }
         }
     }

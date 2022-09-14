@@ -6,18 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.upc.hasis_app.R
 import com.upc.hasis_app.data.model.request.CreateMedicineRequest
 import com.upc.hasis_app.databinding.FragmentRegisterPrescriptionBinding
-import com.upc.hasis_app.presentation.view_model.PatientConsultVIewModel
-import com.upc.hasis_app.presentation.view_model.RegisterPrescriptionViewModel
+import com.upc.hasis_app.presentation.view_model.RegisterRecipeViewModel
 
 class PrescriptionRegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterPrescriptionBinding
-    private val viewModel : RegisterPrescriptionViewModel by activityViewModels()
+    private val viewModel : RegisterRecipeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,11 +30,11 @@ class PrescriptionRegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.btnRegister.setOnClickListener {
             saveMedicineInPrescription()
-            findNavController().navigate(R.id.back_to_recipe)
+            findNavController().navigate(R.id.back_to_register_recipe)
         }
 
         binding.btnBack.setOnClickListener {
-            findNavController().navigate(R.id.back_to_recipe)
+            findNavController().navigate(R.id.back_to_register_recipe)
         }
 
     }

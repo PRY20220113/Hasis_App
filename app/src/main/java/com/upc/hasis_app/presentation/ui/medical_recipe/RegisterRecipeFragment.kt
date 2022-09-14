@@ -9,22 +9,23 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.upc.hasis_app.R
-import com.upc.hasis_app.databinding.FragmentMedicalRecipeBinding
+import com.upc.hasis_app.databinding.FragmentRegisterRecipeBinding
 import com.upc.hasis_app.presentation.adapter.PrescriptionAdapter
-import com.upc.hasis_app.presentation.view_model.*
+import com.upc.hasis_app.presentation.view_model.RegisterRecipeViewModel
+import com.upc.hasis_app.presentation.view_model.RegisterStatus
 
-class FragmentMedicalRecipe : Fragment() {
+class RegisterRecipeFragment : Fragment() {
 
-    private lateinit var binding: FragmentMedicalRecipeBinding
+    private lateinit var binding: FragmentRegisterRecipeBinding
     private lateinit var prescriptionAdapter: PrescriptionAdapter
 
-    private val viewModel : RecipeViewModel by activityViewModels()
+    private val viewModel : RegisterRecipeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMedicalRecipeBinding.inflate(inflater, container, false)
+        binding = FragmentRegisterRecipeBinding.inflate(inflater, container, false)
 
         val recyclerView = binding.prescriptionContainer
 
@@ -34,8 +35,6 @@ class FragmentMedicalRecipe : Fragment() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = prescriptionAdapter
 
-        if(viewModel.actualRecipe == null) viewModel.getActiveRecipe()
-
         initObservers()
 
         return binding.root
@@ -43,32 +42,36 @@ class FragmentMedicalRecipe : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.btnAddPrescription.setOnClickListener {
+            findNavController().navigate(R.id.go_to_add_prescription)
+        }
 
         binding.btnRegisterRecipe.setOnClickListener {
-            //viewModel.setPatientStatus(PatientStatus.Success)
-            findNavController().navigate(R.id.go_to_register_recipe)
+            registerRecipe()
         }
 
         binding.btnBack.setOnClickListener {
-            findNavController().navigate(R.id.back_to_patient)
+            findNavController().navigate(R.id.back_to_recipe)
         }
-
 
     }
 
     private fun initObservers(){
-        viewModel.recipeStatus.observe(viewLifecycleOwner) {
+        viewModel.registerStatus.observe(viewLifecycleOwner) {
             when (it) {
-                is RecipeStatus.Success -> {
-                    binding.progressIndicator.visibility = View.GONE
-                    binding.prescriptionContainer.visibility = View.VISIBLE
+                is RegisterStatus.Success -> {
+                    findNavController().navigate(R.id.back_to_patient)
                 }
-                is RecipeStatus.Failed -> {
-                    binding.progressIndicator.visibility = View.GONE
+                is RegisterStatus.Failed -> {
+
                 }
-                else -> {  viewModel.getActiveRecipe() }
+                else -> {}
             }
         }
+    }
+
+    private fun registerRecipe() {
+        viewModel.registerRecipe()
     }
 
 

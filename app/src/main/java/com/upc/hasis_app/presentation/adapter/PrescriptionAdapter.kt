@@ -2,9 +2,15 @@ package com.upc.hasis_app.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.upc.hasis_app.R
 import com.upc.hasis_app.databinding.ItemRecipeBinding
 import com.upc.hasis_app.domain.entity.Medicine
+import com.upc.hasis_app.presentation.ui.medical_recipe.FragmentMedicalRecipeDirections
+import com.upc.hasis_app.presentation.ui.medical_recipe.RegisterRecipeFragmentDirections
+import com.upc.hasis_app.presentation.ui.patient.PatientConsultFragmentDirections
+import com.upc.hasis_app.presentation.ui.patient.PatientDetailFragmentDirections
 
 
 class PrescriptionAdapter(private val prescriptions: List<Medicine>)
@@ -30,7 +36,9 @@ class PrescriptionAdapter(private val prescriptions: List<Medicine>)
                 binding.tvPrescriptionDescription.text = prescriptionDescription
 
                 holder.itemView.setOnClickListener {
-
+                    val goToUpdate = FragmentMedicalRecipeDirections.goToUpdatePrescription(medicineId = medicineId, medicineName = name,
+                        medicineHour = eachHour, medicineQuantity = quantity, medicineDays = prescribedDays, medicineWeight = weight)
+                    holder.itemView.findNavController().navigate(goToUpdate)
                 }
             }
         }

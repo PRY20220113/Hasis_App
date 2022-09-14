@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/prescription_navigation"
+    app:startDestination="@id/patientDetailFragment">
+
+    <fragment
+        android:id="@+id/patientDetailFragment"
+        android:name="com.upc.hasis_app.presentation.ui.patient.PatientDetailFragment"
+        android:label="PatientDetailFragment"
+        tools:layout="@layout/fragment_patient_detail">
+
+        <action
+            android:id="@+id/go_to_recipe"
+            app:destination="@id/fragmentMedicalRecipe" />
+        <action
+            android:id="@+id/back_to_patient_consult"
+            app:destination="@+id/doctor_navigation"
+            app:popUpTo="@id/patientDetailFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentMedicalRecipe"
+        android:name="com.upc.hasis_app.presentation.ui.medical_recipe.FragmentMedicalRecipe"
+        android:label="FragmentMedicalRecipe"
+        tools:layout="@layout/fragment_medical_recipe">
+        <action
+            android:id="@+id/back_to_patient"
+            app:popUpTo="@id/fragmentMedicalRecipe"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/go_to_register_recipe"
+            app:destination="@id/registerRecipeFragment" />
+        <action
+            android:id="@+id/go_to_update_prescription"
+            app:destination="@id/updatePrescriptionFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerPrescriptionFragment2"
+        android:name="com.upc.hasis_app.presentation.ui.medical_recipe.PrescriptionRegisterFragment"
+        android:label="RegisterPrescriptionFragment"
+        tools:layout="@layout/fragment_register_prescription">
+
+        <action
+            android:id="@+id/back_to_register_recipe"
+            app:popUpTo="@id/registerPrescriptionFragment2"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerRecipeFragment"
+        android:name="com.upc.hasis_app.presentation.ui.medical_recipe.RegisterRecipeFragment"
+        android:label="RegisterRecipeFragment" >
+        <action
+            android:id="@+id/go_to_add_prescription"
+            app:destination="@id/registerPrescriptionFragment2" />
+        <action
+            android:id="@+id/back_to_recipe"
+            app:popUpTo="@id/registerRecipeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <include app:graph="@navigation/doctor_navigation" />
+    <fragment
+        android:id="@+id/updatePrescriptionFragment"
+        android:name="com.upc.hasis_app.presentation.ui.medical_recipe.UpdatePrescriptionFragment"
+        android:label="UpdatePrescriptionFragment" >
+        <action
+            android:id="@+id/back_to_recipe_view"
+            app:popUpTo="@id/updatePrescriptionFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="medicineId"
+            app:argType="integer"
+            android:defaultValue="1" />
+        <argument
+            android:name="medicineName"
+            app:argType="string"
+            android:defaultValue="Medicina" />
+        <argument
+            android:name="medicineHour"
+            app:argType="integer"
+            android:defaultValue="1" />
+        <argument
+            android:name="medicineQuantity"
+            app:argType="integer"
+            android:defaultValue="1" />
+        <argument
+            android:name="medicineDays"
+            app:argType="integer"
+            android:defaultValue="1" />
+
+        <argument
+            android:name="medicineWeight"
+            app:argType="integer"
+            android:defaultValue="1" />
+    </fragment>
+
+
+</navigation>

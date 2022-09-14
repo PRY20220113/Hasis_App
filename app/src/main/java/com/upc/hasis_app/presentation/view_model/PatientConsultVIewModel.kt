@@ -23,14 +23,14 @@ class PatientConsultVIewModel : ViewModel() {
         MutableLiveData<PatientStatus>()
     }
 
-    var patient: Patient? = null
+    var patientId : Int? = null
 
     fun setPatientStatus(status : PatientStatus) {
         currentPatientState.postValue(status)
     }
 
-    fun updatePatient(newPatient: Patient) {
-        patient = newPatient
+    fun setPatient(id : Int? = 1) {
+        patientId = id
         setPatientStatus(PatientStatus.PatientDataComplete)
     }
 

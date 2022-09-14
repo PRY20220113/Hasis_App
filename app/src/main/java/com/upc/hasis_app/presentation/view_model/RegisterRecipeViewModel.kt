@@ -37,11 +37,11 @@ sealed class RecipeStatus {
 }
 
 @HiltViewModel
-class RegisterPrescriptionViewModel @Inject constructor(
+class RegisterRecipeViewModel @Inject constructor(
     private val recipeUseCase: RecipeUseCase,
     private val preferencesUseCase: PreferencesUseCase)  : ViewModel(){
 
-    var actualRecipe : Recipe? = null
+
     var medicinesToRegister : MutableList<CreateMedicineRequest> = mutableListOf()
     var medicines : MutableList<Medicine> = mutableListOf()
     val registerStatus : MutableLiveData<RegisterStatus> by lazy {
@@ -62,22 +62,9 @@ class RegisterPrescriptionViewModel @Inject constructor(
         recipeStatus.postValue(status)
     }
 
-    fun getActiveRecipe() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val call = recipeUseCase.getActiveRecipeOfPatient(patientId!!)
-            if(call.isSuccessful) {
-                val responseDTO = call.body()
-                if(responseDTO!!.httpCode == 200) {
-                    actualRecipe = responseDTO.data
-                    medicines.addAll(actualRecipe!!.medicines)
-                    setRecipeStatus(RecipeStatus.Success)
-                } else { setRecipeStatus( RecipeStatus.Failed ) }
-            }
-        }
-    }
+
 
     fun addPrescription(medicineRequest: CreateMedicineRequest) {
-        if(medicines.isNotEmpty()) medicines.clear()
         medicinesToRegister.add(medicineRequest)
         medicines.add(Medicine(
             0,
