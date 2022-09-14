@@ -11,9 +11,11 @@ import com.upc.hasis_app.presentation.ui.medical_recipe.FragmentMedicalRecipeDir
 import com.upc.hasis_app.presentation.ui.medical_recipe.RegisterRecipeFragmentDirections
 import com.upc.hasis_app.presentation.ui.patient.PatientConsultFragmentDirections
 import com.upc.hasis_app.presentation.ui.patient.PatientDetailFragmentDirections
+import com.upc.hasis_app.presentation.view_model.MedicineStatus
+import com.upc.hasis_app.presentation.view_model.MedicineViewModel
 
 
-class PrescriptionAdapter(private val prescriptions: List<Medicine>)
+class PrescriptionAdapter(private val prescriptions: List<Medicine>, private val viewModel : MedicineViewModel)
     :RecyclerView.Adapter<PrescriptionAdapter.PrescriptionViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PrescriptionViewHolder {
@@ -36,6 +38,7 @@ class PrescriptionAdapter(private val prescriptions: List<Medicine>)
                 binding.tvPrescriptionDescription.text = prescriptionDescription
 
                 holder.itemView.setOnClickListener {
+                    viewModel.setMedicineStatus(MedicineStatus.Init)
                     val goToUpdate = FragmentMedicalRecipeDirections.goToUpdatePrescription(medicineId = medicineId, medicineName = name,
                         medicineHour = eachHour, medicineQuantity = quantity, medicineDays = prescribedDays, medicineWeight = weight)
                     holder.itemView.findNavController().navigate(goToUpdate)

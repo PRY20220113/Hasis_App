@@ -48,6 +48,7 @@ class FragmentMedicalRecipe : Fragment() {
 
         binding.btnRegisterRecipe.setOnClickListener {
             //viewModel.setPatientStatus(PatientStatus.Success)
+            registerRecipeViewModel.setStatus(RegisterStatus.Init)
             findNavController().navigate(R.id.go_to_register_recipe)
         }
 
@@ -63,7 +64,7 @@ class FragmentMedicalRecipe : Fragment() {
             when (it) {
                 is RecipeStatus.Success -> {
 
-                    prescriptionAdapter = PrescriptionAdapter(viewModel.medicines)
+                    prescriptionAdapter = PrescriptionAdapter(viewModel.medicines, medicineViewModel)
 
                     val layoutManager = LinearLayoutManager(context)
                     recyclerView!!.layoutManager = layoutManager

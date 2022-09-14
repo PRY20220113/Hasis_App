@@ -29,7 +29,6 @@ class UpdatePrescriptionFragment : Fragment() {
     ): View? {
         binding = FragmentUpdatePrescriptionBinding.inflate(inflater, container, false)
 
-
         viewModel.setMedicineId(args.medicineId)
 
         initObservers()
@@ -41,6 +40,7 @@ class UpdatePrescriptionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.tvMedicine.text = args.medicineName
+
         binding.etDays.text = "${args.medicineDays} días"
 
         binding.etWeight.setText(args.medicineWeight.toString())

@@ -22,9 +22,7 @@ import javax.inject.Inject
 
 sealed class RegisterStatus {
 
-    object Ready : RecipeStatus()
-    object Eliminating : RegisterStatus()
-    object Registering : RegisterStatus()
+    object Init : RegisterStatus()
     object Success : RegisterStatus()
     object Failed : RegisterStatus()
 

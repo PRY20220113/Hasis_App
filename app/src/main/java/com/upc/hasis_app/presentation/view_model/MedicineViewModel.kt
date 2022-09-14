@@ -13,6 +13,7 @@ import javax.inject.Inject
 
 sealed class MedicineStatus {
 
+    object Init : MedicineStatus()
     object Success : MedicineStatus()
     object Updated : MedicineStatus()
     object Failed : MedicineStatus()
