@@ -5,28 +5,28 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.upc.hasis_app.R
+import com.upc.hasis_app.databinding.ItemMedicineBinding
 import com.upc.hasis_app.databinding.ItemRecipeBinding
 import com.upc.hasis_app.domain.entity.Medicine
 import com.upc.hasis_app.presentation.ui.medical_recipe.FragmentMedicalRecipeDirections
 import com.upc.hasis_app.presentation.ui.medical_recipe.RegisterRecipeFragmentDirections
 import com.upc.hasis_app.presentation.ui.patient.PatientConsultFragmentDirections
 import com.upc.hasis_app.presentation.ui.patient.PatientDetailFragmentDirections
-import com.upc.hasis_app.presentation.view_model.MedicineStatus
-import com.upc.hasis_app.presentation.view_model.MedicineViewModel
+import com.upc.hasis_app.presentation.view_model.RegisterRecipeViewModel
 
 
-class PrescriptionAdapter(private val prescriptions: List<Medicine>, private val viewModel : MedicineViewModel)
-    :RecyclerView.Adapter<PrescriptionAdapter.PrescriptionViewHolder>() {
+class MedicineAdapter(private val prescriptions: List<Medicine>, private val viewModel : RegisterRecipeViewModel)
+    :RecyclerView.Adapter<MedicineAdapter.MedicineViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PrescriptionViewHolder {
-        val binding = ItemRecipeBinding
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicineViewHolder {
+        val binding = ItemMedicineBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
-        return PrescriptionViewHolder(binding)
+        return MedicineViewHolder(binding)
     }
 
     override fun getItemCount() = prescriptions.size
 
-    override fun onBindViewHolder(holder: PrescriptionViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MedicineViewHolder, position: Int) {
         with(holder){
             with(prescriptions[position]) {
                 binding.tvMedicineName.text = name
@@ -37,17 +37,17 @@ class PrescriptionAdapter(private val prescriptions: List<Medicine>, private val
                 val prescriptionDescription = "$quantity tomas cada $eachHour horas"
                 binding.tvPrescriptionDescription.text = prescriptionDescription
 
-                holder.itemView.setOnClickListener {
-                    viewModel.setMedicineStatus(MedicineStatus.Init)
-                    val goToUpdate = FragmentMedicalRecipeDirections.goToUpdatePrescription(medicineId = medicineId, medicineName = name,
-                        medicineHour = eachHour, medicineQuantity = quantity, medicineDays = prescribedDays, medicineWeight = weight)
-                    holder.itemView.findNavController().navigate(goToUpdate)
+                binding.btnUpdate.setOnClickListener {
+                    viewModel.eraseMedicine(position)
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, prescriptions.size)
                 }
+
             }
         }
     }
 
-    inner class PrescriptionViewHolder(val binding: ItemRecipeBinding)
+    inner class MedicineViewHolder(val binding: ItemMedicineBinding)
         :RecyclerView.ViewHolder(binding.root)
 
 }

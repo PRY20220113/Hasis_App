@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 sealed class RegisterStatus {
 
-    object Registering : RegisterStatus()
+    object Init : RegisterStatus()
     object Success : RegisterStatus()
     object Failed : RegisterStatus()
 
@@ -37,13 +37,14 @@ sealed class RecipeStatus {
 }
 
 @HiltViewModel
-class RegisterPrescriptionViewModel @Inject constructor(
+class RegisterRecipeViewModel @Inject constructor(
     private val recipeUseCase: RecipeUseCase,
     private val preferencesUseCase: PreferencesUseCase)  : ViewModel(){
 
-    var actualRecipe : Recipe? = null
+
     var medicinesToRegister : MutableList<CreateMedicineRequest> = mutableListOf()
     var medicines : MutableList<Medicine> = mutableListOf()
+    var registered = false
     val registerStatus : MutableLiveData<RegisterStatus> by lazy {
         MutableLiveData<RegisterStatus>()
     }
@@ -62,22 +63,13 @@ class RegisterPrescriptionViewModel @Inject constructor(
         recipeStatus.postValue(status)
     }
 
-    fun getActiveRecipe() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val call = recipeUseCase.getActiveRecipeOfPatient(patientId!!)
-            if(call.isSuccessful) {
-                val responseDTO = call.body()
-                if(responseDTO!!.httpCode == 200) {
-                    actualRecipe = responseDTO.data
-                    medicines.addAll(actualRecipe!!.medicines)
-                    setRecipeStatus(RecipeStatus.Success)
-                } else { setRecipeStatus( RecipeStatus.Failed ) }
-            }
-        }
+    fun eraseMedicine(medicine: Int) {
+        medicines.removeAt(medicine)
+        medicinesToRegister.removeAt(medicine)
     }
 
+
     fun addPrescription(medicineRequest: CreateMedicineRequest) {
-        if(medicines.isNotEmpty()) medicines.clear()
         medicinesToRegister.add(medicineRequest)
         medicines.add(Medicine(
             0,
@@ -100,7 +92,9 @@ class RegisterPrescriptionViewModel @Inject constructor(
 
             if(call.isSuccessful) {
                 val responseDTO = call.body()
-                if(responseDTO!!.httpCode == 201) { setStatus(RegisterStatus.Success) }
+                if(responseDTO!!.httpCode == 201) {
+                    registered = true
+                    setStatus(RegisterStatus.Success) }
                 else { setStatus( RegisterStatus.Failed ) }
             }
         }

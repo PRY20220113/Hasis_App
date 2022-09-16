@@ -20,7 +20,7 @@ class MedicineUseCase @Inject constructor(
         return medicineRepositoryImp.getMedicineById(medicineId)
     }
 
-    suspend fun createRecipe(medicineId: Int,updateMedicineRequest: UpdateMedicineRequest) : Response<ResponseDTO<Medicine>> {
+    suspend fun updateMedicine(medicineId: Int, updateMedicineRequest: UpdateMedicineRequest) : Response<ResponseDTO<Medicine>> {
         return medicineRepositoryImp.updateMedicine(medicineId, updateMedicineRequest)
     }
 

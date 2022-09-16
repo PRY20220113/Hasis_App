@@ -8,12 +8,8 @@ import com.upc.hasis_app.domain.entity.Patient
 sealed class PatientStatus {
 
     object Success : PatientStatus()
-    object Started : PatientStatus()
     object PatientDataComplete : PatientStatus()
-    object SpeakComplete : PatientStatus()
-    object Listening : PatientStatus()
-    object ListenComplete : PatientStatus()
-    object DataComplete : PatientStatus()
+
 }
 
 
@@ -23,14 +19,14 @@ class PatientConsultVIewModel : ViewModel() {
         MutableLiveData<PatientStatus>()
     }
 
-    var patient: Patient? = null
+    var patientId : Int? = null
 
     fun setPatientStatus(status : PatientStatus) {
         currentPatientState.postValue(status)
     }
 
-    fun updatePatient(newPatient: Patient) {
-        patient = newPatient
+    fun setPatient(id : Int? = 1) {
+        patientId = id
         setPatientStatus(PatientStatus.PatientDataComplete)
     }
 

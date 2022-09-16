@@ -8,25 +8,17 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.upc.hasis_app.presentation.ui.profile.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
+
     <fragment
         android:id="@+id/patientConsultFragment"
         android:name="com.upc.hasis_app.presentation.ui.patient.PatientConsultFragment"
-        android:label="PatientConsultFragment" >
+        android:label="PatientConsultFragment"
+        tools:layout="@layout/fragment_patient_consult">
         <action
-            android:id="@+id/load_patient"
-            app:destination="@id/patientDetailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/patientDetailFragment"
-        android:name="com.upc.hasis_app.presentation.ui.patient.PatientDetailFragment"
-        android:label="PatientDetailFragment" >
-        <action
-            android:id="@+id/close_patient"
-            app:destination="@id/patientConsultFragment" />
-        <action
-            android:id="@+id/go_to_prescriptions"
-            app:destination="@id/prescriptionActivity">
+            android:id="@+id/go_to_patient_detail"
+            app:destination="@id/patientDetailActivity">
             <argument
                 android:name="patientId"
                 app:argType="integer"
@@ -34,13 +26,14 @@
         </action>
     </fragment>
     <activity
-        android:id="@+id/prescriptionActivity"
-        android:name="com.upc.hasis_app.presentation.ui.PrescriptionActivity"
+        android:id="@+id/patientDetailActivity"
+        android:name="com.upc.hasis_app.presentation.ui.PatientDetailActivity"
         android:label="activity_prescription"
-        tools:layout="@layout/activity_prescription" >
+        tools:layout="@layout/activity_prescription">
         <argument
             android:name="patientId"
             app:argType="integer"
             android:defaultValue="1" />
     </activity>
+
 </navigation>
