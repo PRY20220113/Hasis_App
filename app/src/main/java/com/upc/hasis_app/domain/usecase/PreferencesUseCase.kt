@@ -39,6 +39,13 @@ class PreferencesUseCase @Inject constructor(
         preferenceDataStore.setToken(token)
     }
 
+    fun getRole(): String? {
+        return preferenceDataStore.getRole()
+    }
+
+    fun setRole(token: String) {
+        preferenceDataStore.setRole(token)
+    }
 
 
 }

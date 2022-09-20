@@ -3,6 +3,7 @@ package com.upc.hasis_app.data.repository
 import com.upc.hasis_app.data.api.ApiRest
 import com.upc.hasis_app.data.model.response.ResponseDTO
 import com.upc.hasis_app.domain.entity.Doctor
+import com.upc.hasis_app.domain.entity.Speciality
 
 import com.upc.hasis_app.domain.repository.DoctorRepository
 import com.upc.hasis_app.domain.usecase.PreferencesUseCase
@@ -18,6 +19,10 @@ class DoctorRepositoryImp @Inject constructor(
 
    override suspend fun getDoctorById(doctorId: Int): Response<ResponseDTO<Doctor>> {
       return apiRest.getDoctorById(doctorId, preferencesUseCase.getToken()!!)
+   }
+
+   override suspend fun getSpecialities(): Response<ResponseDTO<List<Speciality>>> {
+      return apiRest.getSpecialities()
    }
 
 }

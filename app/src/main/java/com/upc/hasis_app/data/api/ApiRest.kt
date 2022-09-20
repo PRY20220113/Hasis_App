@@ -2,10 +2,7 @@ package com.upc.hasis_app.data.api
 
 import com.upc.hasis_app.data.model.request.*
 import com.upc.hasis_app.data.model.response.*
-import com.upc.hasis_app.domain.entity.Doctor
-import com.upc.hasis_app.domain.entity.Medicine
-import com.upc.hasis_app.domain.entity.Patient
-import com.upc.hasis_app.domain.entity.Recipe
+import com.upc.hasis_app.domain.entity.*
 import retrofit2.Response
 import retrofit2.http.*
 import java.util.*
@@ -39,7 +36,10 @@ interface ApiRest {
     suspend fun createRecipe(@Body createRecipeRequest: CreateRecipeRequest, @Header("Authorization") token: String): Response<ResponseDTO<Recipe>>
 
     @GET("recipe/patient")
-    suspend fun getActiveRecipeOfPatient(@Query("patientId") patientId: Int, @Header("Authorization") token: String): Response<ResponseDTO<Recipe>>
+    suspend fun getActiveRecipesOfPatient(@Query("patientId") patientId: Int, @Header("Authorization") token: String): Response<ResponseDTO<List<Recipe>>>
+
+    @GET("recipe/patient/speciality")
+    suspend fun getActiveRecipeOfPatientBySpeciality(@Query("patientId") patientId: Int,@Query("specialityId") specialityId: Int, @Header("Authorization") token: String): Response<ResponseDTO<Recipe>>
 
 
 
@@ -49,6 +49,9 @@ interface ApiRest {
     @PUT("medicine")
     suspend fun updateMedicine(@Query("medicineId") medicineId: Int,@Body updateMedicineRequest: UpdateMedicineRequest, @Header("Authorization") token: String): Response<ResponseDTO<Medicine>>
 
+
+    @GET("speciality/all")
+    suspend fun getSpecialities(): Response<ResponseDTO<List<Speciality>>>
 
 
 }

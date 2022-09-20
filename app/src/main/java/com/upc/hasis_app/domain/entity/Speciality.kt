@@ -2,14 +2,11 @@ package com.upc.hasis_app.domain.entity
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDate
 
-data class Recipe(
-    var recipeId: Int,
-    var status: Int,
-    var doctor: Doctor,
-    var patient: Patient,
-    var medicines: List<Medicine>
+data class Speciality(
+    var specialityId: Int,
+    var name: String,
+    var description: String,
 ) {
     override fun toString(): String = Gson().toJson(this)
 }

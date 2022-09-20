@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.upc.hasis_app.MainActivity
 import com.upc.hasis_app.data.model.request.LoginRequest
 import com.upc.hasis_app.domain.entity.Doctor
+import com.upc.hasis_app.domain.entity.Patient
 import com.upc.hasis_app.domain.usecase.PreferencesUseCase
 import com.upc.hasis_app.domain.usecase.RecipeUseCase
 import com.upc.hasis_app.domain.usecase.UserUseCase
@@ -64,10 +65,13 @@ class LoginViewModel @Inject constructor(
                     preferencesUseCase.setToken("Bearer ${headers.get("Token").toString()}")
                     if (headers.get("Rol").toString() == "D"){
                         preferencesUseCase.setUserDoctorLoggIn(gson.fromJson(gson.toJson(responseDTO.data), Doctor::class.java))
+                        preferencesUseCase.setRole("D")
+                        setState(ResultStatus.LoggedInDoctor)
                     } else {
-                        preferencesUseCase.setUserDoctorLoggIn(gson.fromJson(gson.toJson(responseDTO.data), Doctor::class.java))
+                        preferencesUseCase.setUserPatientLoggIn(gson.fromJson(gson.toJson(responseDTO.data), Patient::class.java))
+                        preferencesUseCase.setRole("P")
+                        setState(ResultStatus.LoggedInPatient)
                     }
-                    setState(ResultStatus.LoggedIn)
                 } else {
                     errorMessage = responseDTO.errorMessage
                     Log.i("Error Body Login ", errorMessage )

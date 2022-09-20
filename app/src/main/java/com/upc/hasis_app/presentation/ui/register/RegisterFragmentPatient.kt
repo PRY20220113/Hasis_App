@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,28 +16,33 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.upc.hasis_app.R
-import com.upc.hasis_app.data.model.request.RegisterDoctorRequest
 import com.upc.hasis_app.data.model.request.LoginRequest
-import com.upc.hasis_app.databinding.FragmentRegisterDoctorBinding
+import com.upc.hasis_app.data.model.request.RegisterDoctorRequest
+import com.upc.hasis_app.data.model.request.RegisterPatientRequest
+import com.upc.hasis_app.databinding.FragmentRegisterPatientBinding
 import com.upc.hasis_app.domain.entity.Speciality
 import com.upc.hasis_app.domain.usecase.DoctorUseCase
 import com.upc.hasis_app.domain.usecase.PreferencesUseCase
 import com.upc.hasis_app.domain.usecase.UserUseCase
-import com.upc.hasis_app.presentation.adapter.SpecialitySpinnerAdapter
 import com.upc.hasis_app.util.ErrorDialog
 import com.upc.hasis_app.util.SuccessDialog
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
-@AndroidEntryPoint
-class RegisterFragmentDoctor : Fragment() {
 
-    private lateinit var binding: FragmentRegisterDoctorBinding
+@AndroidEntryPoint
+class RegisterFragmentPatient : Fragment() {
+
+
+    private lateinit var binding: FragmentRegisterPatientBinding
+
 
     @Inject
     lateinit var preferencesUseCase: PreferencesUseCase
@@ -44,19 +50,17 @@ class RegisterFragmentDoctor : Fragment() {
     @Inject
     lateinit var userUseCase: UserUseCase
 
-    @Inject
-    lateinit var doctorUseCase: DoctorUseCase
-
-
     private lateinit var datePickerDialog: DatePickerDialog;
-    private lateinit var specialitySelected : Speciality
-    private lateinit var genreSelected : String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentRegisterDoctorBinding.inflate(inflater, container, false)
+        binding = FragmentRegisterPatientBinding.inflate(inflater, container, false)
         return binding.root;
     }
 
@@ -66,49 +70,15 @@ class RegisterFragmentDoctor : Fragment() {
         initDatePicker()
         initButtons()
         initSexSpinner()
-        initSpecialitySpinner()
         binding.etBirthDate.setOnClickListener {
             showDatePicker()
         }
     }
 
-    private fun initSpecialitySpinner() {
-
-        binding.spnSpeciality.adapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, arrayListOf("Obteniendo Especialidades..."))
-        CoroutineScope(Dispatchers.IO).launch {
-            val call = doctorUseCase.getSpecialities()
-            if (call.isSuccessful){
-                val responseDTO = call.body()
-                if(responseDTO!!.httpCode == 200){
-                    val specialities : List<Speciality> = responseDTO.data!!
-                    val auxSpecialities: MutableList<Speciality> = mutableListOf(Speciality(0,"Especialidades...",""))
-                    auxSpecialities.addAll(specialities);
-                    requireActivity().runOnUiThread {
-                        val spnSpecialitiesAdapter = SpecialitySpinnerAdapter(requireContext(),R.layout.spinner_item, auxSpecialities)
-
-                        binding.spnSpeciality.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                val value = parent!!.getItemAtPosition(position)
-                                if(value == auxSpecialities[0]){
-                                    (view as TextView).setTextColor(Color.GRAY)
-                                } else {
-                                    specialitySelected = value as Speciality
-                                }
-                            }
-                            override fun onNothingSelected(parent: AdapterView<*>?) {
-                            }
-                        }
-                        binding.spnSpeciality.adapter = spnSpecialitiesAdapter
-                    }
-
-                }
-            }
-        }
-    }
-
     private fun initSexSpinner() {
         val genres = arrayListOf<String>("Género...","Másculino", "Femenino")
-        val spnSexAdapter = object :ArrayAdapter<String>(requireContext(),R.layout.spinner_item, genres){
+        val spnSexAdapter = object :
+            ArrayAdapter<String>(requireContext(),R.layout.spinner_item, genres){
             override fun isEnabled(position: Int): Boolean {
                 return position != 0
             }
@@ -127,7 +97,6 @@ class RegisterFragmentDoctor : Fragment() {
                 if(value == genres[0]){
                     (view as TextView).setTextColor(Color.GRAY)
                 }
-                genreSelected = value
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
@@ -146,6 +115,9 @@ class RegisterFragmentDoctor : Fragment() {
         binding.etRepeatPassword.doAfterTextChanged {
             binding.etPassword.error = null
             binding.etRepeatPassword.error = null
+        }
+        binding.etBirthDate.doAfterTextChanged {
+            binding.etBirthDate.error = null
         }
     }
 
@@ -192,43 +164,45 @@ class RegisterFragmentDoctor : Fragment() {
             }
             return
         }
-        if(binding.spnSpeciality.selectedItemPosition == 0){
-            with(binding.spnSpeciality.selectedView as TextView) {
-                error = ""
-                setTextColor(Color.RED)
-                text = "Seleccione una especialidad"
-            }
-            return
-        }
         if(binding.etBirthDate.text.toString().isEmpty() && binding.etBirthDate.text.isBlank()){
             binding.etBirthDate.error = "Campo requerido"
             return
         }
-
-        if(binding.etSfees.text.toString().isEmpty() && binding.etSfees.text.isBlank()){
-            binding.etSfees.error = "Campo requerido"
+        if(binding.etBloodType.text.toString().isEmpty() && binding.etBloodType.text.isBlank()){
+            binding.etBloodType.error = "Campo requerido"
             return
         }
-        registerDoctor()
+        if(binding.etChronicleDiseases.text.toString().isEmpty() && binding.etChronicleDiseases.text.isBlank()){
+            binding.etChronicleDiseases.error = "Campo requerido"
+            return
+        }
+        if(binding.etAllergies.text.toString().isEmpty() && binding.etAllergies.text.isBlank()){
+            binding.etAllergies.error = "Campo requerido"
+            return
+        }
+        registerPatient()
     }
 
-    private fun registerDoctor(){
+    private fun registerPatient(){
+
         showProgressBar()
-        var doctor = RegisterDoctorRequest()
-        doctor.dni      = binding.etDni.text.toString()
-        doctor.firstName  = binding.etName.text.toString()
-        doctor.lastName  = binding.etSurname.text.toString()
-        doctor.email    = binding.etEmail.text.toString()
-        doctor.phone    = binding.etPhone.text.toString()
-        doctor.password = binding.etPassword.text.toString()
-        doctor.license = binding.etSfees.text.toString()
-        doctor.sex = if(binding.spnSex.selectedItem.toString() == "Másculino") "M" else "F"
-        doctor.birthDate = binding.etBirthDate.text.toString()
-        doctor.specialityId = specialitySelected.specialityId
+        var patient = RegisterPatientRequest()
+        patient.dni      = binding.etDni.text.toString()
+        patient.firstName  = binding.etName.text.toString()
+        patient.lastName  = binding.etSurname.text.toString()
+        patient.email    = binding.etEmail.text.toString()
+        patient.phone    = binding.etPhone.text.toString()
+        patient.password = binding.etPassword.text.toString()
+        patient.sex = if(binding.spnSex.selectedItem.toString() == "Másculino") "M" else "F"
+        patient.birthDate = binding.etBirthDate.text.toString()
+        patient.bloodT = binding.etBloodType.text.toString()
+        patient.chronicD = binding.etChronicleDiseases.text.toString()
+        patient.allergy = binding.etAllergies.text.toString()
+
 
 
         CoroutineScope(Dispatchers.IO).launch {
-            val call = userUseCase.registerDoctor(doctor)
+            val call = userUseCase.registerPatient(patient)
             if (call.isSuccessful){
                 val responseDTO = call.body()
                 requireActivity().runOnUiThread {
@@ -254,6 +228,7 @@ class RegisterFragmentDoctor : Fragment() {
         }
     }
 
+
     private fun showErrorDialog(message: String){
         val dialog = ErrorDialog(requireContext(), message)
         dialog.requestWindowFeature(1)
@@ -264,7 +239,7 @@ class RegisterFragmentDoctor : Fragment() {
         val dialog = SuccessDialog(requireContext(), message)
         dialog.requestWindowFeature(1)
         dialog.setOnDismissListener {
-            findNavController().navigate(R.id.back_to_login_from_doctor_register)
+            findNavController().navigate(R.id.back_to_login_from_patient_register)
             preferencesUseCase.setLoginRequest(LoginRequest("",""))
         }
         dialog.show()
@@ -314,5 +289,6 @@ class RegisterFragmentDoctor : Fragment() {
         binding.progressBar.visibility = View.GONE
         restoreUserInteraction()
     }
+
 
 }

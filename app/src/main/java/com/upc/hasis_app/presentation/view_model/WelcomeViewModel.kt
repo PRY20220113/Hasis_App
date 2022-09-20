@@ -13,7 +13,8 @@ sealed class ResultStatus {
     object Listening : ResultStatus()
     object ListenComplete : ResultStatus()
     object DataComplete : ResultStatus()
-    object LoggedIn : ResultStatus()
+    object LoggedInDoctor : ResultStatus()
+    object LoggedInPatient : ResultStatus()
     object FailedLoggedIn : ResultStatus()
     object PreferencesExist : ResultStatus()
 

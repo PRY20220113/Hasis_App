@@ -24,8 +24,8 @@ class RecipeRepositoryImp @Inject constructor(
         return apiRest.createRecipe(createRecipeRequest, preferencesUseCase.getToken()!!)
     }
 
-    override suspend fun getActiveRecipeOfPatient(patientId: Int): Response<ResponseDTO<Recipe>> {
-        return apiRest.getActiveRecipeOfPatient(patientId, preferencesUseCase.getToken()!!)
+    override suspend fun getActiveRecipesOfPatient(patientId: Int): Response<ResponseDTO<List<Recipe>>> {
+        return apiRest.getActiveRecipesOfPatient(patientId, preferencesUseCase.getToken()!!)
     }
 
 }

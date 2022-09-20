@@ -20,7 +20,7 @@ class RecipeUseCase @Inject constructor(
         return recipeRepositoryImp.createRecipe(createRecipeRequest)
     }
 
-    suspend fun getActiveRecipeOfPatient(patientId: Int) : Response<ResponseDTO<Recipe>> {
-        return recipeRepositoryImp.getActiveRecipeOfPatient(patientId)
+    suspend fun getActiveRecipesOfPatient(patientId: Int) : Response<ResponseDTO<List<Recipe>>> {
+        return recipeRepositoryImp.getActiveRecipesOfPatient(patientId)
     }
 }

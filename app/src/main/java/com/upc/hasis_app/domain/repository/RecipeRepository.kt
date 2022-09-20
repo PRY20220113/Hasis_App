@@ -11,7 +11,7 @@ interface RecipeRepository {
 
     suspend fun createRecipe(createRecipeRequest: CreateRecipeRequest): Response<ResponseDTO<Recipe>>
 
-    suspend fun getActiveRecipeOfPatient(patientId: Int): Response<ResponseDTO<Recipe>>
+    suspend fun getActiveRecipesOfPatient(patientId: Int): Response<ResponseDTO<List<Recipe>>>
 
 
 }

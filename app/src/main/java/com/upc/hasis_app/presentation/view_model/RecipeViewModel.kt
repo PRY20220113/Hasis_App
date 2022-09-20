@@ -37,13 +37,13 @@ class RecipeViewModel @Inject constructor(
         if(medicines.isNotEmpty()) medicines.clear()
 
         CoroutineScope(Dispatchers.IO).launch {
-            val call = recipeUseCase.getActiveRecipeOfPatient(patientId!!)
+            val call = recipeUseCase.getActiveRecipesOfPatient(patientId!!)
             if(call.isSuccessful) {
                 val responseDTO = call.body()
                 if(responseDTO!!.httpCode == 200) {
-                    actualRecipe = responseDTO.data
-                    if(!actualRecipe?.medicines.isNullOrEmpty()) medicines.addAll(actualRecipe!!.medicines)
-                    setRecipeStatus(RecipeStatus.Success)
+//                    actualRecipe = responseDTO.data
+//                    if(!actualRecipe?.medicines.isNullOrEmpty()) medicines.addAll(actualRecipe!!.medicines)
+//                    setRecipeStatus(RecipeStatus.Success)
                 } else { setRecipeStatus( RecipeStatus.Failed ) }
             }
         }

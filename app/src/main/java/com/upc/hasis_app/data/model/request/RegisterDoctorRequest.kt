@@ -18,6 +18,7 @@ data class RegisterDoctorRequest constructor(
     @SerializedName("phone")        var phone: String = "",
     @SerializedName("sex")          var sex: String = "",
     @SerializedName("license")      var license: String = "",
+    @SerializedName("specialityId")      var specialityId: Int = 0,
 
     ) {
     override fun toString() = Gson().toJson(this)

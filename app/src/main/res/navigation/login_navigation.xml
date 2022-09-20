@@ -25,11 +25,21 @@
         <action
             android:id="@+id/login_doctor_complete"
             app:destination="@id/doctorActivity" />
+        <action
+            android:id="@+id/login_patient_complete"
+            app:destination="@id/patientActivity" />
     </fragment>
     <include app:graph="@navigation/register_navigation" />
+
     <activity
         android:id="@+id/doctorActivity"
         android:name="com.upc.hasis_app.presentation.ui.DoctorActivity"
         android:label="activity_doctor"
         tools:layout="@layout/activity_doctor" />
+
+    <activity
+        android:id="@+id/patientActivity"
+        android:name="com.upc.hasis_app.presentation.ui.PatientActivity"
+        android:label="activity_patient"
+        tools:layout="@layout/activity_patient" />
 </navigation>

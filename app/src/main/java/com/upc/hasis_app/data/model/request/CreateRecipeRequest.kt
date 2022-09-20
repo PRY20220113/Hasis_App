@@ -7,6 +7,7 @@ data class CreateRecipeRequest(
     @SerializedName("patientId")  var patientId: Int = 0,
     @SerializedName("doctorId")   var doctorId: Int = 0,
     @SerializedName("medicines")  var medicines: MutableList<CreateMedicineRequest> = mutableListOf(),
+    @SerializedName("description")   var description: String = "",
 )
 {
     override fun toString(): String = Gson().toJson(this)

@@ -24,7 +24,7 @@ class LocalPreferenceDataStore @Inject constructor(
     private val KEY_DOCTOR_LOG_IN: String = "DoctorLogIn"
     private val KEY_PATIENT_LOG_IN: String = "PatientLogin"
     private val KEY_TOKEN: String = "Token"
-
+    private val KEY_ROLE: String = "Role"
     init {
         sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
     }
@@ -82,14 +82,12 @@ class LocalPreferenceDataStore @Inject constructor(
         if (patient != null) {
             editor = sharedPreferences.edit()
             val gson = Gson()
-            editor.putString(KEY_DOCTOR_LOG_IN, gson.toJson(patient))
+            editor.putString(KEY_PATIENT_LOG_IN, gson.toJson(patient))
             editor.commit()
         } else {
             sharedPreferences.edit().putString(KEY_PATIENT_LOG_IN, "").commit()
         }
     }
-
-
 
     override fun getToken(): String? {
         val token = sharedPreferences.getString(KEY_TOKEN, "")
@@ -104,6 +102,22 @@ class LocalPreferenceDataStore @Inject constructor(
             editor.commit()
         } else {
             sharedPreferences.edit().putString(KEY_TOKEN, "").commit()
+        }
+    }
+
+    override fun getRole(): String? {
+        val token = sharedPreferences.getString(KEY_ROLE, "")
+        if (token!!.isEmpty()) return null
+        return token
+    }
+
+    override fun setRole(role: String) {
+        if (role != null) {
+            editor = sharedPreferences.edit()
+            editor.putString(KEY_ROLE, role)
+            editor.commit()
+        } else {
+            sharedPreferences.edit().putString(KEY_ROLE, "").commit()
         }
     }
 }

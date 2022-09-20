@@ -17,4 +17,7 @@ interface PreferenceDataStore {
 
     fun getToken(): String?;
     fun setToken( token: String);
+
+    fun getRole(): String?;
+    fun setRole( token: String);
 }

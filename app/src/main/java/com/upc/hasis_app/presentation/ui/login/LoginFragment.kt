@@ -113,9 +113,13 @@ class LoginFragment : Fragment() {
                     doLogin()
                     //findNavController().navigate(R.id.login_doctor_complete)
                 }
-                is ResultStatus.LoggedIn -> {
+                is ResultStatus.LoggedInDoctor -> {
                     sttHelper.stopListen()
                     findNavController().navigate(R.id.login_doctor_complete)
+                }
+                is ResultStatus.LoggedInPatient -> {
+                    sttHelper.stopListen()
+                    findNavController().navigate(R.id.login_patient_complete)
                 }
                 is ResultStatus.FailedLoggedIn -> {
                     showErrorDialog(viewModel.errorMessage)

@@ -7,20 +7,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:paddingVertical="100dp"
-            android:paddingHorizontal="100dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:indeterminate="true"
-            android:translationZ="1dp"
-            android:background="#80000000"
-            android:visibility="gone"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingVertical="100dp"
+        android:paddingHorizontal="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:indeterminate="true"
+        android:translationZ="1dp"
+        android:background="#80000000"
+        android:visibility="gone"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -161,18 +161,6 @@
                             android:prompt="@string/sex_text"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="20dp"
-                        android:layout_height="wrap_content">
-                        <Spinner
-                            android:id="@+id/spnSpeciality"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:textSize="12sp"
-                            android:hint="@string/sex_text"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
                     <EditText
                         android:id="@+id/etBirthDate"
                         android:layout_width="match_parent"
@@ -185,14 +173,30 @@
                         tools:ignore="TextFields" />
 
                     <EditText
-                        android:id="@+id/etSfees"
+                        android:id="@+id/etBloodType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="Tipo de sangre"
+                        android:inputType="text"
+                        android:maxLength="3" />
+
+                    <EditText
+                        android:id="@+id/etChronicleDiseases"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="Enfermedades crónicas"
+                        android:inputType="text" />
+
+                    <EditText
+                        android:id="@+id/etAllergies"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
-                        android:hint="@string/sfees_text"
-                        android:inputType="number"
-                        android:maxLength="6" />
+                        android:hint="@string/allergies_text"
+                        android:inputType="text" />
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>

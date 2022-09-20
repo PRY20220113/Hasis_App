@@ -7,7 +7,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="350dp"
-        android:layout_height="400dp">
+        android:layout_height="300dp">
 
         <LinearLayout
             android:id="@+id/ibLogin"
@@ -22,7 +22,7 @@
             <ImageView
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:src="@drawable/ic_error_icon"
                 />
 

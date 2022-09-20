@@ -12,10 +12,10 @@ data class RegisterPatientRequest (
     @SerializedName("password")   var password: String = "",
     @SerializedName("birthDate")  var birthDate: String = "",
     @SerializedName("phone")      var phone: String = "",
-    @SerializedName("sex")        var gener: String = "",
+    @SerializedName("sex")        var sex: String = "",
     @SerializedName("bloodT")     var bloodT: String = "",
-    @SerializedName("chronicD")   var chronicD: String,
-    @SerializedName("allergy")    var allergy: String,
+    @SerializedName("chronicD")   var chronicD: String = "",
+    @SerializedName("allergy")    var allergy: String = "",
 )
 {
     override fun toString() = Gson().toJson(this)

@@ -14,8 +14,8 @@ import javax.inject.Singleton
 object NetworkModule {
 
     //private const val API_URL = "http://192.168.0.8:8080/api/v1/"
-    private const val API_URL = "https://hasis-backend.herokuapp.com/"
-
+    //private const val API_URL = "https://hasis-backend.herokuapp.com/"
+    private const val API_URL = "https://hasis-backend.azurewebsites.net/"
     @Provides
     @Singleton
     fun provideApiRest(): ApiRest {
