@@ -4,6 +4,7 @@ import com.upc.hasis_app.data.api.ApiRest
 import com.upc.hasis_app.data.model.request.CreateRecipeRequest
 import com.upc.hasis_app.data.model.response.ResponseDTO
 import com.upc.hasis_app.domain.entity.Recipe
+import com.upc.hasis_app.domain.entity.Speciality
 import com.upc.hasis_app.domain.repository.RecipeRepository
 import com.upc.hasis_app.domain.usecase.PreferencesUseCase
 import kotlinx.coroutines.Dispatchers
@@ -27,5 +28,14 @@ class RecipeRepositoryImp @Inject constructor(
     override suspend fun getActiveRecipesOfPatient(patientId: Int): Response<ResponseDTO<List<Recipe>>> {
         return apiRest.getActiveRecipesOfPatient(patientId, preferencesUseCase.getToken()!!)
     }
+
+    override suspend fun getActiveRecipesBySpecialityOfPatient(patientId: Int, specialityId: Int): Response<ResponseDTO<Recipe>> {
+        return apiRest.getActiveRecipeOfPatientBySpeciality(patientId, specialityId, preferencesUseCase.getToken()!!)
+    }
+
+    override suspend fun getActiveSpecialityOfPatient(patientId: Int): Response<ResponseDTO<List<Speciality>>> {
+        return apiRest.getActiveSpecialityOfPatient(patientId, preferencesUseCase.getToken()!!)
+    }
+
 
 }

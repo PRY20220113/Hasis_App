@@ -25,6 +25,7 @@
                 android:defaultValue="1" />
         </action>
     </fragment>
+
     <activity
         android:id="@+id/patientDetailActivity"
         android:name="com.upc.hasis_app.presentation.ui.PatientDetailActivity"

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/patient_navigation"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/doctorSpecialitiesFragment">
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.upc.hasis_app.presentation.ui.profile.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
+
+    <fragment
+        android:id="@+id/doctorSpecialitiesFragment"
+        android:name="com.upc.hasis_app.presentation.ui.doctor.DoctorSpecialitiesFragment"
+        android:label="DoctorSpecialitiesFragment"
+        tools:layout="@layout/fragment_doctor_specialities">
+        <action
+            android:id="@+id/go_to_speciality_patient_recipes"
+            app:destination="@id/patientRecipeSpecialityActivity" >
+            <argument
+                android:name="specialityId"
+                app:argType="integer"
+                android:defaultValue="1" />
+        </action>
+    </fragment>
+
+    <activity
+        android:id="@+id/patientRecipeSpecialityActivity"
+        android:name="com.upc.hasis_app.presentation.ui.PatientRecipeSpecialityActivity"
+        android:label="activity_patient_recipe_speciality"
+        tools:layout="@layout/activity_patient_recipe_speciality" >
+        <argument
+            android:name="specialityId"
+            app:argType="integer"
+            android:defaultValue="1" />
+    </activity>
+
+</navigation>

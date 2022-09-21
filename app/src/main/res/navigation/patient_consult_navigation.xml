@@ -53,7 +53,8 @@
     <fragment
         android:id="@+id/registerRecipeFragment"
         android:name="com.upc.hasis_app.presentation.ui.medical_recipe.RegisterRecipeFragment"
-        android:label="RegisterRecipeFragment" >
+        android:label="RegisterRecipeFragment"
+        tools:layout="@layout/fragment_register_recipe">
         <action
             android:id="@+id/go_to_add_prescription"
             app:destination="@id/registerPrescriptionFragment2" />
@@ -66,7 +67,8 @@
     <fragment
         android:id="@+id/updatePrescriptionFragment"
         android:name="com.upc.hasis_app.presentation.ui.medical_recipe.UpdatePrescriptionFragment"
-        android:label="UpdatePrescriptionFragment" >
+        android:label="UpdatePrescriptionFragment"
+        tools:layout="@layout/fragment_update_prescription">
         <action
             android:id="@+id/back_to_recipe_view"
             app:popUpTo="@id/updatePrescriptionFragment"

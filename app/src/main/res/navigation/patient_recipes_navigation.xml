@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/patient_recipes_navigation"
+    app:startDestination="@id/fragmentMedicalRecipeSpeciality">
+
+    <fragment
+        android:id="@+id/fragmentMedicalRecipeSpeciality"
+        android:name="com.upc.hasis_app.presentation.ui.medical_recipe.FragmentMedicalRecipeSpeciality"
+        android:label="fragment_speciality_recipes"
+        tools:layout="@layout/fragment_speciality_recipes" >
+        <action
+            android:id="@+id/back_to_recipes_specialities"
+            app:destination="@+id/patient_navigation"
+            app:popUpTo="@id/fragmentMedicalRecipeSpeciality"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <include app:graph="@navigation/patient_navigation" />
+
+
+</navigation>

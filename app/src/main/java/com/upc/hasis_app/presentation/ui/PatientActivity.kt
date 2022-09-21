@@ -1,12 +1,13 @@
 package com.upc.hasis_app.presentation.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.upc.hasis_app.R
-import com.upc.hasis_app.databinding.ActivityDoctorBinding
 import com.upc.hasis_app.databinding.ActivityPatientBinding
-import com.upc.hasis_app.presentation.ui.patient.PatientConsultFragment
+import com.upc.hasis_app.presentation.ui.doctor.DoctorSpecialitiesFragment
 import com.upc.hasis_app.presentation.ui.profile.ProfileFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,17 +20,18 @@ class PatientActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPatientBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
 
-        binding.nvOptions.setOnItemSelectedListener {
+        binding.nvOptions.setupWithNavController(findNavController(R.id.fragmentPatientContainerView))
 
-            when(it.itemId) {
+//        binding.nvOptions.setOnItemSelectedListener {
+//
+//            when(it.itemId) {
 //                R.id.patientConsultFragment -> replaceFragment(DoctorSpecialitiesFragment())
-                R.id.profileFragment -> replaceFragment(ProfileFragment())
-            }
-            true
-        }
+//                R.id.profileFragment -> replaceFragment(ProfileFragment())
+//            }
+//            true
+//        }
     }
 
     private fun replaceFragment(fragment : Fragment) {

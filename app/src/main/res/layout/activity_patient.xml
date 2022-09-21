@@ -25,13 +25,13 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.fragment.app.FragmentContainerView
+    <fragment
         android:id="@+id/fragmentPatientContainerView"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/doctor_navigation"
+        app:navGraph="@navigation/patient_navigation"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/secondary_color"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentDoctorContainerView"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentPatientContainerView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

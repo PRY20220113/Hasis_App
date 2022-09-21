@@ -4,6 +4,7 @@ import com.upc.hasis_app.data.local.preferences.LocalPreferenceDataStore
 import com.upc.hasis_app.data.model.request.LoginRequest
 import com.upc.hasis_app.domain.entity.Doctor
 import com.upc.hasis_app.domain.entity.Patient
+import com.upc.hasis_app.domain.entity.Speciality
 import javax.inject.Inject
 
 class PreferencesUseCase @Inject constructor(
@@ -45,6 +46,14 @@ class PreferencesUseCase @Inject constructor(
 
     fun setRole(token: String) {
         preferenceDataStore.setRole(token)
+    }
+
+    fun getSpecialitySelected(): Speciality? {
+        return preferenceDataStore.getSpecialitySelected()
+    }
+
+    fun setSpecialitySelected(speciality: Speciality) {
+        preferenceDataStore.setSpecialitySelected(speciality)
     }
 
 

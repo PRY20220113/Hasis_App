@@ -41,6 +41,9 @@ interface ApiRest {
     @GET("recipe/patient/speciality")
     suspend fun getActiveRecipeOfPatientBySpeciality(@Query("patientId") patientId: Int,@Query("specialityId") specialityId: Int, @Header("Authorization") token: String): Response<ResponseDTO<Recipe>>
 
+    @GET("recipe/patient/speciality/active")
+    suspend fun getActiveSpecialityOfPatient(@Query("patientId") patientId: Int, @Header("Authorization") token: String): Response<ResponseDTO<List<Speciality>>>
+
 
 
     @GET("medicine")

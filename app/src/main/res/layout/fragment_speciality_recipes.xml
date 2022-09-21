@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".presentation.ui.medical_recipe.FragmentMedicalRecipeSpeciality">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tbMedicalRecipeSpecialityTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/prescriptionContainer">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:tint="@color/white"
+                android:backgroundTint="@color/primary_color"
+                android:contentDescription="@string/register_title"
+                android:src="@drawable/ic_round_arrow_back" />
+
+            <TextView
+                android:layout_margin="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                android:text="Especialidad "/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/prescriptionContainer"
+            android:layout_marginHorizontal="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@+id/tbMedicalRecipeSpecialityTitle"
+            app:layout_constraintBottom_toTopOf="@+id/optionsContainer"
+            tools:listitem="@layout/item_recipe"/>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tbMedicalRecipeSpecialityTitle"
+            app:layout_constraintBottom_toTopOf="@+id/optionsContainer"/>
+
+
+        <LinearLayout
+            android:id="@+id/optionsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
+                android:id="@+id/btnListen"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:cornerRadius="0dp"
+                android:backgroundTint="@color/secondary_color"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:icon="@drawable/ic_scan_qr"
+                app:iconGravity="textStart"
+                android:text="@string/listen_recipes"
+                app:layout_constraintBottom_toBottomOf="parent">
+            </com.google.android.material.button.MaterialButton>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
+                android:id="@+id/btnFind"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:cornerRadius="0dp"
+                android:backgroundTint="@color/primary_color"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:icon="@drawable/ic_location"
+                app:iconGravity="textStart"
+                android:text="@string/find_pharmacies"
+                app:layout_constraintBottom_toBottomOf="parent">
+            </com.google.android.material.button.MaterialButton>
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

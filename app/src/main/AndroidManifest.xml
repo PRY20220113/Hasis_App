@@ -41,6 +41,9 @@
             android:name=".presentation.ui.DoctorActivity"
             android:exported="false" />
         <activity
+            android:name=".presentation.ui.PatientRecipeSpecialityActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
