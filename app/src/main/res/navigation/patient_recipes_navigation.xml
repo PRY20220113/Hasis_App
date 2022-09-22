@@ -15,8 +15,18 @@
             app:destination="@+id/patient_navigation"
             app:popUpTo="@id/fragmentMedicalRecipeSpeciality"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/go_to_nearby_pharmacies"
+            app:destination="@id/nearby_pharmacies" />
     </fragment>
+
     <include app:graph="@navigation/patient_navigation" />
+
+    <fragment
+        android:id="@+id/nearby_pharmacies"
+        android:name="com.upc.hasis_app.nearby_pharmacies"
+        android:label="fragment_nearby_pharmacies"
+        tools:layout="@layout/fragment_nearby_pharmacies" />
 
 
 </navigation>

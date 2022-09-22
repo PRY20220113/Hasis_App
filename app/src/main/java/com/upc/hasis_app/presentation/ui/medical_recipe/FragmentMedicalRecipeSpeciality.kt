@@ -16,6 +16,7 @@ import com.upc.hasis_app.databinding.FragmentSpecialityRecipesBinding
 import com.upc.hasis_app.domain.usecase.PreferencesUseCase
 import com.upc.hasis_app.domain.usecase.RecipeUseCase
 import com.upc.hasis_app.presentation.adapter.PrescriptionAdapter
+import com.upc.hasis_app.presentation.adapter.PrescriptionPatientAdapter
 import com.upc.hasis_app.presentation.adapter.SpecialityAdapter
 import com.upc.hasis_app.presentation.view_model.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +31,9 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
 
     private lateinit var binding: FragmentSpecialityRecipesBinding
 
+    private lateinit var recipePatientAdapter: PrescriptionPatientAdapter
+    private var recyclerView : RecyclerView? = null
+
     @Inject
     lateinit var preferencesUseCase: PreferencesUseCase
 
@@ -42,23 +46,37 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
     ): View? {
         binding = FragmentSpecialityRecipesBinding.inflate(inflater, container, false)
 
+        recyclerView = binding.prescriptionPatientContainer
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        recyclerView!!.layoutManager = LinearLayoutManager(context)
+        binding.progressIndicator.visibility = View.VISIBLE
+        binding.prescriptionPatientContainer.visibility = View.GONE
+        getActiveRecipeForSpeciality()
+
 
         binding.btnListen.setOnClickListener {
-
         }
+
         binding.btnBack.setOnClickListener {
-            findNavController().navigate(R.id.back_to_recipes_specialities)
+//            findNavController().navigate(
+//                FragmentMedicalRecipeSpecialityDirections.backToRecipesSpecialities()
+//            )
+            requireActivity().onBackPressed()
         }
 
         binding.btnFind.setOnClickListener {
         }
-        getActiveRecipeForSpeciality()
+
+    }
+
+    private fun hideProgressBar(){
+        binding.progressIndicator.visibility = View.GONE
+        binding.prescriptionPatientContainer.visibility = View.VISIBLE
     }
 
     private fun getActiveRecipeForSpeciality(){
@@ -67,9 +85,9 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
             if (call.isSuccessful){
                 val responseDTO = call.body()
                 requireActivity().runOnUiThread {
-//                    hideProgressBar()
+                    hideProgressBar()
                     if(responseDTO!!.httpCode == 200){
-//
+                        recyclerView!!.adapter = PrescriptionPatientAdapter(responseDTO.data!!.medicines)
 //                        specialityAdapter = SpecialityAdapter(responseDTO.data!!,navigation )
 //                        recyclerView!!.adapter = specialityAdapter
                     } else {
@@ -80,7 +98,7 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
                 val errorMessage = call.errorBody()!!.string()
                 Log.i("Response", errorMessage)
                 requireActivity().runOnUiThread {
-//                    hideProgressBar()
+                    hideProgressBar()
                 }
                 this.cancel()
             }

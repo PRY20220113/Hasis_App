@@ -46,6 +46,7 @@ class DoctorSpecialitiesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.i("DoctorSpecialitiesFragment", "OnCreate")
     }
 
 
@@ -53,8 +54,10 @@ class DoctorSpecialitiesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.i("DoctorSpecialitiesFragment", "onCreateView")
         binding = FragmentDoctorSpecialitiesBinding.inflate(inflater, container, false)
         recyclerView = binding.specialitiesContainer
+        getActiveSpecialities()
         return binding.root
     }
 
@@ -66,7 +69,6 @@ class DoctorSpecialitiesFragment : Fragment() {
         binding.specialitiesContainer.visibility = View.GONE
         val parent = parentFragment
         navigation = findNavController()
-        getActiveSpecialities()
     }
 
     private fun hideProgressBar(){
@@ -82,7 +84,6 @@ class DoctorSpecialitiesFragment : Fragment() {
                 requireActivity().runOnUiThread {
                     hideProgressBar()
                     if(responseDTO!!.httpCode == 200){
-
                         specialityAdapter = SpecialityAdapter(responseDTO.data!!,navigation )
                         recyclerView!!.adapter = specialityAdapter
                     } else {

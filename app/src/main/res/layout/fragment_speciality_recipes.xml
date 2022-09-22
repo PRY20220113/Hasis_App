@@ -12,8 +12,7 @@
             android:id="@+id/tbMedicalRecipeSpecialityTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/prescriptionContainer">
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btnBack"
@@ -25,6 +24,7 @@
                 android:src="@drawable/ic_round_arrow_back" />
 
             <TextView
+                android:id="@+id/specialityName"
                 android:layout_margin="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/prescriptionContainer"
+            android:id="@+id/prescriptionPatientContainer"
             android:layout_marginHorizontal="20dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
