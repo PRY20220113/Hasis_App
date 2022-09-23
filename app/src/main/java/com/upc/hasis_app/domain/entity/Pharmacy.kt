@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
 data class Pharmacy(
-    var pharmacyId: Int,
+    var pharmacyId: String,
     var name: String,
     var location: String,
 ) {

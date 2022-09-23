@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/nearby_pharmacies"
-        android:name="com.upc.hasis_app.nearby_pharmacies"
+        android:name="com.upc.hasis_app.presentation.ui.patient.FragmentNearbyPharmacies"
         android:label="fragment_nearby_pharmacies"
         tools:layout="@layout/fragment_nearby_pharmacies" />
 
