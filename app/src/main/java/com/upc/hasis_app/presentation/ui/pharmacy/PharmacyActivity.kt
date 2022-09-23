@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -28,26 +29,26 @@ import com.upc.hasis_app.domain.usecase.PlacesUseCase
 import com.upc.hasis_app.presentation.adapter.PharmacyAdapter
 import com.upc.hasis_app.presentation.ui.patient.PatientConsultFragment
 import com.upc.hasis_app.presentation.ui.profile.ProfileFragment
-import com.upc.hasis_app.presentation.view_model.DoctorViewModel
-import com.upc.hasis_app.presentation.view_model.PatientConsultVIewModel
-import com.upc.hasis_app.presentation.view_model.PatientStatus
+import com.upc.hasis_app.presentation.view_model.*
+import com.upc.hasis_app.util.tts.TTSHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PharmacyActivity : AppCompatActivity() {
+class PharmacyActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
 
     private lateinit var binding: ActivityNearbyPharmaciesBinding
     private lateinit var pharmacyAdapter: PharmacyAdapter
     private var recyclerView : RecyclerView? = null
-
+    lateinit var ttsHelper : TTSHelper
     private lateinit var context : Context
-
+    private val viewModel : PharmacyViewModel by viewModels()
     private lateinit var fusedLocationProviderClient : FusedLocationProviderClient
 
     @Inject
@@ -59,7 +60,7 @@ class PharmacyActivity : AppCompatActivity() {
         setContentView(binding.root)
         context = this
         recyclerView = binding.nearbyPharmaciesContainer
-
+        ttsHelper = TTSHelper(this, this)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         val layoutManager = LinearLayoutManager(context)
@@ -71,8 +72,23 @@ class PharmacyActivity : AppCompatActivity() {
             onBackPressed()
         }
         getLastLocation()
+        initObservers()
 
+    }
 
+    private fun initObservers(){
+        viewModel.currentState.observe(this) {
+            when (it) {
+                is SpeakStatus.ReadyToSpeak -> {
+                    viewModel.interactWithUser(ttsHelper)
+                }
+                is SpeakStatus.SpeakComplete -> {
+
+                }
+                else -> {
+                }
+            }
+        }
     }
 
     private fun hideProgressBar(){
@@ -89,7 +105,10 @@ class PharmacyActivity : AppCompatActivity() {
                 runOnUiThread {
                     hideProgressBar()
                     pharmacyAdapter = PharmacyAdapter(getMappedPharmacies(body).toList(), context)
+                    viewModel.updateMedicines(getMappedPharmacies(body).toList())
                     recyclerView!!.adapter = pharmacyAdapter
+
+                    viewModel.setState(SpeakStatus.ReadyToSpeak)
                 }
             } else {
                 val errorMessage = call.errorBody()!!.string()
@@ -157,4 +176,11 @@ class PharmacyActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val result = ttsHelper.tts!!.setLanguage(Locale("es", "ES"))
+
+            if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {  }
+        }
+    }
 }
