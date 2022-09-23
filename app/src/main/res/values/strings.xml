@@ -59,4 +59,5 @@
     <string name="find_pharmacies">Buscar farmacias</string>
     <string name="listen_recipes">Escuchar recetas</string>
     <string name="no_nearby_pharmacies_message">No se encontraron farmacias cercanas a tu ubicación disponibles</string>
+    <string name="start_medication">Iniciar medicación</string>
 </resources>

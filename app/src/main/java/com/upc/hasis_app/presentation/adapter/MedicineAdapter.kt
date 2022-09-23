@@ -21,6 +21,9 @@ class MedicineAdapter(private val prescriptions: List<Medicine>, private val vie
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicineViewHolder {
         val binding = ItemMedicineBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
+
+
+
         return MedicineViewHolder(binding)
     }
 

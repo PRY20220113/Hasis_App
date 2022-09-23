@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 sealed class SpeakStatus {
 
     object Success : SpeakStatus()
+    object ReadyToSpeak : SpeakStatus()
     object Speaking : SpeakStatus()
     object SpeakComplete : SpeakStatus()
 

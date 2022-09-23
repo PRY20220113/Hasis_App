@@ -94,9 +94,9 @@
                 android:layout_weight="1"
                 android:textAllCaps="false"
                 android:textSize="16sp"
-                app:icon="@drawable/ic_location"
+                app:icon="@drawable/ic_fact_check"
                 app:iconGravity="textStart"
-                android:text="@string/find_pharmacies"
+                android:text="@string/start_medication"
                 app:layout_constraintBottom_toBottomOf="parent">
             </com.google.android.material.button.MaterialButton>
 

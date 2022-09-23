@@ -4,9 +4,11 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,26 +21,30 @@ import com.upc.hasis_app.databinding.ActivityNearbyPharmaciesBinding
 import com.upc.hasis_app.domain.entity.Pharmacy
 import com.upc.hasis_app.domain.usecase.PlacesUseCase
 import com.upc.hasis_app.presentation.adapter.PharmacyAdapter
+import com.upc.hasis_app.presentation.view_model.*
+import com.upc.hasis_app.util.tts.TTSHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import org.apache.commons.text.WordUtils
+import java.util.*
 import javax.inject.Inject
 import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
 
 @AndroidEntryPoint
-class PharmacyActivity : AppCompatActivity() {
+class PharmacyActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
 
     private lateinit var binding: ActivityNearbyPharmaciesBinding
     private lateinit var pharmacyAdapter: PharmacyAdapter
     private var recyclerView : RecyclerView? = null
-
+    lateinit var ttsHelper : TTSHelper
     private lateinit var context : Context
-
+    private val viewModel : PharmacyViewModel by viewModels()
     private lateinit var fusedLocationProviderClient : FusedLocationProviderClient
 
     private var lat = 0.0
@@ -46,6 +52,8 @@ class PharmacyActivity : AppCompatActivity() {
 
     private var latP = 0.0
     private var lngP = 0.0
+
+    private var containerHeight = 0
 
     @Inject
     lateinit var  placesUseCase : PlacesUseCase
@@ -56,21 +64,42 @@ class PharmacyActivity : AppCompatActivity() {
         setContentView(binding.root)
         context = this
         recyclerView = binding.nearbyPharmaciesContainer
-
+        ttsHelper = TTSHelper(this, this)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         val layoutManager = LinearLayoutManager(context)
-        recyclerView!!.layoutManager = layoutManager
+        recyclerView!!.layoutManager = object : LinearLayoutManager(this){
+            override fun checkLayoutParams(lp: RecyclerView.LayoutParams?): Boolean {
+                lp!!.height = (height /3.2).toInt()
+                return true
+            }
+        }
         binding.progressIndicator.visibility = View.VISIBLE
-        binding.nearbyPharmaciesContainer.visibility = View.GONE
+        binding.nearbyPharmaciesContainer.visibility = View.INVISIBLE
 
         binding.btnBack.setOnClickListener {
             onBackPressed()
             finish();
         }
         getLastLocation()
+        initObservers()
+
+    }
 
 
+    private fun initObservers(){
+        viewModel.currentState.observe(this) {
+            when (it) {
+                is SpeakStatus.ReadyToSpeak -> {
+                    viewModel.interactWithUser(ttsHelper)
+                }
+                is SpeakStatus.SpeakComplete -> {
+
+                }
+                else -> {
+                }
+            }
+        }
     }
 
     private fun hideProgressBar(){
@@ -92,6 +121,9 @@ class PharmacyActivity : AppCompatActivity() {
                         recyclerView!!.adapter = pharmacyAdapter
                         binding.llNoNearbyPharmacies.visibility = View.INVISIBLE
                         binding.nearbyPharmaciesContainer.visibility = View.VISIBLE
+                        viewModel.updateMedicines(pharmacies)
+                        viewModel.setState(SpeakStatus.ReadyToSpeak)
+
                     } else {
                         binding.llNoNearbyPharmacies.visibility = View.VISIBLE
                         binding.nearbyPharmaciesContainer.visibility = View.INVISIBLE
@@ -116,15 +148,16 @@ class PharmacyActivity : AppCompatActivity() {
             pharmacies.add(
                 Pharmacy(
                 pharmacy["place_id"].toString() ,
-                pharmacy["name"].toString(),
+                WordUtils.capitalizeFully(pharmacy["name"].toString()),
                 ((pharmacy["geometry"] as LinkedTreeMap<*,*>)["location"] as LinkedTreeMap<*,*>).let {
-                     latP =  it["lat"].toString().toDouble()
+                    latP =  it["lat"].toString().toDouble()
                     lngP = it["lng"].toString().toDouble()
-                    "$lat,$lng"
+                    "$latP,$lngP"
                 }.toString(),getDistance(lat,lng, latP, lngP,'K').times(1000).toInt().toString() )
             )
             if (pharmacies.size >= 3) break
         }
+        Log.i("Farmacias", pharmacies.toString())
         return pharmacies
     }
 
@@ -194,5 +227,13 @@ class PharmacyActivity : AppCompatActivity() {
         return rad * 180.0 / Math.PI
     }
 
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val result = ttsHelper.tts!!.setLanguage(Locale("es", "ES"))
+
+            if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {  }
+        }
+    }
 
 }
