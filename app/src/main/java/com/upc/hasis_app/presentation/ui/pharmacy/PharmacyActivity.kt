@@ -3,40 +3,31 @@ package com.upc.hasis_app.presentation.ui.pharmacy
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.opengl.Visibility
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.gson.internal.LinkedTreeMap
-import com.upc.hasis_app.R
-import com.upc.hasis_app.databinding.ActivityDoctorBinding
 import com.upc.hasis_app.databinding.ActivityNearbyPharmaciesBinding
 import com.upc.hasis_app.domain.entity.Pharmacy
 import com.upc.hasis_app.domain.usecase.PlacesUseCase
 import com.upc.hasis_app.presentation.adapter.PharmacyAdapter
-import com.upc.hasis_app.presentation.ui.patient.PatientConsultFragment
-import com.upc.hasis_app.presentation.ui.profile.ProfileFragment
-import com.upc.hasis_app.presentation.view_model.DoctorViewModel
-import com.upc.hasis_app.presentation.view_model.PatientConsultVIewModel
-import com.upc.hasis_app.presentation.view_model.PatientStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.acos
+import kotlin.math.cos
+import kotlin.math.sin
 
 @AndroidEntryPoint
 class PharmacyActivity : AppCompatActivity() {
@@ -49,6 +40,12 @@ class PharmacyActivity : AppCompatActivity() {
     private lateinit var context : Context
 
     private lateinit var fusedLocationProviderClient : FusedLocationProviderClient
+
+    private var lat = 0.0
+    private var lng = 0.0
+
+    private var latP = 0.0
+    private var lngP = 0.0
 
     @Inject
     lateinit var  placesUseCase : PlacesUseCase
@@ -69,6 +66,7 @@ class PharmacyActivity : AppCompatActivity() {
 
         binding.btnBack.setOnClickListener {
             onBackPressed()
+            finish();
         }
         getLastLocation()
 
@@ -81,15 +79,24 @@ class PharmacyActivity : AppCompatActivity() {
     }
 
 
-    private fun getNearbyPharmacies(location:String){
+    private fun getNearbyPharmacies(lat:Double, lng:Double){
         CoroutineScope(Dispatchers.IO).launch {
-            val call = placesUseCase.getNerbyPharmacies(location)
+            val call = placesUseCase.getNerbyPharmacies("$lat,$lng")
             if (call.isSuccessful){
                 val body = call.body() as LinkedTreeMap<*, *>
                 runOnUiThread {
                     hideProgressBar()
-                    pharmacyAdapter = PharmacyAdapter(getMappedPharmacies(body).toList(), context)
-                    recyclerView!!.adapter = pharmacyAdapter
+                    val pharmacies = getMappedPharmacies(body).toList()
+                    if (pharmacies.isNotEmpty()){
+                        pharmacyAdapter = PharmacyAdapter(pharmacies, context)
+                        recyclerView!!.adapter = pharmacyAdapter
+                        binding.llNoNearbyPharmacies.visibility = View.INVISIBLE
+                        binding.nearbyPharmaciesContainer.visibility = View.VISIBLE
+                    } else {
+                        binding.llNoNearbyPharmacies.visibility = View.VISIBLE
+                        binding.nearbyPharmaciesContainer.visibility = View.INVISIBLE
+                    }
+
                 }
             } else {
                 val errorMessage = call.errorBody()!!.string()
@@ -111,10 +118,10 @@ class PharmacyActivity : AppCompatActivity() {
                 pharmacy["place_id"].toString() ,
                 pharmacy["name"].toString(),
                 ((pharmacy["geometry"] as LinkedTreeMap<*,*>)["location"] as LinkedTreeMap<*,*>).let {
-                    val lat =  it.get("lat").toString()
-                    val lng = it.get("lng").toString()
+                     latP =  it["lat"].toString().toDouble()
+                    lngP = it["lng"].toString().toDouble()
                     "$lat,$lng"
-                }.toString() )
+                }.toString(),getDistance(lat,lng, latP, lngP,'K').times(1000).toInt().toString() )
             )
             if (pharmacies.size >= 3) break
         }
@@ -127,9 +134,9 @@ class PharmacyActivity : AppCompatActivity() {
 
             fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
                 if (location != null){
-                    val lat = location.latitude.toString()
-                    val lng = location.longitude.toString()
-                    getNearbyPharmacies("$lat,$lng");
+                     lat = location.latitude.toDouble()
+                     lng = location.longitude.toDouble()
+                    getNearbyPharmacies(lat,lng);
                 }
             }
 
@@ -156,5 +163,36 @@ class PharmacyActivity : AppCompatActivity() {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
+
+    private fun getDistance(
+        lat1: Double,
+        lon1: Double,
+        lat2: Double,
+        lon2: Double,
+        unit: Char
+    ): Double {
+        val theta = lon1 - lon2
+        var dist =
+            sin(deg2rad(lat1)) * sin(deg2rad(lat2)) + cos(deg2rad(lat1)) * cos(
+                deg2rad(lat2)
+            ) * cos(deg2rad(theta))
+        dist = acos(dist)
+        dist = rad2deg(dist)
+        dist *= 60 * 1.1515
+        if (unit == 'K') {
+            dist *= 1.609344
+        } else if (unit == 'N') {
+            dist *= 0.8684
+        }
+        return dist
+    }
+
+    private fun deg2rad(deg: Double): Double {
+        return deg * Math.PI / 180.0
+    }
+    private fun rad2deg(rad: Double): Double {
+        return rad * 180.0 / Math.PI
+    }
+
 
 }

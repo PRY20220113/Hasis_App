@@ -53,6 +53,35 @@
             tools:layout_editor_absoluteY="0dp"
             tools:listitem="@layout/item_pharmacy" />
 
+
+        <LinearLayout
+            android:id="@+id/llNoNearbyPharmacies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible">
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/ic_not_listed_location"
+                android:layout_gravity="center"
+                android:alpha="0.3">
+
+            </ImageView>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_nearby_pharmacies_message"
+                android:textAlignment="center"
+                android:alpha="0.3"/>
+        </LinearLayout>
+
+
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressIndicator"
             android:layout_width="wrap_content"

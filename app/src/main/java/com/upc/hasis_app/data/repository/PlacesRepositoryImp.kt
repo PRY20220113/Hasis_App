@@ -22,7 +22,7 @@ class PlacesRepositoryImp @Inject constructor(
    private val GOOGLE_API_KEY = "AIzaSyCaUSKnE9wkpEb3g-UGkDrAWovR7jB7byU"
 
    override suspend fun getNearbyPharmacies(location:String): Response<Any> {
-     return apiMapsRest.getNearbyPlaces("farmacia",location, "100", GOOGLE_API_KEY)
+     return apiMapsRest.getNearbyPlaces("farmacia",location, "20", GOOGLE_API_KEY)
    }
 
 }

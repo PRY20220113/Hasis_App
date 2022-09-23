@@ -34,6 +34,7 @@ class PharmacyAdapter(private val pharmacies: List<Pharmacy>,val context: Contex
         with(holder){
             with(pharmacies[position]) {
                 binding.tvSpecialityName.text = name
+                binding.tvDistance.text = "A ${this.distance} metros"
                 binding.btnGo.setOnClickListener {
                     val gmmIntentUri = Uri.parse("google.navigation:q=${this.location}&mode=w")
                     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
@@ -43,4 +44,6 @@ class PharmacyAdapter(private val pharmacies: List<Pharmacy>,val context: Contex
             }
         }
     }
+
+
 }

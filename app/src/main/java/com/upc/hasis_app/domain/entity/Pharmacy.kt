@@ -7,6 +7,7 @@ data class Pharmacy(
     var pharmacyId: String,
     var name: String,
     var location: String,
+    var distance: String
 ) {
     override fun toString(): String = Gson().toJson(this)
 }
