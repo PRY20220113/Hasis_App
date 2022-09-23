@@ -109,7 +109,5 @@ class LoginViewModel @Inject constructor(
                 ttsHelper.speakOut("Ingrese su contraseña")
             }
         }
-
-
     }
 }

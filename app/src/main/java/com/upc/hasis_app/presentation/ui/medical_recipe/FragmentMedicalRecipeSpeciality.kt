@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.upc.hasis_app.MainActivity
 import com.upc.hasis_app.R
 import com.upc.hasis_app.databinding.FragmentMedicalRecipeBinding
 import com.upc.hasis_app.databinding.FragmentSpecialityRecipesBinding
@@ -18,7 +19,9 @@ import com.upc.hasis_app.domain.usecase.RecipeUseCase
 import com.upc.hasis_app.presentation.adapter.PrescriptionAdapter
 import com.upc.hasis_app.presentation.adapter.PrescriptionPatientAdapter
 import com.upc.hasis_app.presentation.adapter.SpecialityAdapter
+import com.upc.hasis_app.presentation.ui.PatientRecipeSpecialityActivity
 import com.upc.hasis_app.presentation.view_model.*
+import com.upc.hasis_app.util.tts.TTSHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +35,9 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
     private lateinit var binding: FragmentSpecialityRecipesBinding
 
     private lateinit var recipePatientAdapter: PrescriptionPatientAdapter
+    private val viewModel : RecipeListenViewModel by activityViewModels()
     private var recyclerView : RecyclerView? = null
+    private lateinit var ttsHelper: TTSHelper
 
     @Inject
     lateinit var preferencesUseCase: PreferencesUseCase
@@ -57,9 +62,10 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
         binding.progressIndicator.visibility = View.VISIBLE
         binding.prescriptionPatientContainer.visibility = View.GONE
         getActiveRecipeForSpeciality()
-
+        ttsHelper = (activity as PatientRecipeSpecialityActivity).ttsHelper
 
         binding.btnListen.setOnClickListener {
+            viewModel.interactWithUser(ttsHelper)
         }
 
         binding.btnBack.setOnClickListener {
@@ -73,6 +79,20 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
 
         }
 
+        initObservers()
+
+    }
+
+    private fun initObservers(){
+        viewModel.currentState.observe(viewLifecycleOwner) {
+            when (it) {
+                is SpeakStatus.SpeakComplete -> {
+
+                }
+                else -> {
+                }
+            }
+        }
     }
 
     private fun hideProgressBar(){
@@ -89,6 +109,7 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
                     hideProgressBar()
                     if(responseDTO!!.httpCode == 200){
                         recyclerView!!.adapter = PrescriptionPatientAdapter(responseDTO.data!!.medicines)
+                        viewModel.updateMedicines(responseDTO.data!!.medicines)
 //                        specialityAdapter = SpecialityAdapter(responseDTO.data!!,navigation )
 //                        recyclerView!!.adapter = specialityAdapter
                     } else {
