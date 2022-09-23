@@ -16,18 +16,39 @@
             android:id="@+id/ivProfilePic"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            app:layout_constraintEnd_toEndOf="@id/verticalGuidelineEnd"
             app:layout_constraintStart_toStartOf="@id/verticalGuidelineStart"
             app:layout_constraintTop_toTopOf="@id/horizontalGuidelineStart"
             android:background="@color/black"
+            android:src="@drawable/hasis_vector_login"
             />
 
         <LinearLayout
-            android:id="@+id/llEdad"
+            android:id="@+id/llName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="@id/verticalGuidelineStart"
             app:layout_constraintTop_toBottomOf="@id/ivProfilePic"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre: " />
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="45 años" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@id/verticalGuidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/llName"
             android:layout_marginTop="10dp">
             <TextView
                 android:layout_width="wrap_content"
@@ -41,19 +62,19 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llHeight"
+            android:id="@+id/llDNI"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@id/verticalGuidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/llEdad">
+            app:layout_constraintTop_toBottomOf="@id/llAge">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Altura: " />
+                android:text="DNI: " />
             <TextView
-                android:id="@+id/tvAltura"
+                android:id="@+id/tvDNI"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="1.71 m" />
@@ -61,19 +82,19 @@
 
 
         <LinearLayout
-            android:id="@+id/llWeight"
+            android:id="@+id/llGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@id/verticalGuidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/llHeight">
+            app:layout_constraintTop_toBottomOf="@id/llDNI">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Peso: " />
+                android:text="Género: " />
             <TextView
-                android:id="@+id/tvPeso"
+                android:id="@+id/tvGenre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="70 kg" />
@@ -84,10 +105,23 @@
             android:id="@+id/ivCodigoQR"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            app:layout_constraintBottom_toBottomOf="@id/horizontalGuidelineEnd"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toTopOf="@id/btnPharmacies"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
+            android:id="@+id/btnPharmacies"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            app:cornerRadius="0dp"
+            android:backgroundTint="@color/primary_color"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:text="Buscar farmacias cercanas"
+            app:layout_constraintBottom_toBottomOf="parent">
+        </com.google.android.material.button.MaterialButton>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/verticalGuidelineStart"
@@ -115,6 +149,9 @@
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

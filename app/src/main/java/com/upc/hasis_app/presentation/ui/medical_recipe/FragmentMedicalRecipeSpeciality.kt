@@ -70,9 +70,7 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
         }
 
         binding.btnFind.setOnClickListener {
-            findNavController().navigate(
-                FragmentMedicalRecipeSpecialityDirections.goToNearbyPharmacies()
-            )
+
         }
 
     }

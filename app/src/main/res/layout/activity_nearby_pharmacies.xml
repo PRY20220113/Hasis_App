@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.ui.patient.FragmentNearbyPharmacies">
+    tools:context=".presentation.ui.pharmacy.PharmacyActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -51,7 +51,7 @@
             android:visibility="invisible"
             tools:layout_editor_absoluteX="20dp"
             tools:layout_editor_absoluteY="0dp"
-            tools:listitem="@layout/item_recipe" />
+            tools:listitem="@layout/item_pharmacy" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressIndicator"
@@ -66,4 +66,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

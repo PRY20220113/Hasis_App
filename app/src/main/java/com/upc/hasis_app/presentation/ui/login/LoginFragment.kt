@@ -1,5 +1,6 @@
 package com.upc.hasis_app.presentation.ui.login
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -7,6 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -71,6 +74,7 @@ class LoginFragment : Fragment() {
 
     private fun doLogin(){
 //        if (!viewModel.dataComplete())
+        showProgressBar()
         viewModel.setData(dni = binding.tiUsername.text.toString(), password = binding.tiPassword.text.toString())
         viewModel.loginUser()
     }
@@ -115,13 +119,16 @@ class LoginFragment : Fragment() {
                 }
                 is ResultStatus.LoggedInDoctor -> {
                     sttHelper.stopListen()
+                    hideProgressBar()
                     findNavController().navigate(R.id.login_doctor_complete)
                 }
                 is ResultStatus.LoggedInPatient -> {
                     sttHelper.stopListen()
+                    hideProgressBar()
                     findNavController().navigate(R.id.login_patient_complete)
                 }
                 is ResultStatus.FailedLoggedIn -> {
+                    hideProgressBar()
                     showErrorDialog(viewModel.errorMessage)
                 }
                 else -> {
@@ -156,7 +163,26 @@ class LoginFragment : Fragment() {
     }
 
 
+    private fun blockUserInteraction(){
+        requireActivity().window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+    }
 
+    private fun restoreUserInteraction(){
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    private fun showProgressBar(){
+        binding.progressBar.visibility = View.VISIBLE
+        binding.progressBar.requestFocus()
+        blockUserInteraction()
+    }
+
+    private fun hideProgressBar(){
+        binding.progressBar.visibility = View.GONE
+        restoreUserInteraction()
+    }
 
 
 }

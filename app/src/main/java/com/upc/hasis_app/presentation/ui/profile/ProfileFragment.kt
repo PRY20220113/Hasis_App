@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.upc.hasis_app.MainActivity
@@ -60,12 +61,44 @@ class ProfileFragment : Fragment() {
             450
         )
 
+        binding.btnPharmacies.setOnClickListener {
+            findNavController().navigate(ProfileFragmentDirections.goToPharmacyActivity())
+        }
+
         binding.ivCodigoQR.setImageBitmap(bitmap);
 
         CoroutineScope(Dispatchers.IO).launch{
             //Log.i("Test", preferencesUseCase.getLoginRequest().toString())
         }
 
+        if (preferencesUseCase.getRole() == "D"){
+            loadDoctorProfileData()
+        } else {
+            loadPatientProfileData()
+        }
+
     }
 
+
+    private fun loadPatientProfileData(){
+        binding.ivCodigoQR.visibility = View.VISIBLE
+        binding.btnPharmacies.visibility = View.VISIBLE
+
+        val patient = preferencesUseCase.getUserPatientLoggIn()!!
+        binding.tvName.text = "${patient.user.firstName} ${patient.user.lastName}"
+        binding.tvEdad.text = patient.user.age.toString()
+        binding.tvDNI.text = patient.user.dni
+        binding.tvGenre.text = if (patient.user.sex == "M") "Masculino" else "Femenino"
+    }
+
+    private fun loadDoctorProfileData(){
+        binding.ivCodigoQR.visibility = View.GONE
+        binding.btnPharmacies.visibility = View.GONE
+
+        val doctor = preferencesUseCase.getUserDoctorLoggIn()!!
+        binding.tvName.text = "${doctor.user.firstName} ${doctor.user.lastName}"
+        binding.tvEdad.text = doctor.user.age.toString()
+        binding.tvDNI.text = doctor.user.dni
+        binding.tvGenre.text = if (doctor.user.sex == "M") "Masculino" else "Femenino"
+    }
 }

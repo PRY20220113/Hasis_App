@@ -31,7 +31,7 @@ class PatientActivity : AppCompatActivity() {
     private val profileFragment: Fragment = ProfileFragment()
     private val doctorSpecialitiesFragment: Fragment = DoctorSpecialitiesFragment()
 
-    private lateinit var fusedLocationProviderClient : FusedLocationProviderClient
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +44,7 @@ class PatientActivity : AppCompatActivity() {
         fm.beginTransaction().add(com.upc.hasis_app.R.id.fragmentPatientContainerView, profileFragment, "2").hide(profileFragment).commit()
         fm.beginTransaction().add(com.upc.hasis_app.R.id.fragmentPatientContainerView, doctorSpecialitiesFragment, "1").commit()
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
 
         binding.nvOptions.setOnItemSelectedListener {
             when(it.itemId){
@@ -61,41 +61,7 @@ class PatientActivity : AppCompatActivity() {
             }
             return@setOnItemSelectedListener false
         }
-        getLastLocation()
-       // binding.nvOptions.setupWithNavController(findNavController(R.id.fragmentPatientContainerView))
     }
 
-    private fun getLastLocation(){
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
 
-            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                if (location != null){
-                    Toast.makeText(this, location.latitude.toString() + " " + location.longitude.toString(), Toast.LENGTH_LONG).show()
-                    Log.i("Location", location.latitude.toString() + " " + location.longitude.toString())
-                }
-            }
-
-        } else {
-            askPermission()
-        }
-    }
-    private fun askPermission(){
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 999)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == 999){
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                getLastLocation()
-            }
-            else {
-                Toast.makeText(this, "Requiere permisos de ubicación", Toast.LENGTH_LONG).show()
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
 }

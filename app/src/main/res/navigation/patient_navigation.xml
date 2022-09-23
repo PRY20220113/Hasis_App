@@ -9,7 +9,11 @@
         android:id="@+id/profileFragment"
         android:name="com.upc.hasis_app.presentation.ui.profile.ProfileFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile"/>
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/go_to_pharmacyActivity"
+            app:destination="@id/pharmacyActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/doctorSpecialitiesFragment"
@@ -24,6 +28,9 @@
                 app:argType="integer"
                 android:defaultValue="1" />
         </action>
+        <action
+            android:id="@+id/go_to_pharmacyActivity"
+            app:destination="@id/pharmacyActivity" />
     </fragment>
 
     <activity
@@ -36,5 +43,11 @@
             app:argType="integer"
             android:defaultValue="1" />
     </activity>
+
+    <activity
+        android:id="@+id/pharmacyActivity"
+        android:name="com.upc.hasis_app.presentation.ui.pharmacy.PharmacyActivity"
+        android:label="activity_nearby_pharmacies"
+        tools:layout="@layout/activity_nearby_pharmacies" />
 
 </navigation>

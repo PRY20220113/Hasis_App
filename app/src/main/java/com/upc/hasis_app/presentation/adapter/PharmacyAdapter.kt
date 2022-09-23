@@ -13,7 +13,7 @@ import com.upc.hasis_app.databinding.ItemPharmacyBinding
 import com.upc.hasis_app.databinding.ItemSpecialityBinding
 import com.upc.hasis_app.domain.entity.Pharmacy
 
-class PharmacyAdapter(private val pharmacies: List<Pharmacy>,private val onClickListener: View.OnClickListener,val context: Context) :
+class PharmacyAdapter(private val pharmacies: List<Pharmacy>,val context: Context) :
     RecyclerView.Adapter<PharmacyAdapter.PharmacyViewHolder>() {
 
 
