@@ -72,6 +72,8 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
 //            findNavController().navigate(
 //                FragmentMedicalRecipeSpecialityDirections.backToRecipesSpecialities()
 //            )
+            ttsHelper.silence()
+            viewModel.setState(SpeakStatus.SpeakComplete)
             requireActivity().onBackPressed()
         }
 
@@ -86,8 +88,8 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
     private fun initObservers(){
         viewModel.currentState.observe(viewLifecycleOwner) {
             when (it) {
-                is SpeakStatus.SpeakComplete -> {
-
+                is SpeakStatus.ReadyToSpeak -> {
+                    viewModel.interactWithUser(ttsHelper)
                 }
                 else -> {
                 }
@@ -110,6 +112,7 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
                     if(responseDTO!!.httpCode == 200){
                         recyclerView!!.adapter = PrescriptionPatientAdapter(responseDTO.data!!.medicines)
                         viewModel.updateMedicines(responseDTO.data!!.medicines)
+                        viewModel.setState(SpeakStatus.ReadyToSpeak)
 //                        specialityAdapter = SpecialityAdapter(responseDTO.data!!,navigation )
 //                        recyclerView!!.adapter = specialityAdapter
                     } else {

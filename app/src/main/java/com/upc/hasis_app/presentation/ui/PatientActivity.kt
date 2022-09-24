@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,15 +20,16 @@ import com.google.android.gms.location.LocationServices
 import com.upc.hasis_app.databinding.ActivityPatientBinding
 import com.upc.hasis_app.presentation.ui.doctor.DoctorSpecialitiesFragment
 import com.upc.hasis_app.presentation.ui.profile.ProfileFragment
+import com.upc.hasis_app.util.tts.TTSHelper
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 
 @AndroidEntryPoint
-class PatientActivity : AppCompatActivity() {
+class PatientActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private lateinit var  binding : ActivityPatientBinding
-
+    lateinit var ttsHelper : TTSHelper
     private val profileFragment: Fragment = ProfileFragment()
     private val doctorSpecialitiesFragment: Fragment = DoctorSpecialitiesFragment()
 
@@ -35,6 +37,8 @@ class PatientActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        ttsHelper = TTSHelper(this, this)
         binding = ActivityPatientBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -60,6 +64,15 @@ class PatientActivity : AppCompatActivity() {
                 }
             }
             return@setOnItemSelectedListener false
+        }
+    }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val result = ttsHelper.tts!!.setLanguage(Locale("es", "ES"))
+
+            if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {  }
+
         }
     }
 
