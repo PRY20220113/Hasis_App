@@ -86,7 +86,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:insetTop="0dp" android:insetBottom="0dp" android:insetRight="0dp" android:insetLeft="0dp"
-                android:id="@+id/btnFind"
+                android:id="@+id/btnStart"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 app:cornerRadius="0dp"

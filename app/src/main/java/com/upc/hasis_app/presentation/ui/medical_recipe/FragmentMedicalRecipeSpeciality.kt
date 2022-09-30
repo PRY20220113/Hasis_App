@@ -1,33 +1,34 @@
 package com.upc.hasis_app.presentation.ui.medical_recipe
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.upc.hasis_app.MainActivity
-import com.upc.hasis_app.R
-import com.upc.hasis_app.databinding.FragmentMedicalRecipeBinding
 import com.upc.hasis_app.databinding.FragmentSpecialityRecipesBinding
+import com.upc.hasis_app.domain.entity.Schedule
 import com.upc.hasis_app.domain.usecase.PreferencesUseCase
 import com.upc.hasis_app.domain.usecase.RecipeUseCase
-import com.upc.hasis_app.presentation.adapter.PrescriptionAdapter
 import com.upc.hasis_app.presentation.adapter.PrescriptionPatientAdapter
-import com.upc.hasis_app.presentation.adapter.SpecialityAdapter
 import com.upc.hasis_app.presentation.ui.PatientRecipeSpecialityActivity
 import com.upc.hasis_app.presentation.view_model.*
+import com.upc.hasis_app.util.service.NotificationService
 import com.upc.hasis_app.util.tts.TTSHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.*
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class FragmentMedicalRecipeSpeciality : Fragment() {
@@ -77,13 +78,33 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
             requireActivity().onBackPressed()
         }
 
-        binding.btnFind.setOnClickListener {
-
+        binding.btnStart.setOnClickListener {
+            preferencesUseCase.setSchedules(generateSchedules())
+            requireActivity().startService(Intent(requireActivity(), NotificationService::class.java))
+            //requireActivity().stopService(Intent(requireActivity(), NotificationService::class.java))
         }
 
         initObservers()
 
     }
+
+    private fun generateSchedules(): List<Schedule> {
+        val schedules = mutableListOf<Schedule>()
+        for (medicine  in viewModel.medicines){
+            val total = (medicine.prescribedDays * 24) / medicine.eachHour
+            for (i in 0..total){
+                schedules.add(Schedule(medicine.medicineId, medicine.name, medicine.weight, medicine.quantity, getNowDateRounded(i*medicine.eachHour).toString()))
+            }
+        }
+        println(schedules.toString())
+        return schedules
+    }
+
+    private fun getNowDateRounded(hours : Int): LocalDateTime {
+        val nowDate = LocalDate.now().atTime(LocalDateTime.now().hour+1, 0)
+       return nowDate.plusHours(hours.toLong())
+    }
+
 
     private fun initObservers(){
         viewModel.currentState.observe(viewLifecycleOwner) {

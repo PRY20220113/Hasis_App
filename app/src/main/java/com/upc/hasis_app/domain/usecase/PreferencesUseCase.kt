@@ -4,6 +4,7 @@ import com.upc.hasis_app.data.local.preferences.LocalPreferenceDataStore
 import com.upc.hasis_app.data.model.request.LoginRequest
 import com.upc.hasis_app.domain.entity.Doctor
 import com.upc.hasis_app.domain.entity.Patient
+import com.upc.hasis_app.domain.entity.Schedule
 import com.upc.hasis_app.domain.entity.Speciality
 import javax.inject.Inject
 
@@ -54,6 +55,15 @@ class PreferencesUseCase @Inject constructor(
 
     fun setSpecialitySelected(speciality: Speciality) {
         preferenceDataStore.setSpecialitySelected(speciality)
+    }
+
+
+    fun getSchedules(): List<Schedule>? {
+        return preferenceDataStore.getSchedules()
+    }
+
+    fun setSchedules(schedules: List<Schedule>) {
+        preferenceDataStore.setSchedules(schedules)
     }
 
 

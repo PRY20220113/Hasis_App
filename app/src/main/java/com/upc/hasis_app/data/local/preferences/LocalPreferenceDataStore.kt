@@ -3,13 +3,17 @@ package com.upc.hasis_app.data.local.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.upc.hasis_app.data.model.request.LoginRequest
 import com.upc.hasis_app.domain.entity.Doctor
 import com.upc.hasis_app.domain.entity.Patient
+import com.upc.hasis_app.domain.entity.Schedule
 import com.upc.hasis_app.domain.entity.Speciality
 import com.upc.hasis_app.util.Constantes
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.lang.reflect.Type
 import javax.inject.Inject
+
 
 class LocalPreferenceDataStore @Inject constructor(
    @ApplicationContext context: Context
@@ -27,6 +31,7 @@ class LocalPreferenceDataStore @Inject constructor(
     private val KEY_TOKEN: String = "Token"
     private val KEY_ROLE: String = "Role"
     private val KEY_SPECIALITY_SELECTED: String = "SpecialitySelected"
+    private val KEY_SCHEDULE: String = "Schedule"
 
     init {
         sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
@@ -141,6 +146,25 @@ class LocalPreferenceDataStore @Inject constructor(
             editor.commit()
         } else {
             sharedPreferences.edit().putString(KEY_SPECIALITY_SELECTED, "").commit()
+        }
+    }
+
+    override fun getSchedules(): List<Schedule>? {
+        val json = sharedPreferences.getString(KEY_SCHEDULE, "")
+        if (json!!.isEmpty()) return null
+        val gson = Gson()
+        val listType: Type = object : TypeToken<ArrayList<Schedule?>?>() {}.type
+        return gson.fromJson(json, listType)
+    }
+
+    override fun setSchedules(schedules: List<Schedule>) {
+        if (schedules != null) {
+            editor = sharedPreferences.edit()
+            val gson = Gson()
+            editor.putString(KEY_SCHEDULE, gson.toJson(schedules))
+            editor.commit()
+        } else {
+            sharedPreferences.edit().putString(KEY_SCHEDULE, "").commit()
         }
     }
 }

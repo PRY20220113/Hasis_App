@@ -22,7 +22,7 @@ import javax.inject.Inject
 class SpecialityViewModel  : ViewModel()  {
 
 
-    lateinit var specialities : List<Speciality>
+    var specialities : List<Speciality> = arrayListOf()
     var specialityId : Int? = null
     var updated = false
     var cameFromRecipes = false
