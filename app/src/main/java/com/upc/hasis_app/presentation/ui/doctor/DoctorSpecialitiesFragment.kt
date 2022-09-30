@@ -82,8 +82,13 @@ class DoctorSpecialitiesFragment : Fragment() {
         val parent = parentFragment
         sttHelper = STTHelper(context)
         navigation = findNavController()
+
         initObservers()
         setSpeechRecognizerListeners()
+
+        if(viewModel.cameFromRecipes) {
+            viewModel.setSpecialityStatus(SpeakStatus.ReadyToSpeak)
+        }
     }
 
     private fun setSpeechRecognizerListeners() {
@@ -95,7 +100,7 @@ class DoctorSpecialitiesFragment : Fragment() {
     }
 
     private val goToSpecialityListen : (ArrayList<String>) -> Unit = {
-        viewModel.navigateTo(it[0].replace("\\s".toRegex(), ""), navigation)
+        viewModel.navigateTo(it[0].replace("\\s".toRegex(), ""), navigation, (activity as PatientActivity).navigateToProfile())
     }
 
 
@@ -108,7 +113,14 @@ class DoctorSpecialitiesFragment : Fragment() {
                 is SpeakStatus.SpeakComplete -> {
                     sttHelper.listen()
                 }
+                is SpeakStatus.NotFound -> {
+                    viewModel.interactOnError(ttsHelper)
+                }
+                is SpeakStatus.Success -> {
+                    ttsHelper.silence()
+                }
                 else -> {
+
                 }
             }
         }

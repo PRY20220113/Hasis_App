@@ -2,9 +2,11 @@ package com.upc.hasis_app.presentation.view_model
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.google.android.gms.dynamic.SupportFragmentWrapper
 import com.upc.hasis_app.R
 import com.upc.hasis_app.data.model.request.UpdateMedicineRequest
 import com.upc.hasis_app.domain.entity.Speciality
@@ -23,6 +25,7 @@ class SpecialityViewModel  : ViewModel()  {
     lateinit var specialities : List<Speciality>
     var specialityId : Int? = null
     var updated = false
+    var cameFromRecipes = false
 
     val currentSpeakStatus : MutableLiveData<SpeakStatus> by lazy {
         MutableLiveData<SpeakStatus>()
@@ -40,19 +43,35 @@ class SpecialityViewModel  : ViewModel()  {
         currentSpeakStatus.postValue(status)
     }
 
-    fun navigateTo(specialityText : String, navController : NavController) {
+    fun navigateTo(specialityText : String, navController : NavController, goToProfile : Unit) {
 
         var bundle : Bundle? = null
 
-        for(speciality in specialities) {
-            if(specialityText.contains(speciality.name.lowercase())){
-                bundle = bundleOf("specialityId" to speciality.specialityId)
-                break
+
+        if(specialityText.contains("perfil")) {
+            goToProfile
+            setSpecialityStatus(SpeakStatus.Success)
+        } else {
+            for(speciality in specialities) {
+
+                if(specialityText.contains(speciality.name.lowercase())){
+                    bundle = bundleOf("specialityId" to speciality.specialityId)
+                    break
+                }
+            }
+
+            if(bundle != null) {
+                cameFromRecipes = true
+                navController.navigate(R.id.go_to_speciality_patient_recipes, bundle)
+            } else {
+                setSpecialityStatus(SpeakStatus.NotFound)
             }
         }
-        if(bundle != null) {
-            navController.navigate(R.id.go_to_speciality_patient_recipes, bundle)
-        }
+    }
+
+    fun interactOnError(ttsHelper: TTSHelper) {
+        var textToSpeak = "No se ha encontrado la especialidad mencionada. Por favor vuelva a repetirla"
+        ttsHelper.speakOut(textToSpeak)
     }
 
     fun interactWithUser(ttsHelper: TTSHelper) {
@@ -63,7 +82,6 @@ class SpecialityViewModel  : ViewModel()  {
         for(it in specialities.indices) {
             if(it >= specialities.size - 1) textToSpeak += " y "
             textToSpeak += "${specialities[it].name}, "
-
         }
 
         textToSpeak += ". Para revisar el detalle de la receta por favor diga el nombre de la especialidad."

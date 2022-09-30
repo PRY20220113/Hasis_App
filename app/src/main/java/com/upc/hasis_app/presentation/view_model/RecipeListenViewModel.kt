@@ -13,6 +13,7 @@ sealed class SpeakStatus {
     object ReadyToSpeak : SpeakStatus()
     object Speaking : SpeakStatus()
     object SpeakComplete : SpeakStatus()
+    object NotFound : SpeakStatus()
 
 }
 
