@@ -36,7 +36,7 @@ class SpecialityAdapter(private val specialities: List<Speciality>, private val 
                 binding.ivSpeciality.setImageResource(R.drawable.ic_eye)
                 binding.btnGo.setOnClickListener {
                     //holder.itemView.findNavController().navigate(R.id.go_to_speciality_patient_recipes)
-                    val bundle= bundleOf("specialityId" to this.specialityId)
+                    val bundle= bundleOf("specialityId" to this.specialityId, "specialityName" to this.name)
                     navController.navigate(R.id.go_to_speciality_patient_recipes, bundle)
           //          navController!!.navigate(R.id.go_to_speciality_patient_recipes)
                 }

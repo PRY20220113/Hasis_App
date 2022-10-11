@@ -1,15 +1,19 @@
 package com.upc.hasis_app.presentation.ui.medical_recipe
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.annotation.DrawableRes
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.upc.hasis_app.R
 import com.upc.hasis_app.databinding.FragmentSpecialityRecipesBinding
 import com.upc.hasis_app.domain.entity.Schedule
 import com.upc.hasis_app.domain.usecase.PreferencesUseCase
@@ -26,7 +30,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.*
 import javax.inject.Inject
 
 
@@ -62,30 +65,32 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
         recyclerView!!.layoutManager = LinearLayoutManager(context)
         binding.progressIndicator.visibility = View.VISIBLE
         binding.prescriptionPatientContainer.visibility = View.GONE
-        getActiveRecipeForSpeciality()
+
+        binding.specialityName.text = preferencesUseCase.getSpecialitySelected()!!.name
+
         ttsHelper = (activity as PatientRecipeSpecialityActivity).ttsHelper
+
+
 
         binding.btnListen.setOnClickListener {
             viewModel.interactWithUser(ttsHelper)
         }
 
         binding.btnBack.setOnClickListener {
-//            findNavController().navigate(
-//                FragmentMedicalRecipeSpecialityDirections.backToRecipesSpecialities()
-//            )
             ttsHelper.silence()
             viewModel.setState(SpeakStatus.SpeakComplete)
             requireActivity().onBackPressed()
+            requireActivity().finish()
         }
 
         binding.btnStart.setOnClickListener {
             preferencesUseCase.setSchedules(generateSchedules())
             requireActivity().startService(Intent(requireActivity(), NotificationService::class.java))
+            changeButtonStart()
             //requireActivity().stopService(Intent(requireActivity(), NotificationService::class.java))
         }
-
+        getActiveRecipeForSpeciality()
         initObservers()
-
     }
 
     private fun generateSchedules(): List<Schedule> {
@@ -96,8 +101,30 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
                 schedules.add(Schedule(medicine.medicineId, medicine.name, medicine.weight, medicine.quantity, getNowDateRounded(i*medicine.eachHour).toString()))
             }
         }
-        println(schedules.toString())
         return schedules
+    }
+
+
+    private fun changeButtonStart(){
+        binding.btnStart.text = "Medicación Iniciada"
+        binding.btnStart.isClickable = false
+        binding.btnStart.icon = ContextCompat.getDrawable(requireContext(),R.drawable.ic_clock)
+    }
+
+    private fun verifyMedicines(): Boolean{
+        if (preferencesUseCase.getSchedules() == null) return false
+        val medicines = mutableSetOf<Int>()
+        val medicinesAux = mutableSetOf<Int>()
+        for(schedule in preferencesUseCase.getSchedules()!!){
+            medicines.add(schedule.medicineId)
+        }
+        for(medicine in viewModel.medicines){
+            medicinesAux.add(medicine.medicineId)
+        }
+        println(medicinesAux)
+        println(medicines)
+        if (medicinesAux == medicines) return true
+        return false
     }
 
     private fun getNowDateRounded(hours : Int): LocalDateTime {
@@ -110,6 +137,7 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
         viewModel.currentState.observe(viewLifecycleOwner) {
             when (it) {
                 is SpeakStatus.ReadyToSpeak -> {
+
                     viewModel.interactWithUser(ttsHelper)
                 }
                 else -> {
@@ -133,9 +161,10 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
                     if(responseDTO!!.httpCode == 200){
                         recyclerView!!.adapter = PrescriptionPatientAdapter(responseDTO.data!!.medicines)
                         viewModel.updateMedicines(responseDTO.data!!.medicines)
+                        if(verifyMedicines()){
+                            changeButtonStart()
+                        }
                         viewModel.setState(SpeakStatus.ReadyToSpeak)
-//                        specialityAdapter = SpecialityAdapter(responseDTO.data!!,navigation )
-//                        recyclerView!!.adapter = specialityAdapter
                     } else {
                         Log.i("Response", responseDTO.toString())
                     }

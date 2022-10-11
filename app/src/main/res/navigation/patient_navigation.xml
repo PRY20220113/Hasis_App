@@ -27,6 +27,10 @@
                 android:name="specialityId"
                 app:argType="integer"
                 android:defaultValue="1" />
+            <argument
+                android:name="specialityName"
+                app:argType="string"
+                android:defaultValue="" />
         </action>
         <action
             android:id="@+id/go_to_pharmacyActivity"
@@ -42,6 +46,10 @@
             android:name="specialityId"
             app:argType="integer"
             android:defaultValue="1" />
+        <argument
+            android:name="specialityName"
+            app:argType="string"
+            android:defaultValue="" />
     </activity>
 
     <activity

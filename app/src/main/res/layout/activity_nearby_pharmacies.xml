@@ -68,7 +68,7 @@
                 android:alpha="0.3">
 
             </ImageView>
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no_nearby_pharmacies_message"

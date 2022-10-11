@@ -19,7 +19,7 @@ sealed class SpeakStatus {
 
 class RecipeListenViewModel : ViewModel() {
 
-    lateinit var medicines : List<Medicine>
+    var medicines : List<Medicine> = arrayListOf()
 
     val currentState : MutableLiveData<SpeakStatus> by lazy {
         MutableLiveData<SpeakStatus>()

@@ -30,18 +30,17 @@ class PatientRecipeSpecialityActivity : AppCompatActivity(), TextToSpeech.OnInit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val specialityId = PatientRecipeSpecialityActivityArgs.fromBundle(intent.extras!!).specialityId
+        val specialityName = PatientRecipeSpecialityActivityArgs.fromBundle(intent.extras!!).specialityName
+        preferencesUseCase.setSpecialitySelected(Speciality(specialityId,specialityName,"-"))
+        println(specialityId)
 
         ttsHelper = TTSHelper(this, this)
-
         binding = ActivityPatientRecipeSpecialityBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 
 
-
-        val a = PatientRecipeSpecialityActivityArgs.fromBundle(intent.extras!!).specialityId
-        preferencesUseCase.setSpecialitySelected(Speciality(a,"","-"))
-        println(a)
 
     }
 

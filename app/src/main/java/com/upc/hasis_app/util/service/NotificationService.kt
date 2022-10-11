@@ -5,17 +5,18 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
-import android.nfc.Tag
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
-import android.os.Looper
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.upc.hasis_app.R
+import com.upc.hasis_app.domain.entity.Schedule
 import com.upc.hasis_app.domain.usecase.PreferencesUseCase
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -24,6 +25,9 @@ class NotificationService : Service() {
     private final val TAG = "NotificationService"
 
     val handler = Handler()
+    lateinit var actualShedule : Schedule
+
+    val CHANNEL_ID = "hasis_channel"
 
     @Inject
     lateinit var preferencesUseCase : PreferencesUseCase
@@ -47,8 +51,9 @@ class NotificationService : Service() {
                     contador++
                     Log.d(TAG, contador.toString())
                     Log.d(TAG, preferencesUseCase.getSchedules().toString())
-                    if(contador == 10) NotificationManagerCompat.from(applicationContext).notify(1,getNotification())
-                    postDelayed(this, 1000)
+                    Log.d(TAG, getNowDateRounded().toString())
+                    if(verifySchedule()) NotificationManagerCompat.from(applicationContext).notify(1,getNotification())
+                    postDelayed(this, 60000)
                 }
             }
             postDelayed(runnable, 1000)
@@ -62,29 +67,43 @@ class NotificationService : Service() {
         super.onDestroy()
     }
 
+    private fun verifySchedule(): Boolean{
+        for (schedule in preferencesUseCase.getSchedules()!!)
+        {
+            if(getNowDateRounded() == LocalDateTime.parse(schedule.localDate)){
+                actualShedule = schedule
+                return true
+            }
+        }
+        return false
+    }
 
+
+    private fun getNowDateRounded(): LocalDateTime {
+        return LocalDate.now().atTime(LocalDateTime.now().hour, LocalDateTime.now().minute)
+    }
 
     private fun getNotification(): Notification {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                "channel_01",
-                "My Channel",
-                NotificationManager.IMPORTANCE_DEFAULT
+                CHANNEL_ID,
+                "Pastillero Hasis",
+                NotificationManager.IMPORTANCE_HIGH
             )
             val notificationManager = getSystemService(
                 NotificationManager::class.java
             )
             notificationManager.createNotificationChannel(channel)
             val builder = Notification.Builder(
-                applicationContext, "channel_01"
+                applicationContext, CHANNEL_ID
             ).setAutoCancel(true)
-                .setSmallIcon(android.R.drawable.ic_delete)
-                .setContentText("Toma tu pastilla mano")
+                .setSmallIcon(android.R.mipmap.sym_def_app_icon)
+                .setContentText("Hora de tomar ${actualShedule.quantity} tableta/s de ${actualShedule.weight} miligramos de tu pastilla ${actualShedule.name}")
             builder.build()
         } else {
             val builder = NotificationCompat.Builder(this)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText("My Channel")
+                .setContentTitle("Pastillero Hasis")
+                .setContentText("Hora de tomar ${actualShedule.quantity} tableta/s de ${actualShedule.weight} miligramos de tu pastilla ${actualShedule.name}")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
             builder.build()
