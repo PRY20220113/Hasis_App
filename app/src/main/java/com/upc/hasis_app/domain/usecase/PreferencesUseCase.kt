@@ -66,5 +66,12 @@ class PreferencesUseCase @Inject constructor(
         preferenceDataStore.setSchedules(schedules)
     }
 
+    fun getServiceStatus(): String? {
+        return preferenceDataStore.getServiceStatus()
+    }
+
+    fun setServiceStatus(status: String) {
+        preferenceDataStore.setServiceStatus(status)
+    }
 
 }

@@ -28,4 +28,7 @@ interface PreferenceDataStore {
 
     fun getSchedules(): List<Schedule>?
     fun setSchedules(schedules: List<Schedule>)
+
+    fun getServiceStatus(): String?
+    fun setServiceStatus(status: String)
 }

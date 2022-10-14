@@ -1,7 +1,9 @@
 package com.upc.hasis_app.presentation.ui.medical_recipe
 
+import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.support.annotation.DrawableRes
 import android.util.Log
@@ -9,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startForegroundService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +24,9 @@ import com.upc.hasis_app.domain.usecase.RecipeUseCase
 import com.upc.hasis_app.presentation.adapter.PrescriptionPatientAdapter
 import com.upc.hasis_app.presentation.ui.PatientRecipeSpecialityActivity
 import com.upc.hasis_app.presentation.view_model.*
+import com.upc.hasis_app.util.service.Actions
 import com.upc.hasis_app.util.service.NotificationService
+import com.upc.hasis_app.util.service.ServiceState
 import com.upc.hasis_app.util.tts.TTSHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -85,7 +90,8 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
 
         binding.btnStart.setOnClickListener {
             preferencesUseCase.setSchedules(generateSchedules())
-            requireActivity().startService(Intent(requireActivity(), NotificationService::class.java))
+            //requireActivity().startService(Intent(requireActivity(), NotificationService::class.java))
+            actionOnService(Actions.START)
             changeButtonStart()
             //requireActivity().stopService(Intent(requireActivity(), NotificationService::class.java))
         }
@@ -93,12 +99,28 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
         initObservers()
     }
 
+    private fun actionOnService(action: Actions) {
+        if (preferencesUseCase.getServiceStatus() == ServiceState.STOPPED.name && action == Actions.STOP) return
+        Intent(requireActivity(), NotificationService::class.java).also {
+            it.action = action.name
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Log.i("MEDICAL RECIPE SPECIALITY","Starting the service in >=26 Mode")
+                requireActivity().startForegroundService(it)
+                return
+            }
+            Log.i("MEDICAL RECIPE SPECIALITY","Starting the service in < 26 Mode")
+           requireActivity().startService(it)
+
+        }
+    }
+
+
     private fun generateSchedules(): List<Schedule> {
         val schedules = mutableListOf<Schedule>()
         for (medicine  in viewModel.medicines){
             val total = (medicine.prescribedDays * 24) / medicine.eachHour
             for (i in 0..total){
-                schedules.add(Schedule(medicine.medicineId, medicine.name, medicine.weight, medicine.quantity, getNowDateRounded(i*medicine.eachHour).toString()))
+                schedules.add(Schedule(medicine.medicineId, medicine.name, medicine.weight, medicine.quantity, getNowDateRounded(i).toString()))
             }
         }
         return schedules
@@ -106,9 +128,10 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
 
 
     private fun changeButtonStart(){
-        binding.btnStart.text = "Medicación Iniciada"
-        binding.btnStart.isClickable = false
-        binding.btnStart.icon = ContextCompat.getDrawable(requireContext(),R.drawable.ic_clock)
+//        binding.btnStart.text = "Medicación Iniciada"
+//        binding.btnStart.isClickable = false
+//        binding.btnStart.icon = ContextCompat.getDrawable(requireContext(),R.drawable.ic_clock)
+        binding.btnStart.visibility = View.GONE
     }
 
     private fun verifyMedicines(): Boolean{
@@ -128,8 +151,10 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
     }
 
     private fun getNowDateRounded(hours : Int): LocalDateTime {
-        val nowDate = LocalDate.now().atTime(LocalDateTime.now().hour+1, 0)
-       return nowDate.plusHours(hours.toLong())
+//        val nowDate = LocalDate.now().atTime(LocalDateTime.now().hour+1, 0)
+//       return nowDate.plusHours(hours.toLong())
+        val nowDate = LocalDate.now().atTime(LocalDateTime.now().hour, LocalDateTime.now().minute+1)
+         return nowDate.plusMinutes(hours.toLong())
     }
 
 

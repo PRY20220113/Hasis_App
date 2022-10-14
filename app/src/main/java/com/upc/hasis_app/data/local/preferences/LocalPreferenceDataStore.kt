@@ -167,4 +167,20 @@ class LocalPreferenceDataStore @Inject constructor(
             sharedPreferences.edit().putString(KEY_SCHEDULE, "").commit()
         }
     }
+
+    override fun getServiceStatus(): String? {
+        val token = sharedPreferences.getString(KEY_SPECIALITY_SELECTED, "")
+        if (token!!.isEmpty()) return null
+        return token
+    }
+
+    override fun setServiceStatus(status: String) {
+        if (status != null) {
+            editor = sharedPreferences.edit()
+            editor.putString(KEY_SPECIALITY_SELECTED, status)
+            editor.commit()
+        } else {
+            sharedPreferences.edit().putString(KEY_SPECIALITY_SELECTED, "").commit()
+        }
+    }
 }
