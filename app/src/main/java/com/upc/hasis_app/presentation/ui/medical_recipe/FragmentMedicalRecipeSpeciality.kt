@@ -110,7 +110,6 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
             }
             Log.i("MEDICAL RECIPE SPECIALITY","Starting the service in < 26 Mode")
            requireActivity().startService(it)
-
         }
     }
 
@@ -124,6 +123,13 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
             }
         }
         return schedules
+    }
+
+    private fun getNowDateRounded(hours : Int): LocalDateTime {
+//        val nowDate = LocalDate.now().atTime(LocalDateTime.now().hour+1, 0)
+//        return nowDate.plusHours(hours.toLong())
+            val nowDate = LocalDate.now().atTime(LocalDateTime.now().hour, LocalDateTime.now().minute+1)
+             return nowDate.plusMinutes(hours.toLong())
     }
 
 
@@ -150,12 +156,7 @@ class FragmentMedicalRecipeSpeciality : Fragment() {
         return false
     }
 
-    private fun getNowDateRounded(hours : Int): LocalDateTime {
-//        val nowDate = LocalDate.now().atTime(LocalDateTime.now().hour+1, 0)
-//       return nowDate.plusHours(hours.toLong())
-        val nowDate = LocalDate.now().atTime(LocalDateTime.now().hour, LocalDateTime.now().minute+1)
-         return nowDate.plusMinutes(hours.toLong())
-    }
+
 
 
     private fun initObservers(){

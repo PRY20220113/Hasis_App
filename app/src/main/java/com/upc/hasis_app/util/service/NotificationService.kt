@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
@@ -17,6 +18,8 @@ import androidx.core.app.NotificationManagerCompat
 import com.upc.hasis_app.R
 import com.upc.hasis_app.domain.entity.Schedule
 import com.upc.hasis_app.domain.usecase.PreferencesUseCase
+import com.upc.hasis_app.presentation.view_model.ResultStatus
+import com.upc.hasis_app.util.tts.TTSHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -27,8 +30,9 @@ import java.time.LocalDateTime
 import java.util.*
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
-class NotificationService : Service() {
+class NotificationService : Service(),TextToSpeech.OnInitListener {
 
 
     private val TAG = "NotificationService"
@@ -44,6 +48,10 @@ class NotificationService : Service() {
     lateinit var preferencesUseCase : PreferencesUseCase
 
     var counter = 1
+
+    lateinit var ttsHelper : TTSHelper
+
+    var notificationText = ""
 
     override fun onBind(intent: Intent?): IBinder? {
         Log.i(TAG,"Some component want to bind with the service")
@@ -69,6 +77,7 @@ class NotificationService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        ttsHelper = TTSHelper(this, this)
         Log.i(TAG,"The service has been created".toUpperCase())
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channel = NotificationChannel(
@@ -85,7 +94,6 @@ class NotificationService : Service() {
         }
         notificationManager.createNotificationChannel(channel)
         val notification = NotificationCompat.Builder(this, CHANNEL_ID).build()
-
         startForeground(counter, notification)
     }
 
@@ -103,7 +111,6 @@ class NotificationService : Service() {
                 }
             }
 
-        // we're starting a loop in a coroutine
         GlobalScope.launch(Dispatchers.IO) {
             while (isServiceStarted) {
                 launch(Dispatchers.IO) {
@@ -113,7 +120,7 @@ class NotificationService : Service() {
                         with(NotificationManagerCompat.from(applicationContext)) {
                             counter++
                             notify(counter, getNotification2())
-
+                            ttsHelper.speakOut(notificationText)
                         }
                     }
                 }
@@ -169,6 +176,8 @@ class NotificationService : Service() {
         val contentTitle= "Hora de la medicación"
         val contentText = "Hora de tu dosis de ${actualShedule.name} de las ${actualShedule.localDate.substring(11,16)}, debes ingerir  ${actualShedule.quantity} tableta(s) de ${actualShedule.weight} miligramos"
 
+        notificationText = contentText
+
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             val notificationManager = getSystemService(
@@ -207,9 +216,12 @@ class NotificationService : Service() {
 
     private fun getNotification2(): Notification{
 
-        val contentTitle= "Hora de la medicación"
-        val contentText = "Hora de tu dosis de ${actualShedule.name} de las ${actualShedule.localDate.substring(11,16)}, debes ingerir  ${actualShedule.quantity} tableta(s) de ${actualShedule.weight} miligramos"
+        val contentTitle = "Hora de la medicación"
+        val contentText  = "Hora de tu dosis de ${actualShedule.name} de las ${actualShedule.localDate.substring(11,16)}, " +
+                if (actualShedule.quantity == 1) "debes ingerir ${actualShedule.quantity} pastilla " else  "debes ingerir ${actualShedule.quantity} pastillas " +
+                "de ${actualShedule.weight} miligramos"
 
+        notificationText = contentText
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -242,4 +254,15 @@ class NotificationService : Service() {
             .setPriority(Notification.PRIORITY_HIGH) // for under android 26 compatibility
             .build()
     }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val result = ttsHelper.tts!!.setLanguage(Locale("es", "ES"))
+
+            if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {  }
+
+            //viewModel.setState(ResultStatus.Success)
+        }
+    }
+
 }
